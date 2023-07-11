@@ -1,25 +1,24 @@
 {
     "IconPrincipal": {
-        "Value": "\\vendor\\img\\emergia.ico"
+        "Value": "\\menu-juegos\\vendor\\img\\emergia.ico"
     },
     "backgroundImage": {
-        "Value": "\\vendor\\img\\background-inicio.png"
+        "Value": "\\menu-juegos\\vendor\\img\\background-inicio.png"
     },
     "iconInicio": {
-        "Value": "\\vendor\\img\\icon-inicio.png"
+        "Value": "\\menu-juegos\\vendor\\img\\icon-inicio.png"
     },
     "imagenDelete": {
-        "Value": "\\vendor\\img\\delete-inicio.png"
+        "Value": "\\menu-juegos\\vendor\\img\\delete-inicio.png"
     },
     "imagenNavBar": {
-        "Value": "\\vendor\\img\\iconoEmergiaNavBar.png"
+        "Value": "\\menu-juegos\\vendor\\img\\iconoEmergiaNavBar.png"
     },
     "imagenJuegos": {
-        "Value": "\\vendor\\img\\icon-juegos.png"
+        "Value": "\\menu-juegos\\vendor\\img\\icon-juegos.png"
     },
-    
     "imagenSalir":{
-        "Value": "\\vendor\\img\\background-salir.png"
+        "Value": "\\menu-juegos\\vendor\\img\\background-salir.png"
     }
     
 }

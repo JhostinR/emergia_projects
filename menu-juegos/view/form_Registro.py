@@ -87,7 +87,7 @@ class Registro:
         label.config(image=imagen_tk, bg="#ff9e18")
 
         titulo = tk.Label(frame1, text="ミ DATOS DEL JUGADOR 彡", font=("Helvetica", 16, "bold"), bg="#ff9e18",
-                          foreground="#773dbd")
+                            foreground="#773dbd")
         titulo.place(x=0, y=20)
         # endregion Frame1
 
@@ -105,35 +105,35 @@ class Registro:
 
         # Dirección y etiqueta de la dirección
         direccion_label = tk.Label(frame2, text="Dirección:", bg="#773dbd", foreground="#ff9e18",
-                                   font=("Helvetica", 11, "bold"))
+                                    font=("Helvetica", 11, "bold"))
         direccion_label.place(x=110, y=65)
         direccion_entry = tk.Entry(frame2, bg="#773dbd", foreground="#fff", font=("Helvetica", 11, "bold"))
         direccion_entry.place(x=65, y=95)
 
         # Teléfono y etiqueta del teléfono
         telefono_label = tk.Label(frame2, text="Teléfono:", bg="#773dbd", foreground="#ff9e18",
-                                  font=("Helvetica", 11, "bold"))
+                                    font=("Helvetica", 11, "bold"))
         telefono_label.place(x=110, y=130)
         telefono_entry = tk.Entry(frame2, bg="#773dbd", foreground="#fff", font=("Helvetica", 11, "bold"))
         telefono_entry.place(x=65, y=155)
 
         # Descripción y etiqueta de la descripción
         descripcion_label = tk.Label(frame2, text="Descripción (opcional):", bg="#773dbd", foreground="#ff9e18",
-                                     font=("Helvetica", 11, "bold"))
+                                        font=("Helvetica", 11, "bold"))
         descripcion_label.place(x=65, y=190)
         descripcion_text = scrolledtext.ScrolledText(frame2, width=20, height=4, bg="#773dbd", foreground="#fff",
-                                                     font=("Helvetica", 11, "bold"))
+                                                        font=("Helvetica", 11, "bold"))
         descripcion_text.place(x=60, y=220)
 
         # Botón para registrar los datos
         registrar_button = tk.Button(frame2, text="REGISTRAR", font=("Helvetica", 9, "bold"), bg="#773dbd",
-                                     foreground="#fff", width=13, height=1, command=registrar_datos)
+                                        foreground="#fff", width=13, height=1, command=registrar_datos)
         registrar_button.place(x=20, y=325)
         registrar_button.bind('<Enter>', lambda e: e.widget.config(bg='#9d79ff', foreground="#000"))
         registrar_button.bind('<Leave>', lambda e: e.widget.config(bg='#7141f5', foreground="#fff"))
 
         limpiar_button = tk.Button(frame2, text="LIMPIAR", font=("Arial", 9, "bold"), bg="#FC8A4A", width=13, height=1,
-                                   command=limpiar_datos)
+                                    command=limpiar_datos)
         limpiar_button.place(x=180, y=325)
         limpiar_button.bind('<Enter>', lambda e: e.widget.config(bg='#e0592a', foreground="#fff"))
         limpiar_button.bind('<Leave>', lambda e: e.widget.config(bg='#FC8A4A', foreground="#000"))
