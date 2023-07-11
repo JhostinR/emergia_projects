@@ -1,74 +1,53 @@
+#Importando librerias necesarias
 import os
+from tkinter import messagebox
 
+#Creando una clase
 class Usuario:
     def __init__(self):
         self.__nombreUsuario = ""
         self.__direccion = ""
         self.__telefono = ""
         self.__descripcion = ""
-        self.__numerosJuegos = 0
-        
-    def getnombreUsuario(self):
+
+    def getNombreUsuario(self):
         return self.__nombreUsuario
     
-    def setnombreUsuario(self,nombreUsuario):
+    def setNombreUsuario(self,nombreUsuario):
         self.__nombreUsuario = nombreUsuario
     
-    def getdireccion(self):
+    def getDireccion(self):
         return self.__direccion
     
-    def setdireccion(self,direccion):
+    def setDireccion(self,direccion):
         self.__direccion = direccion
         
-    def gettelefono(self):
+    def getTelefono(self):
         return self.__telefono
     
-    def settelefono(self,telefono):
+    def setTelefono(self,telefono):
         self.__telefono = telefono
         
-    def getdescripcion(self):
+    def getDescripcion(self):
         return self.__descripcion
     
-    def setdescripcion(self,descripcion):
+    def setDescripcion(self,descripcion):
         self.__descripcion = descripcion
-        
-    def getnumerosJuegos(self):
-        return self.__numerosJuegos
     
-    def setnumerosJuegos(self,numjuegos):
-        self.__numerosJuegos = numjuegos
-
-    def pedirDatos(self):
-        print("\n")
-        self.mensaje =  ("=========================\n")
-        self.mensaje += ("|   ESCRIBE TUS DATOS    |\n")
-        self.mensaje += ("=========================")
-        print(self.mensaje)
-        self.setnombreUsuario(input("ingrese su nombre: "))
-        self.setdireccion(input("ingrese su direccion: "))
-        
-        while True:
-            try: 
-                self.settelefono(int(input("ingrese su telefono: ")))
-                break
-            except ValueError:
-                print("el valor ingresado es incorrecto, intenta ingresar un numero")
-        
-        self.setdescripcion(input("ingrese su descripcion: "))
-        clear = lambda: os.system('cls')
-        clear()
-    
-    def imprimirUsuario(self):
-        clear = lambda: os.system('cls')
-        clear()
-        print("\n")
-        self.mensaje =  ("=====================================\n")
-        self.mensaje += ("|          DATOS DEL JUGADOR        |\n")
-        self.mensaje += ("=====================================")
-        print(self.mensaje)
-        print(f"El usuario es: {self.getnombreUsuario()}")
-        print(f"La direccion del usuario es: {self.getdireccion()}")
-        print(f"El telefono de contacto es: {self.gettelefono()}")
-        print(f"La descripcion del usuario es: {self.getdescripcion()}")
-        print("=====================================")
-        return(f"numero de veces que jugo son: {str(self.getnumerosJuegos())}\n=====================================")
+    def actualizar_datos_jugador(self):
+        if self.getNombreUsuario == "":
+            return("no hay datos")
+        else:
+            mensaje = (f"El usuario es: {self.getNombreUsuario()}\n")
+            mensaje += (f"La direccion es: {self.getDireccion()}\n")
+            mensaje += (f"El telefono es: {self.getTelefono()}\n")
+            mensaje += (f"La descripcion es: {self.getDescripcion()}")
+            return(mensaje)
+    def borrarDatos(self):
+        # Aquí va la lógica para borrar los datos del usuario
+        # Por ejemplo, puedes reiniciar los atributos del objeto a sus valores predeterminados o eliminarlos por completo.
+        # Por ejemplo:
+        self.nombreUsuario = ""
+        self.direccion = ""
+        self.telefono = ""
+        self.descripcion = ""
