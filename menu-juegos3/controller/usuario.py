@@ -9,6 +9,7 @@ class Usuario:
         self.__telefono = ""
         self.__descripcion = ""
         self.__contador = 0
+        self.__nombreJuego = ""
 
     def getNombreUsuario(self):
         return self.__nombreUsuario
@@ -39,6 +40,12 @@ class Usuario:
 
     def setContador(self,contador):
         self.__contador = contador
+    
+    def getNombreJuego(self):
+        return self.__nombreJuego
+    
+    def setNombreJuego(self, nombreJuego):
+        self.__nombreJuego = nombreJuego
     
     def imprimirUsuario(self):
         mensaje = (f"El usuario es: {self.getNombreUsuario()}\n")

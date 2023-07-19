@@ -26,6 +26,7 @@ class Menu:
 # region recibir datos
         self.datos_jugador = datos_jugador
         usuario.getContador =  0
+        usuario.getNombreJuego = ""
 # endregion recibir datos
 
 # region configuracion ventana
