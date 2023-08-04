@@ -1,0 +1,174 @@
+<script>
+    const ConsultaHistorial=Vue.component('consulta-registro-component', {
+       data: function () {
+          return {
+            count: 0,
+            documento:'',       
+            isLoading:false,
+            data:[],
+            dataPaginador:[],
+            isLoadingx:false,
+            filtros:{
+              id:'',
+              ff:'',
+              error:'Todo',
+              estado:'En gestion'
+            },
+            errores:{'movil':['DNI Incorrecto','Cliente cancela','ICC incorrecto','Error Sistema','Error Formato','Baja en el operador donante','Operador donante no Responde','Rechazada fuerza mayor','Operador donante no Registrado','Número a portar erróneo o inactivo','Portabilidad interna','Cliente ausente','Error datos de dirección','Dni no coincide','Consulta portabilidad','Cliente no acepta expedición','Sin Estado de Error','Creacion usuario incorrecta','Paquetes añadidos incorrectamente','Timeout','Authentication Error'],
+            'fijo':['Motivos Rechazo','DNI Incorrecto','Cliente cancela','Revendedor Incorrecto','Error Sistema','Error Formato','Baja en el operador donante','Operador donante no Responde','Rechazada fuerza mayor','Error tipo acceso','Rechazada Impago operador donante','Númeracion a portar erroneo o inactivo','Sin Estado de Error','Numeracion no asignada ni portada al operador donante']},
+            estados:['Todo','En gestion','OK','KO'],
+            userProf:''
+          }
+        },
+        methods:{     
+          getCasos:function(){
+            this.isLoading=true 
+          var usr=JSON.parse(localStorage.getItem('user')).username
+          console.log(this.filtros)
+          google.script.run.withSuccessHandler((res)=>{
+            this.data=JSON.parse(res)         
+            this.isLoading=false
+            if(this.data.length<1){
+                this.mostrarMensaje('No se encontraron resultados con los filtros aplicados!','Info!',true)
+              }                           
+          }).withFailureHandler((err)=>{
+            console.log(err.message)
+            this.isLoading=false
+          }).getData(usr, this.filtros)
+          },
+          mostrarAsignar:function(){
+            this.isLoadingx = !this.isLoadingx
+            var usr=JSON.parse(localStorage.getItem('user')).username
+            google.script.run.withSuccessHandler(res=>{
+              this.fila.value=res
+              this.isLoadingx = !this.isLoadingx 
+              this.sub_route.actual = '/nuevo-caso'
+            }).withFailureHandler((res)=>{
+              this.mostrarMensaje("No hay datos para asignar",'Info!',true)
+              this.isLoadingx = !this.isLoadingx
+            }).asignarCaso(usr)
+          },
+          mostrarDetalle:function(flx){
+              this.fila.value=flx
+              this.sub_route.actual = '/detalle-caso'
+          },
+          changePaginador:function(newDataPaginador){
+            this.dataPaginador=newDataPaginador
+          },
+          mostrarMensaje:function(text,title,type){
+            this.message.text=text,
+            this.message.title=title,
+            this.message.typeError=type,
+            this.message.visible=true
+          },
+          formatFechaHora:function(fecha){
+            let date = fecha?new Date(fecha):''   
+            let inter = new Intl.DateTimeFormat('es-ES')
+            return fecha ? inter.format(date):''
+          }           
+        },
+        inject: ['sub_route','fila','message'],
+        
+        created(){
+          this.isLoading=true 
+          var usr=JSON.parse(localStorage.getItem('user')).username
+          google.script.run.withSuccessHandler((res)=>{
+            this.data=JSON.parse(res)         
+            this.isLoading=false
+            if(this.data.length<1){
+                this.mostrarMensaje('No se encontraron resultados con los filtros aplicados!','Info!',true)
+              }                           
+          }).withFailureHandler((err)=>{
+            console.log(err.message)
+            this.isLoading=false
+          }).getData(usr, this.filtros)
+            google.script.run.withSuccessHandler((res)=>{
+            this.userProf=res                                 
+          }).withFailureHandler().usrProff(usr)
+        },
+        template:`
+        <div>
+          <div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-4  my-sm-3 my-md-5 ">      
+            <div class="col mb-sm-2 mb-md-1 row">
+              <label  class="text-end col-md-4 col-lg-4  col-form-label">ID Cliente</label>
+              <div class=" col-md-8 col-lg-8 ">
+                <input type="search" class="form-control" v-model:value="filtros.id" >
+              </div>
+            </div>
+            <div class="col mb-sm-2 mb-md-1 row">
+              <label  class="col-md-4 col-lg-4  col-form-label text-end">Fecha</label>
+              <div class="col-md-8 col-lg-8 ">
+                <input type="date" class="form-control" v-model:value='filtros.ff' >
+              </div>
+            </div>
+            <div class="col mb-sm-2 mb-md-1 row">
+              <label class="col-md-4 col-lg-4  col-form-label text-end">Error</label>
+              <div class="col-md-8 col-lg-8 ">
+                <select  class="form-select" v-model="filtros.error">
+                  <option v-for="(x,y) of errores.movil" :key="y" :value="x">{{x}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col mb-sm-2 mb-md-1 row">
+              <label class="col-md-4 col-lg-4  col-form-label text-end">Estado</label>
+              <div class="col-md-8 col-lg-8 ">
+                <select  class="form-select" v-model="filtros.estado">
+                  <option v-for="(estadox,idx) of estados" :key="idx" :value="estadox">{{estadox}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col text-start">
+            <button v-on:click='getCasos' type="button" class="btn btn-purple">      
+              Consultar</button>
+          </div>             
+        
+          <paginador-component :size='10' :data='data' v-on:changePage='changePaginador'></paginador-component>      
+        
+          <table class="table table-striped table-bordered ">
+            <thead>
+              <tr class="bg-teja text-white">
+                <th scope="col" v-if="userProf === 'Supervisor'">Asesor Asignado</th>
+                <th scope="col">ID Cliente</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Error</th>
+                <th scope="col">Estado</th>
+                <th scope="col" class="text-end" style="max-width: 60px;"><button v-on:click='mostrarAsignar()' type="button" class="btn btn-purple">      
+              Obtener Caso <span v-show="isLoadingx" class="spinner-grow-sm spinner-grow bg-teja" role="status" aria-hidden="true"></span></button></th>
+              </tr>
+            </thead>
+            <tbody v-if="!isLoading">
+              <tr v-for="(message, i) of dataPaginador" :key="i">
+                <td v-if="userProf === 'Supervisor'">{{message.user}}</td>
+                <td>{{message.customer_id}}</td>
+                <td>{{formatFechaHora(message.fecha)}}</td>
+                <td>{{message.error_a ? message.error_a : message.error_i}}</td>
+                <td>{{message.estado}}</td>
+                <td style="width:40px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#773dbd" class="w-5 h-5"
+                    @click='mostrarDetalle(message.fila)'>
+                    <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                    <path fill-rule="evenodd"
+                      d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                      clip-rule="evenodd" />
+                  </svg>
+        
+                </td>
+              </tr>      
+        
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td colspan="6" class="text-center">
+                  <span class="spinner-grow-sm spinner-grow bg-teja" role="status" aria-hidden="true"></span>
+                </td>
+              </tr>     
+        
+            </tbody>      
+          </table>   
+        </div>
+        `   
+  
+    })
+  
+  </script>

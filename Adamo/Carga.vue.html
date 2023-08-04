@@ -1,0 +1,51 @@
+<script>
+  const CargaCasos=Vue.component('Carga-casos-component', {
+     data: function () {
+        return {
+          isLoading:false,  
+        }
+      },
+      created(){ 
+        /*this.isLoading=true
+          console.log(this.fila.value)
+          google.script.run.withSuccessHandler((res)=>{
+          this.data=JSON.parse(res,(key,value)=>key.includes('fecha')? new Date(value):value)  
+          this.isLoading=false
+          console.log(this.data)
+        }).withFailureHandler().getDataById(this.fila.value)**/
+      },
+      methods:{   
+        cargarCasos:function(){
+          this.isLoading = !this.isLoading
+          google.script.run.withSuccessHandler((res)=>{
+            this.isLoading = !this.isLoading
+            this.mostrarMensaje(res,'Success!',false)
+          }).withFailureHandler((err)=>{
+            this.isLoading = !this.isLoading
+            this.mostrarMensaje(err,'Error!',true)
+          }).subirCasos()
+        },
+        mostrarMensaje:function(text,title,type){
+        this.message.text=text,
+        this.message.title=title,
+        this.message.typeError=type,
+        this.message.visible=true
+      },
+      },     
+
+      inject: ['fila','sub_route','message'], 
+
+      template:`
+      <div>
+      <div>
+        <a href="https://docs.google.com/spreadsheets/d/1IVpGKIHtnLnL4D-VKSFSGIoZmeiId4BVz3j6TlBplLQ/edit#gid=0" target="_blank" class="link-success">Abrir archivo para carga de casos</a>
+	      <button id="cargarCasoOrdenes" class="btn btn-success" @click="cargarCasos" type="button">
+        Cargar Casos
+        <span v-show='isLoading' class="spinner-grow-sm spinner-grow " role="status" aria-hidden="true"></span>
+        </button>
+      </div>
+      </div>
+      `
+    })
+
+</script>
