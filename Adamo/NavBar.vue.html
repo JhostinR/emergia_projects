@@ -1,0 +1,73 @@
+<script>
+    const NavBar=Vue.component('navbar-component', {    
+        data: function () {
+          return {
+            faltantes:0
+          }
+        },
+        inject: ['user','route','message','prueba','sub_route'],
+        methods:{
+          cerrarSesion:function(){
+            localStorage.removeItem('user')
+            localStorage.removeItem('fechaLogin')
+            this.user.name=''
+            this.user.username=''
+            this.sub_route.actual='/consulta'
+            this.route.currentRoute='/login'
+          },
+          cambiarMensaje:function(){
+            console.log('cambiando mensaje')
+            if(this.message.text=='a'){
+              this.message.text='prueba de watcher'
+            }else{
+              this.message.text='a'
+            }
+          },
+          getCasosFaltantes:function(){
+            google.script.run.withSuccessHandler((res)=>{
+              this.faltantes = res
+            }).withFailureHandler().contarFaltantes()
+          },
+        },  
+        created () {       
+          this.getCasosFaltantes()
+  
+          setInterval(()=>{
+            //this.getCasosFaltantes()
+          },60000) 
+        }, 
+        template: `
+            <nav class="navbar sticky-bottom navbar-dark bg-dark ">
+              <div class="container-fluid">
+                <div>
+                  <h2 class="text-white"></h2>
+                </div>
+                <div class="d-flex gap-1">          
+                  <span class="text-white bg-warning btn me-3" >  
+                    Casos Faltantes: {{faltantes}}    
+                  </span>
+                  <span @click='cambiarMensaje' class="btn btn-info d-flex align-items-center text-white gap-2 bg-purple border-0" >
+                    <span style="width:30px;">                                      
+                      <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                      <path fill-rule="evenodd" 
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-5.5-2.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zM10 12a5.99 5.99 0 00-4.793 2.39A6.483 6.483 0 0010 16.5a6.483 6.483 0 004.793-2.11A5.99 5.99 0 0010 12z" clip-rule="evenodd" />
+                      </svg>                                      
+                    </span> 
+                    {{user.name}}
+                  </span>          
+                  <span @click="cerrarSesion" class="text-white btn" style="width:50px;">
+                    <svg  viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                      <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z" 
+                        clip-rule="evenodd" />
+                     <path fill-rule="evenodd" 
+                        d="M6 10a.75.75 0 01.75-.75h9.546l-1.048-.943a.75.75 0 111.004-1.114l2.5 2.25a.75.75 0 010 1.114l-2.5 2.25a.75.75 0 11-1.004-1.114l1.048-.943H6.75A.75.75 0 016 10z" 
+                        clip-rule="evenodd" />
+                    </svg>                           
+                  </span>
+                </div> 
+              </div>
+            </nav>
+        `
+      })
+  
+  </script>

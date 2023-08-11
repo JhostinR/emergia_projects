@@ -1,0 +1,106 @@
+<style>
+    :root {
+      --bs-purple: #773dbd;
+      --bs-teja: #e7511e;
+  
+    }
+  
+  
+    .bg-purple {
+      background-color: var(--bs-purple) !important;
+    }
+  
+    .bg-teja {
+      background-color: var(--bs-teja) !important;
+    }
+  
+  
+    .text-purple {
+  
+      color: var(--bs-purple) !important
+    }
+  
+    .text-teja {
+  
+      color: var(--bs-teja) !important
+    }
+  
+    .animate-pulse {
+  
+      animation: pulse 1.4s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+    }
+  
+    @keyframes pulse {
+  
+      70% {
+        opacity: 30%;
+      }
+  
+    }
+  
+  
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted black;
+    }
+  
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+  
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+  
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+    }
+  
+  .sorting {
+    background-color: #D4D4D4;
+  }
+  
+  .asc:after {
+    content: ' ↑';
+  }
+  
+  .desc:after {
+    content: " ↓";
+  }
+  
+  
+  
+  
+    .btn-purple {
+      --bs-btn-color: #fff;
+      --bs-btn-bg: var(--bs-purple);
+      --bs-btn-border-color: var(--bs-purple);
+      --bs-btn-hover-color: #fff;
+      --bs-btn-hover-bg: #6122ad;
+      --bs-btn-hover-border-color: #6f24ca;
+      --bs-btn-focus-shadow-rgb: 49, 132, 253;
+      --bs-btn-active-color: #fff;
+      --bs-btn-active-bg: #6f24ca;
+      --bs-btn-active-border-color: #0a53be;
+      --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+      --bs-btn-disabled-color: #fff;
+      --bs-btn-disabled-bg:var(--bs-purple);
+      --bs-btn-disabled-border-color: var(--bs-purple)
+    }
+  
+    span.btn{
+      cursor:default !important;
+    }
+  
+  
+  
+  
+  
+  </style>

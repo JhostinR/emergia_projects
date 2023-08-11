@@ -1,0 +1,119 @@
+<script>  
+    const Log=Vue.component('log-component', {
+      props:['logs'],
+      data: function () {
+        return {  
+            newSeguimiento:{
+              observacion:'',
+              usuario:''
+            }, 
+            isLoading:false,
+            dataPaginador:[]      
+        }
+      },
+      methods:{
+        changeData:function(data){
+          this.dataPaginador=data
+        },
+        formatFechaHora:function(fecha){
+          let date = fecha?new Date(fecha):''   
+            let inter = new Intl.DateTimeFormat('es-ES')
+            return fecha ? inter.format(date):''
+        },
+        mostrarMensaje:function(text,title,type){
+           this.message.text=text,
+            this.message.title=title,
+            this.message.typeError=type,
+            this.message.visible=true
+        },
+        addSeguimiento:function(){ 
+          let token=localStorage.getItem('token')
+          this.newSeguimiento.usuario=JSON.parse(localStorage.getItem('user')).username
+          if(this.newSeguimiento.observacion){
+            this.isLoading=true
+            google.script.run.withSuccessHandler((res)=>{
+              this.isLoading=false
+              this.newSeguimiento.observacion=''
+              this.$emit('changeData',res)
+              this.mostrarMensaje('Seguimiento agregado','Exito!',false)
+            }).withFailureHandler((err)=>{
+              console.log(err.message)
+              this.isLoading=false
+            }).addSeguimiento(token,this.newSeguimiento, this.fila.value)
+  
+          }else{
+           this.mostrarMensaje('La observación es obligatoria','Error!',true)
+          }
+  
+        }
+      },        
+       inject: ['message', 'fila'],
+  
+      template:`<fieldset class="px-3 my-4">
+      
+        <legend>Historial de interacciones</legend>
+      
+        <div class=" border border-2 py-3 px-2 row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 gap-3 my-sm-3 my-md-5 m">
+      
+  
+          <paginador-component :size=10 :data='logs' v-on:changePage='changeData' ></paginador-component>
+      
+          <table class="table table-striped table-bordered ">
+            <thead>
+              <tr class="bg-teja text-white">
+                <th scope="col">Fecha</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Errores</th>
+                <th scope="col">Observación</th>
+                  </svg>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+      
+              <tr v-for="(log,i) of dataPaginador" :key='i'>
+                <th>{{formatFechaHora(log.fecha)}}</th>
+                <td>{{log.usr}}</td>
+                <td>{{log.errI}} > {{log.errF}} </td>
+                <td colspan="2">{{log.obs}}</td>
+              </tr>
+            </tbody>
+      
+          </table>
+      
+      
+        </div>
+      
+      
+      
+        <div class="modal fade " id="nuevoLog" tabindex="-1" aria-labelledby="tituloNuevoLog" data-bs-backdrop="static"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header bg-purple text-white">
+                <h5 class="modal-title" id="tituloNuevoLog">Nuevo Seguimiento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body row  mx-2 ">
+      
+                <textarea class="form-control" rows="3" v-model:value="newSeguimiento.observacion"></textarea>
+      
+      
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-purple" @click="addSeguimiento">
+                    <span v-show='isLoading' class="spinner-grow-sm spinner-grow " role="status" aria-hidden="true"></span>
+                    Guardar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      
+      
+      </fieldset>
+      `
+    })
+  
+  </script>
