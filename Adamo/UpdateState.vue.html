@@ -64,52 +64,67 @@
         }
       },
 
-        askForAnotherAction: function() {
-          this.swalWithBootstrapButtons = Swal.mixin({
-              customClass: {
-                  confirmButton: 'btn btn-success',
-                  cancelButton: 'btn btn-danger'
+      askForAnotherAction: function() {
+        this.swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+          },
+          buttonsStyling: false
+        });
+      
+        this.swalWithBootstrapButtons.fire({
+          title: 'Desea agregar otro intento?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'aceptar',
+          cancelButtonText: 'cancelar',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Ingrese un nuevo caso:',
+              input: 'text',
+              inputAttributes: {
+                autocapitalize: 'off'
               },
-              buttonsStyling: false
-          })
-
-          this.swalWithBootstrapButtons.fire({
-              title: 'Desea agregar otro intento?',
-              icon: 'warning',
               showCancelButton: true,
-              confirmButtonText: 'aceptar',
-              cancelButtonText: 'cancelar',
-              reverseButtons: true
-          }).then((result) => {
+              confirmButtonText: 'Aceptar',
+              cancelButtonText: 'Cancelar',
+              showLoaderOnConfirm: true,
+              preConfirm: (dato) => {
+                if (!dato) {
+                  Swal.showValidationMessage('Por favor, ingrese un dato válido');
+                }
+              },
+              allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
               if (result.isConfirmed) {
+                var usr = JSON.parse(localStorage.getItem('user')).username;
+                var sheet = SpreadsheetApp.getActive().getSheetByName('DataCarga');
+                var dataCargaValues = sheet.getRange("C:C").getValues().flat(); // Assuming the data is in column C of Sheet 3
+                var dato = result.value;
+      
+                if (dataCargaValues.includes(dato)) {
+                  google.script.run.withSuccessHandler(res => {
+                    this.fila.value = res;
+                    this.sub_route.actual = '/nuevo-caso';
+                  }).asignarCaso(usr, dato);
+                } else {
                   Swal.fire({
-                      title: 'Ingrese un dato:',
-                      input: 'text',
-                      inputAttributes: {
-                          autocapitalize: 'off'
-                      },
-                      showCancelButton: true,
-                      confirmButtonText: 'Aceptar',
-                      cancelButtonText: 'Cancelar',
-                      showLoaderOnConfirm: true,
-                      preConfirm: (dato) => {
-                          if (!dato) {
-                              Swal.showValidationMessage('Por favor, ingrese un dato válido')
-                          }
-                      },
-                      allowOutsideClick: () => !Swal.isLoading()
-                  }).then((result) => {
-                      if (result.isConfirmed) {
-                          var usr = JSON.parse(localStorage.getItem('user')).username
-                          google.script.run.withSuccessHandler(res => {
-                              this.fila.value = res
-                              this.sub_route.actual = '/nuevo-caso'
-                          }).asignarCaso(usr)
-                      }
+                    title: 'Tarea no existe, por favor ingresa otra',
+                    icon: 'error',
+                    showCancelButton: false,
+                    confirmButtonText: 'Aceptar',
+                    allowOutsideClick: () => !Swal.isLoading()
                   });
-              };
-          });
+                }
+              }
+            });
+          }
+        });
       },
+      
       mostrarMensaje:function(text,title,type){
         this.message.text=text,
         this.message.title=title,
