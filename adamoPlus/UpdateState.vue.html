@@ -1,0 +1,378 @@
+<script>  
+
+    const UpdateState=Vue.component('update-state-component', {
+      props:['inicial'],
+      data: function () {
+        return {  
+          newSeguimiento:{
+              observacion:'',
+              usuario:'',
+              estado:'',
+              forecastCola:'MOVILES',
+              forecastProceso:'',
+              error:'',
+              opc:'',
+              linea:'', 
+              opc_alterna:'',
+              donante:'',   
+              usecreador:'', 
+              motivoFinal:'', 
+              erroresOSS:'', 
+              casoEscalado:'',
+              billing_Id:''
+              },   
+              isValid:true, 
+              error:'',  
+            isLoading:false,
+            errores:{'movil':['DNI Incorrecto','Cliente cancela','ICC incorrecto','Error Sistema','Error Formato','Baja en el operador donante','Operador donante no Responde','Rechazada fuerza mayor','Operador donante no Registrado','Número a portar erróneo o inactivo','Portabilidad interna','Cliente ausente','Error datos de dirección','Dni no coincide','Consulta portabilidad','Cliente no acepta expedición','Sin Estado de Error','Creacion usuario incorrecta','Paquetes añadidos incorrectamente','Timeout','Authentication Error']},
+  
+  
+            donante:{'donante':['YOIGO','MOVISTAR','XFERA MOVILES','VODAFONE','ADAMO TV','ORANGE','EUSKALTEL','DIGI SPAIN TELECOM','JAZZTEL','SIMYO','LYCAMOBILE','TELEFÓNICA','AIRE NETWORKS','NUMERO NUEVO','LEBARA','PEPEPHONE','ALTECOM','AVANTEL','MASMOVIL','TELECABLE','LLAMAYA','TELECABLE','PTV TELECOM 4G','LOBSTER','LLAMAYA','JETNET','YOU MOBILE','LEAST COST ROUTING TELECOM, S.L.','PTV TELECOM 4G','LEMONVIL','R CABLE Y TELECOMUNICACIONES','PARLEM','FIBRITEL','PTV TELECOM 4G','NO CARGAN DATOS','AUNA TELECOMUNICACIONES','ONSICOM','FLEXIMÓVIL','XARTIC','XFERA','NO OPERATOR FOUND','TUENTI TECHNOLOGIES','VECTONE MOVIL','SERVICIOS TELEFONICOS DE AUDIOTEX S.A','KNET COMUNICACIONES, S.L','LEMONVIL','IBERCOM TELECOM, S.A.U','ONMOVIL','PROCONO','OPENCABLE TELECOMUNICACIONES SL','AVATEL','RACC']}, 
+  
+            erroresOSS:{'erroresOSS':['BPM-001','RECH_IDENT','ELD_ISSUE','MM_BAD_REQUEST','ELD_ERROR_RESPONSE','OTHER','RECH_ICCID','SC_INTERNAL_ERROR','BPM-00001','MM_ASSET_NOT_FOUND','MM_PARSE_ERROR','SC_NOT_FOUND','RECH_BNUME','MM_INVALID_STATE','REQ_FIELD_MISSING','REQ_FIELD_ERROR','SIN ERROR','TV']}
+  
+  
+      }},
+      inject:['fila','message','sub_route'],
+      created(){
+  
+      },
+      methods:{
+        updateState:function(){
+          this.checkValidity()
+  
+          this.newSeguimiento.usuario=JSON.parse(localStorage.getItem('user')).username
+  
+          if(this.newSeguimiento.observacion && this.newSeguimiento.estado && this.newSeguimiento.error && (this.newSeguimiento.linea || !this.inicial)){
+            if (this.isValid){
+            this.isLoading=true
+            google.script.run.withSuccessHandler((res)=>{       
+              this.$emit('updateData',res)
+              this.mostrarMensaje('Cambios guardados','Exito!',false)
+              this.isLoading=false
+              //this.sub_route.actual=`/consulta`
+              this.clearForm();
+              this.askForAnotherAction();
+            }).withFailureHandler((err)=>{
+              this.mostrarMensaje(err.message,'Error!',true)
+              this.isLoading=false
+            }).updateStateI(this.fila.value,this.newSeguimiento,this.inicial)
+              
+            } else {
+              this.mostrarMensaje( `El campo ${this.error} es requerido o está ingresando un valor no valido!`,'Error!',true)
+            }
+          }else{
+            this.mostrarMensaje('Todos los datos con * son necesarios','Error!',true)
+          }
+        },
+  
+          clearForm() {
+            // Obtén el formulario por su ID de template
+            const formContainer = this.$refs.formNew;
+  
+            // Limpia los datos ingresados en el formulario
+            for (const input of formContainer.querySelectorAll('input')) {
+              input.value = '';
+            }
+  
+            // Limpia los datos ingresados en el formulario
+            for (const textarea of formContainer.querySelectorAll('textarea')) {
+              textarea.value = '';
+            }
+  
+            // Limpia los datos ingresados en el formulario
+            for (const select of formContainer.querySelectorAll('select')) {
+              select.value = undefined;
+            }
+  
+            // Limpia el estado del componente
+            this.newSeguimiento = {
+              observacion: '',
+              usuario: '',
+              estado: '',
+              forecastCola: 'MOVILES',
+              forecastProceso: '',
+              error: '', 
+              opc: '',
+              linea: '',
+              opc_alterna: '',
+              donante: '',
+              usecreador: '',
+              motivoFinal: '',
+              erroresOSS: '',
+              casoEscalado: '',
+              billing_Id: ''
+            };
+          },
+  
+  
+          askForAnotherAction: function() {
+            this.swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+        
+            this.swalWithBootstrapButtons.fire({
+                title: 'Desea agregar otro intento?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'aceptar',
+                cancelButtonText: 'cancelar',
+                reverseButtons: true
+            }).then((result) => {
+              
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Ingrese un ID:',
+                        input: 'text',
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (id) => {
+                            if (!id) {
+                                Swal.showValidationMessage('Por favor, ingrese un ID válido')
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                          console.log(result)
+                            // Aquí es donde se asigna el ID ingresado a la página 
+                            //this.sub_route.actual = `/nuevo-caso`;
+                            //this.data.customer_id = result.value;
+  
+                            let timerInterval
+                            Swal.fire({
+                              title: 'CARGANDO EL ID',
+                              timer: 5000,
+                              timerProgressBar: true,
+                              didOpen: () => {
+                                Swal.showLoading()
+                              },
+                              willClose: () => {
+                                clearInterval(timerInterval)
+                              }
+                            })
+  
+  
+                          let user=JSON.parse(localStorage.getItem('user')).username
+                           google.script.run.withSuccessHandler((res)=>{
+                             this.fila.value=res
+                             //this.sub_route.actual = `/nuevo-caso`;
+                             this.$emit("nueva-tarea");
+  
+                            }).withFailureHandler((error)=>{
+                              this.mostrarMensaje(error.message,'Error!',true)
+                              this.isLoading=false
+                              
+                            }).buscarTarea(result.value,user) 
+                        }else{
+                          this.sub_route.actual=`/consulta`
+                        }
+                    });
+                }
+               if(result.isDismissed){
+                  this.sub_route.actual=`/consulta`
+                } 
+            });
+        },
+  
+        mostrarMensaje:function(text,title,type){
+          this.message.text=text,
+          this.message.title=title,
+          this.message.typeError=type,
+          this.message.visible=true
+        },
+        reset:function(){
+          this.newSeguimiento.observacion=''
+          this.newSeguimiento.estado=''
+        },
+  
+        checkValidity:function(){
+          const elementos = document.querySelectorAll(
+            "input, select, textarea"
+            );
+          for (let i = 0; i < elementos.length; i++) { 
+            if (!elementos[i].checkValidity()) 
+            { 
+              this.error=elementos[i].name;
+              this.isValid=false; 
+              break; } }
+        }
+  
+      },
+  
+      template:'#casacion',
+  
+  })
+  
+  </script>
+  
+  <template id='casacion'>
+      <!-- Modal -->
+      <div class="modal fade " id="updateModal" tabindex="-1" aria-labelledby="sendLabel" data-bs-backdrop="static"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header bg-purple text-white">
+              <h5 class="modal-title" id="readModalLabel">Nuevo intento</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row row-cols-sm-1 gap-2 my-sm-3  m" ref="formNew">
+  
+              <div class="col mb-sm-2 mb-md-1 row">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Estado: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <select type="text" class="form-select"  v-model:value="newSeguimiento.estado">
+                  <option seleted>En Curso</option>
+                  <option>OK</option>
+                  <option>KO</option>
+                  </select>
+                </div>
+              </div>
+  
+              <div class="col mb-sm-2 mb-md-1 row">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Forecast Cola: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <select type="text" class="form-select"  v-model:value="newSeguimiento.forecastCola">
+                  <option seleted>MOVILES</option>
+                  </select>
+                </div>
+              </div>
+  
+              <div class="col mb-sm-2 mb-md-1 row">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Forecast Proceso: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <select type="text" class="form-select"  v-model:value="newSeguimiento.forecastProceso">
+                  <option seleted>MOV_INC_SIM&PORTA</option>
+                  </select>
+                </div>
+              </div>
+  
+              <div class="col mb-sm-2 mb-md-1 row">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Motivo: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <select type="text" class="form-select"  v-model:value="newSeguimiento.error">
+                  <option seleted disabled></option>
+                  <option v-for="(x,y) of errores.movil" :key="y" :value="x">{{x}}</option>
+                  </select>
+                </div>
+              </div>
+  
+              <div class="col mb-sm-2 mb-md-1 row" v-if="inicial">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Opcion alternativa:</label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <select type="text" class="form-select"  v-model:value="newSeguimiento.opc">
+                  <option seleted>Intento adicional a peticion de cliente</option>
+                  <option>Numero nuevo</option>
+                  <option>Cambio de producto</option>
+                  </select>
+                </div>
+              </div>
+  
+              <div class="col mb-sm-2 mb-md-1 row" v-if="inicial">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Operador Donante:</label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <select type="text" class="form-select"  v-model:value="newSeguimiento.donante">
+                  <option seleted disabled></option>
+                  <option v-for="(x,y) of donante.donante" :key="y" :value="x">{{x}}</option>
+                  </select>
+                </div>
+              </div>
+  
+  
+              <div class="col mb-sm-2 mb-md-1 row" v-if="inicial">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Linea: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <input type="text" class="form-control"  v-model:value="newSeguimiento.linea">
+                  </select>
+                </div>
+              </div>
+  
+              <div class="col mb-sm-2 mb-md-1 row" v-if="inicial">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Usuario Creador: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <input type="text" class="form-control" required v-model:value="newSeguimiento.usecreador">
+                  </select>
+                </div>
+              </div>
+  
+              <div class="col mb-sm-2 mb-md-1 row">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Motivo Final: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <select type="text" class="form-select"  v-model:value="newSeguimiento.motivoFinal">
+                  <option seleted>EN PROGRESO</option>
+                  <option>SE RELANZA</option>
+                  <option>PORTADO</option>
+                  <option>CANCELADO</option>
+                  </select>
+                </div>
+              </div>
+  
+  
+              <div class="col mb-sm-2 mb-md-1 row" v-if="inicial">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Errores OSS:</label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <select type="text" class="form-select"  v-model:value="newSeguimiento.erroresOSS">
+                  <option seleted disabled></option>
+                  <option v-for="(x,y) of erroresOSS.erroresOSS" :key="y" :value="x">{{x}}</option>
+                  </select>
+                </div>
+              </div>
+  
+  
+              <div class="col mb-sm-2 mb-md-1 row">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Caso Escalado: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <select type="text" class="form-select"  v-model:value="newSeguimiento.casoEscalado">
+                  <option seleted>SI</option>
+                  <option>NO</option>
+                    </select>
+                </div>
+              </div>
+  
+              <div class="col mb-sm-2 mb-md-1 row" v-if="inicial">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Billing Id: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <input type="text" class="form-control" pattern="[0-9]{5,12}" v-model:value="newSeguimiento.billing_Id" name="Billing Id">
+                  </select>
+                </div>
+              </div>
+  
+              <!-- <div class="col mb-sm-2 mb-md-1 row" v-if="inicial">
+                <label for="validationServer01" class="  col-md-4 col-lg-4  col-form-label">Fecha Actual: </label>
+                <div class=" col-md-8 col-lg-8 ">
+                  <input type="date" class="form-control" v-model:value="newSeguimiento.fechaGestion" name="Fecha Actual">
+                  </select>
+                </div>
+              </div> -->
+  
+  
+              <div class="col mb-sm-2 mb-md-1 row">
+                <label for="validationServer01" class="  col-md-12 col-lg-12  col-form-label">Observación: <strong><label style="color:red;">*</label></strong></label>
+                <div class=" col-md-12 col-lg-12 ">
+                  <textarea class="form-control" row="3" v-model:value="newSeguimiento.observacion">
+                  </textarea>
+                  </p>
+                </div>
+              </div>        
+  
+            </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-purple"  @click="updateState" data-bs-dismiss="modal">
+                  <span v-show='isLoading' class="spinner-grow-sm spinner-grow " role="status" aria-hidden="true"></span>
+                  Guardar</button>
+              </div>
+          </div>
+        </div>
+      </div>
+  
+  </template>

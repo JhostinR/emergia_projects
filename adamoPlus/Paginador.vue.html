@@ -1,0 +1,78 @@
+<script>  
+    const Paginador=Vue.component('paginador-component', {
+      props:['data', 'size'],
+      data: function () {
+        return {  
+          inicio:0,
+          actual:0                 
+        }
+      },
+      mounted(){
+        this.actual= this.data?.length>0 ? 1:0
+        this.$emit('changePage',this.dataPaginador)
+      },
+  
+      methods:{
+        siguiente:function(){       
+          this.inicio+=this.size
+          this.actual++
+          this.$emit('changePage',this.dataPaginador)
+         
+        },
+        anterior:function(){        
+          this.inicio-=this.size
+          this.actual--
+          this.$emit('changePage',this.dataPaginador)
+          
+        },    
+      },    
+      computed:{
+        dataPaginador:function(){             
+          return this.data ? [...this.data].splice(this.inicio,this.size).sort((a,b)=> new Date(b.fecha).getTime() - new Date(a.fecha).getTime()):[]
+        },
+        isInicial:function(){
+          return this.inicio==0 ? true:false
+        },
+        isFinal:function(){
+               
+          return this.inicio+this.size >= (this.data ? this.data.length:0) ? true:false
+        },
+        pages:function(){    
+           
+          return Math.ceil(this.data?.length/this.size)
+        }
+      },   
+      watch:{
+        data:function(newvalue,oldvalue){    
+          if(this.actual==0 && this.data.length>0){
+            this.actual=1
+          }
+          if(this.actual>0 && this.data.length<1){
+            this.actual=0
+          }
+          this.$emit('changePage',this.dataPaginador)
+        }
+      },
+      
+      template:`
+        <div class="d-flex flex-row-reverse px-0 w-100">
+        
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item" :class="{disabled:isInicial}">
+                <a class="page-link text-purple" @click=anterior>Anterior</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link text-purple">{{actual}} / {{pages}}</a>
+              </li>
+        
+              <li class="page-item" :class="{disabled:isFinal}">
+                <a class="page-link text-purple" @click=siguiente>Siguiente</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        `
+    })
+  
+  </script>

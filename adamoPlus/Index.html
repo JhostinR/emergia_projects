@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <base target="_top">
+
+  <!-- Estilos de bootstrap -->
+  <?!= include("bootstrap");?>
+  <?!= include("styles.css");?>
+
+  <!-- Importar Vuejs -->
+  <?!= include("vue.js");?>
+
+    <?!= include("Utilities");?>
+
+
+
+
+
+</head>
+
+<body style="overflow-y:hidden">
+
+
+  <div id="app">
+
+  
+
+
+
+
+  </div>
+
+
+  <!-- Scripts de Bootstrap -->
+  <?!= include("bootstrap-js");?>
+
+
+
+
+  <!-- Componentes de vue -->
+
+  <?!= include("SideBar.vue");?>
+  <?!= include("NavBar.vue");?>
+  <?!= include("Consulta.vue");?>
+  <?!= include("Home.vue");?>
+  <?!= include("Login.vue");?>
+  <?!= include("Message.vue");?>
+  <?!= include("DetalleCaso.vue");?>
+  <?!= include("NewCase.vue");?>
+  <?!= include("Log.vue");?>
+  <?!= include("Paginador.vue");?>  
+  <?!= include("UpdateState.vue");?>
+  <?!= include("Carga.vue");?>
+
+
+  <!-- configuración vue -->
+
+
+  <script>
+   
+    var fila=0
+    
+    const NotFound={ template: '<p>Page No Found</p>' }
+    
+    const routes={ 
+      '/login':Login,
+      '/home': Home       
+    }    
+
+    const sub_routes={
+      '/consulta':ConsultaHistorial, 
+      '/detalle-caso':DetalleCaso,
+      '/nuevo-caso':NewCaso,
+      '/cargar' :CargaCasos
+    }
+
+
+      
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return{          
+          message: {text:'Prueba'},
+          pruebaW:{name:''},
+          user:{name:'',username:''},
+          route: {currentRoute:'/login'},
+          sub_route:{actual:'/consulta'}
+        }
+      },
+      
+      provide() {
+         return{        
+          user:this.user,          
+          route:this.route  ,
+          sub_route:this.sub_route      
+        }      
+      
+      },
+       computed: {
+        ViewComponent () {
+          return routes[this.route.currentRoute] || NotFound
+        },
+        ViewSubComponent(){
+          return sub_routes[this.sub_route.actual] || NotFound
+        }
+      }, 
+
+      watch: {
+        'route.currentRoute':function(newValue,oldValue) {
+          if(newValue!=oldValue){
+            let fechaLogin=parseInt(localStorage.getItem('fechaLogin'))
+            let logado=restarFechas(fechaLogin)
+            if(!logado){
+              this.route.currentRoute='/login'
+            } 
+
+          }
+                
+          
+        },
+        'sub_route.actual':function(newValue,oldValue) {
+          if(newValue!=oldValue){
+            let fechaLogin=parseInt(localStorage.getItem('fechaLogin'))
+            let logado=restarFechas(fechaLogin)
+            if(!logado){
+
+              this.route.currentRoute='/login'
+            } 
+
+          }
+                
+          
+        },
+
+      },
+      methods:{
+        mostrarMensaje:function(){
+/*           const toastLiveExample = document.getElementById('liveToast')
+          const toast = new bootstrap.Toast(toastLiveExample)
+          toast.show() */
+
+        }
+      },
+
+      created () {
+        let fechaLogin=parseInt(localStorage.getItem('fechaLogin'))
+        let logado=restarFechas(fechaLogin)
+        if(!logado){
+          this.route.currentRoute='/login'
+        }else{
+          let usuarioLogado=JSON.parse(localStorage.getItem('user'))
+          this.user.name=usuarioLogado.name
+          this.user.username=usuarioLogado.username
+          this.route.currentRoute='/home'
+
+        } 
+    
+      } ,
+       render (h) {
+         let sub_route=this.ViewSubComponent    
+         
+         //return h(this.ViewComponent) }      
+         return h(this.ViewComponent,
+          {
+            
+            scopedSlots: {
+              contenido: function (props) {
+                
+                return h(sub_route)
+              }
+            },
+              props: {
+                route: this.route,
+                sub_route:this.sub_route
+              },
+
+          }
+        )
+        }
+    
+    })
+ 
+  </script>
+
+
+  <script>
+
+   // function mostrarMensaje:function(){
+     
+      //toast.show()
+    
+    //}
+    
+  </script>
+
+
+
+</body>
+
+</html>
