@@ -1,2 +1,2 @@
 # Proyectos de emergia
-# Primer proyecto realizado con python
+# algunos proyectos que se realizaron en el aprendizaje
