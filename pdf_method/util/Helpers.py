@@ -7,7 +7,7 @@ relative_path = os.getcwd()
 class Helpers:
 
     def __init__(self):
-        self.__rutaConfig = relative_path + "/config.json"
+        self.__rutaConfig = relative_path + "/pdf_method/config.json"
 
     def leerConfig(self, clave, value):
         with open(self.__rutaConfig, 'r') as file: 
