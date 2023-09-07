@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from PyPDF2 import PdfReader, PdfWriter
-from util.helpers import Helpers
+from util.Helpers import Helpers
 import os
 
 help = Helpers()
