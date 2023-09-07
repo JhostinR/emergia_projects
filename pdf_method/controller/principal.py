@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from PyPDF2 import PdfReader, PdfWriter
 from util.Helpers import Helpers
+import os
 
 help = Helpers()
 
@@ -44,6 +45,11 @@ class Visualizador:
         button_split_pdf.bind('<Leave>', lambda e: e.widget.config(bg='#ff8a9a'))
         button_split_pdf.place(x=180, y=260)
         
+        button_merge_pdf = tk.Button(self.ventana, text="𝙐𝙣𝙞𝙧 𝙋𝘿𝙁", command=self.merge_pdfs, width=18, height=1, bg='#ff8a9a')
+        button_merge_pdf.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
+        button_merge_pdf.bind('<Leave>', lambda e: e.widget.config(bg='#ff8a9a'))
+        button_merge_pdf.place(x=320, y=260)
+        
         # Crea un boton para salir
         button_split_pdf = tk.Button(self.ventana, text="𝙎𝙖𝙡𝙞𝙧", command=self.salir, width=18, height=1, bg='#ff8a9a')
         button_split_pdf.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
@@ -66,6 +72,8 @@ class Visualizador:
         self.entry_filename.delete(0, tk.END)
         self.entry_filename.insert(0, filename)
 
+
+
     # Función para dividir el archivo PDF
     def split_pdf(self):
         filename = self.entry_filename.get()
@@ -85,6 +93,13 @@ class Visualizador:
 
             pages_per_pdf = int(pages_per_pdf)
 
+            # Abre un cuadro de diálogo para seleccionar la ubicación de guardado
+            output_directory = filedialog.askdirectory(title="Selecciona la carpeta de guardado")
+
+            if not output_directory:
+                messagebox.showerror("Error", "Debes seleccionar una carpeta de guardado.")
+                return
+
             # Dividir el archivo PDF en partes iguales
             for i in range(0, total_pages, pages_per_pdf):
                 # Crear un objeto PDFWriter para el archivo PDF de salida
@@ -94,8 +109,10 @@ class Visualizador:
                 for j in range(i, min(i + pages_per_pdf, total_pages)):
                     writer.add_page(pdf.pages[j])
 
-                # Guardar el archivo PDF de salida con un nombre diferente
-                output_filename = f"{filename}_({i // pages_per_pdf + 1}).pdf"
+                # Construir la ruta completa para el archivo de salida en la carpeta seleccionada
+                output_filename = os.path.join(output_directory, f"{os.path.basename(filename)}_{i // pages_per_pdf + 1}.pdf")
+                
+                # Guardar el archivo PDF de salida
                 with open(output_filename, "wb") as output_file:
                     writer.write(output_file)
 
@@ -103,6 +120,44 @@ class Visualizador:
 
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error al dividir el PDF: {str(e)}")
+
+
+    def merge_pdfs(self):
+        # Abre un cuadro de diálogo para seleccionar los archivos PDF a unir
+        file_paths = filedialog.askopenfilenames(filetypes=[("PDF files", "*.pdf")])
+
+        if not file_paths:
+            messagebox.showerror("Error", "Debes seleccionar al menos dos archivos PDF para unir.")
+            return
+
+        try:
+            # Abre un cuadro de diálogo para seleccionar la ubicación de guardado
+            output_directory = filedialog.askdirectory(title="Selecciona la carpeta de guardado")
+
+            if not output_directory:
+                messagebox.showerror("Error", "Debes seleccionar una carpeta de guardado.")
+                return
+
+            # Crear un objeto PDFWriter para el archivo PDF de salida
+            merged_pdf = PdfWriter()
+
+            # Agregar las páginas de cada archivo PDF al PDF de salida
+            for file_path in file_paths:
+                pdf = PdfReader(open(file_path, "rb"))
+                for page in pdf.pages:
+                    merged_pdf.add_page(page)
+
+            # Construir la ruta completa para el archivo de salida en la carpeta seleccionada
+            output_filename = os.path.join(output_directory, "merged_pdf.pdf")
+
+            # Guardar el archivo PDF de salida en la carpeta seleccionada
+            with open(output_filename, "wb") as output_file:
+                merged_pdf.write(output_file)
+
+            messagebox.showinfo("PDF unido", "El proceso de unión de PDFs se ha completado correctamente.")
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error al unir los PDFs: {str(e)}")
 
 if __name__ == "__main__":
     Visualizador()
