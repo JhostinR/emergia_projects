@@ -1,7 +1,8 @@
 import tkinter as tk
+import glob
 from tkinter import filedialog, messagebox
 from PyPDF2 import PdfReader, PdfWriter
-from util.Helpers import Helpers
+from util.helpers import Helpers
 import os
 
 help = Helpers()
@@ -119,34 +120,33 @@ class Visualizador:
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error al dividir el PDF: {str(e)}")
 
-    # Función para unir los archivos
     def unir_pdf(self):
-        # Abre un cuadro de diálogo para seleccionar los archivos PDF a unir
-        file_paths = filedialog.askopenfilenames(filetypes=[("PDF files", "*.pdf")])
-
-        if not file_paths:
-            messagebox.showerror("Error", "Debes seleccionar al menos dos archivos PDF para unir.")
-            return
-
         try:
-            # Abre un cuadro de diálogo para seleccionar la ubicación de guardado
-            output_directory = filedialog.askdirectory(title="Selecciona la carpeta de guardado")
+            # Abre un cuadro de diálogo para seleccionar la carpeta que contiene los archivos PDF
+            folder_path = filedialog.askdirectory(title="Selecciona la carpeta con archivos PDF")
 
-            if not output_directory:
-                messagebox.showerror("Error", "Debes seleccionar una carpeta de guardado.")
+            if not folder_path:
+                messagebox.showerror("Error", "Debes seleccionar una carpeta con archivos PDF.")
+                return
+
+            # Obtener la lista de archivos PDF en la carpeta seleccionada
+            pdf_files = glob.glob(os.path.join(folder_path, "*.pdf"))
+
+            if len(pdf_files) < 2:
+                messagebox.showerror("Error", "Debes tener al menos dos archivos PDF en la carpeta para unir.")
                 return
 
             # Crear un objeto PDFWriter para el archivo PDF de salida
             merged_pdf = PdfWriter()
 
             # Agregar las páginas de cada archivo PDF al PDF de salida
-            for file_path in file_paths:
+            for file_path in pdf_files:
                 pdf = PdfReader(open(file_path, "rb"))
                 for page in pdf.pages:
                     merged_pdf.add_page(page)
 
             # Construir la ruta completa para el archivo de salida en la carpeta seleccionada
-            output_filename = os.path.join(output_directory, "pdf_unido.pdf")
+            output_filename = os.path.join(folder_path, "pdf_unido.pdf")
 
             # Guardar el archivo PDF de salida en la carpeta seleccionada
             with open(output_filename, "wb") as output_file:
@@ -156,6 +156,7 @@ class Visualizador:
 
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error al unir los PDFs: {str(e)}")
+
 
     # Función para salir de la ventana
     def salir(self):
