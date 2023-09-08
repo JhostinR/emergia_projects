@@ -1,10 +1,11 @@
 import tkinter as tk
 from util.helpers import Helpers
 from PIL import Image, ImageTk
-import os
 from view.form_unir import PDFUnirApp
+from view.form_dividir import PDFDividerApp
 
 unir = PDFUnirApp
+dividir = PDFDividerApp
 help = Helpers()
 
 class Visualizador:
@@ -50,7 +51,9 @@ class Visualizador:
         self.ventana.mainloop()
         
     def dividirPDF(self):
-        pass
+        self.ventana.withdraw()
+        dividir_pdf = PDFDividerApp()
+        dividir_pdf.mainloop()
     
     def unirPDF(self):
         self.ventana.withdraw()  # Oculta la ventana actual
