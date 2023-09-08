@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from PyPDF2 import PdfReader, PdfWriter
+from util.helpers import Helpers
 import os
+
+help = Helpers()
 
 class PDFUnirApp:
     def __init__(self):
@@ -9,6 +12,7 @@ class PDFUnirApp:
         self.ventana.title('Unir PDFs')
         self.ventana.geometry("500x350")
         self.ventana.resizable(False, False)
+        help.centerWindows(self.ventana,350,500) # height width
 
         # Botón para seleccionar la carpeta con archivos PDF
         self.btn_select_folder = tk.Button(self.ventana, text="Seleccionar carpeta con PDFs", command=self.select_folder)
@@ -32,6 +36,8 @@ class PDFUnirApp:
 
         self.folder_path = None
         self.output_folder = None
+        
+        self.ventana.mainloop()
 
     def select_folder(self):
         self.folder_path = filedialog.askdirectory(title="Selecciona la carpeta con archivos PDF")
@@ -80,9 +86,5 @@ class PDFUnirApp:
         else:
             messagebox.showerror("Error", "Debes seleccionar una carpeta con archivos PDF y una carpeta de destino.")
 
-    def run(self):
-        self.ventana.mainloop()
-
 if __name__ == "__main__":
-    app = PDFUnirApp()
-    app.run()
+    PDFUnirApp()

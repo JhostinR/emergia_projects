@@ -1,6 +1,10 @@
 {
     "imagenPDF":{
         "Value": "\\dividir_unir_pdf\\vendor\\img\\pdf_icon.ico"
+    },
+
+    "imagenPrincipal":{
+        "Value": "\\dividir_unir_pdf\\vendor\\img\\imgPDF.png"
     }
     
 }
