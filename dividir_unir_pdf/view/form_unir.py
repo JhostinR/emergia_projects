@@ -7,8 +7,9 @@ import os
 help = Helpers()
 
 class PDFUnirApp:
-    def __init__(self):
-        self.ventana = tk.Tk()
+    def __init__(self, ventana_principal):
+        self.ventana_principal = ventana_principal  
+        self.ventana = tk.Toplevel(self.ventana_principal) 
         self.ventana.title('Unir PDFs')
         self.ventana.geometry("500x350")
         self.ventana.resizable(False, False)
@@ -36,6 +37,9 @@ class PDFUnirApp:
 
         self.folder_path = None
         self.output_folder = None
+        
+        self.close_button = tk.Button(self.ventana, text="cerrar", command=self.on_close)
+        self.close_button.pack(pady=20)
         
         self.ventana.mainloop()
 
@@ -85,6 +89,10 @@ class PDFUnirApp:
                 messagebox.showerror("Error", f"Ocurrió un error al unir los PDFs: {str(e)}")
         else:
             messagebox.showerror("Error", "Debes seleccionar una carpeta con archivos PDF y una carpeta de destino.")
+    
+    def on_close(self):
+        self.ventana.destroy()  # Cierra la ventana de dividir PDF
+        self.ventana_principal.deiconify()  # Muestra la ventana principal
 
 if __name__ == "__main__":
     PDFUnirApp()

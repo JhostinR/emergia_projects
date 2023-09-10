@@ -7,12 +7,14 @@ import os
 help = Helpers()
 
 class PDFDividerApp:
-    def __init__(self):
-        self.ventana = tk.Tk()  
+    def __init__(self, ventana_principal):
+        self.ventana_principal = ventana_principal  
+        self.ventana = tk.Toplevel(self.ventana_principal)  
         self.ventana.title('Dividir PDFs')
         self.ventana.geometry("500x350")
         self.ventana.resizable(False, False)
         help.centerWindows(self.ventana,350,500) # height width
+        self.ventana.protocol("WM_DELETE_WINDOW", self.on_close)  # Captura el evento de cierre
 
         self.entry_filename = tk.Entry(self.ventana, width=40)
         self.entry_filename.grid(row=0, column=0, padx=10, pady=10)
@@ -45,6 +47,9 @@ class PDFDividerApp:
         self.divide_button = tk.Button(self.ventana, text="Dividir PDF", command=self.divide_pdf)
         self.divide_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
 
+        self.close_button = tk.Button(self.ventana, text="cerrar", command=self.on_close)
+        self.close_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+        
         self.ventana.mainloop()
 
     def select_pdf_file(self):
@@ -93,6 +98,10 @@ class PDFDividerApp:
 
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error al dividir el PDF: {str(e)}")
+
+    def on_close(self):
+        self.ventana.destroy()  # Cierra la ventana de dividir PDF
+        self.ventana_principal.deiconify()  # Muestra la ventana principal
 
 if __name__ == "__main__":
     PDFDividerApp()
