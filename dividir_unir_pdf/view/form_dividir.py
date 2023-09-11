@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import Image, ImageTk
 from tkinter import filedialog, messagebox
 from PyPDF2 import PdfReader, PdfWriter
 from util.helpers import Helpers
@@ -21,6 +22,14 @@ class PDFDividerApp:
         titulo = tk.Label(self.ventana, text="Dividir PDF", font=("Arial", 20, "bold"), foreground="#f5425d", bg="#ffd6dc")
         titulo.place(x=170,y=8)
 
+        imagen = Image.open(help.leerConfig("imagenUnir", "Value"))
+        nueva_imagen = imagen.resize((270, 270))
+        imagen_tk = ImageTk.PhotoImage(nueva_imagen)
+
+        label = tk.Label(self.ventana)
+        label.place(x=100, y=50)
+        label.config(image=imagen_tk, bg="#ffd6dc")
+        
         self.entry_filename = tk.Entry(self.ventana, width=24)
         self.entry_filename.place_forget()
 
@@ -43,17 +52,17 @@ class PDFDividerApp:
         self.entry_pages_per_pdf.place(x=270, y=150)
 
         # Botón para seleccionar la ubicación de guardado
-        self.select_output_button = tk.Button(self.ventana, text="Seleccionar Carpeta de Salida", font=("Arial", 10, "bold"), command=self.select_output_folder, width=24, bg='#ff8a9a')
+        self.select_output_button = tk.Button(self.ventana, text="Seleccionar carpeta de guardado", font=("Arial", 10, "bold"), command=self.select_output_folder, width=28, bg='#ff8a9a', state="disabled")
         self.select_output_button.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
         self.select_output_button.bind('<Leave>', lambda e: e.widget.config(bg='#ff8a9a'))
         self.select_output_button.place(x=160, y=190)
 
         # Etiqueta para mostrar la ruta de la carpeta de salida
-        self.output_label = tk.Label(self.ventana, text="Ruta de salida: ", font=("Arial", 8, "bold"), bg='#ffd6dc')
+        self.output_label = tk.Label(self.ventana, text="Ruta de guardado: ", font=("Arial", 8, "bold"), bg='#ffd6dc')
         self.output_label.place(x=60, y=230)
 
         # Botón para dividir el archivo PDF
-        self.divide_button = tk.Button(self.ventana, text="Dividir PDF", font=("Arial", 10, "bold"), command=self.divide_pdf, width=11, bg='#ff8a9a')
+        self.divide_button = tk.Button(self.ventana, text="Dividir PDF", font=("Arial", 10, "bold"), command=self.divide_pdf, width=11, bg='#ff8a9a', state="disabled")
         self.divide_button.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
         self.divide_button.bind('<Leave>', lambda e: e.widget.config(bg='#ff8a9a'))
         self.divide_button.place(x=200, y=270)
@@ -70,11 +79,14 @@ class PDFDividerApp:
         self.entry_filename.delete(0, tk.END)
         self.entry_filename.insert(0, file_path)
         self.selected_file_label.config(text=f"Ruta del archivo PDF: {file_path}")
+        self.select_output_button.config(state=tk.NORMAL)
+        self.divide_button.config(state=tk.DISABLED)
 
     def select_output_folder(self):
         output_folder = filedialog.askdirectory()
         self.output_folder = output_folder
         self.output_label.config(text=f"Ruta de salida: {output_folder}")
+        self.divide_button.config(state=tk.NORMAL)
 
     def divide_pdf(self):
         pdf_file = self.entry_filename.get()

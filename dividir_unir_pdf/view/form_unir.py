@@ -16,6 +16,7 @@ class PDFUnirApp:
         self.ventana.config(bg='#ffd6dc')
         self.ventana.resizable(False, False)
         help.centerWindows(self.ventana,350,500) # height width
+        self.ventana.protocol("WM_DELETE_WINDOW", self.on_close)  # Captura el evento de cierre
         
         # Titulo principal
         titulo = tk.Label(self.ventana, text="Unir PDF", font=("Arial", 20, "bold"), foreground="#f5425d", bg="#ffd6dc")
