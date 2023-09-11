@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import Image, ImageTk
 from tkinter import filedialog, messagebox
 from PyPDF2 import PdfReader, PdfWriter
 from util.helpers import Helpers
@@ -12,34 +13,55 @@ class PDFUnirApp:
         self.ventana = tk.Toplevel(self.ventana_principal) 
         self.ventana.title('Unir PDFs')
         self.ventana.geometry("500x350")
+        self.ventana.config(bg='#ffd6dc')
         self.ventana.resizable(False, False)
         help.centerWindows(self.ventana,350,500) # height width
+        
+        # Titulo principal
+        titulo = tk.Label(self.ventana, text="Unir PDF", font=("Arial", 20, "bold"), foreground="#f5425d", bg="#ffd6dc")
+        titulo.place(x=190,y=8)
+        
+        imagen = Image.open(help.leerConfig("imagenUnir", "Value"))
+        nueva_imagen = imagen.resize((270, 270))
+        imagen_tk = ImageTk.PhotoImage(nueva_imagen)
+        
+        label = tk.Label(self.ventana)
+        label.place(x=100, y=50)
+        label.config(image=imagen_tk, bg="#ffd6dc")
 
         # Botón para seleccionar la carpeta con archivos PDF
-        self.btn_select_folder = tk.Button(self.ventana, text="Seleccionar carpeta con PDFs", command=self.select_folder)
-        self.btn_select_folder.pack(pady=20)
-
+        self.btn_select_folder = tk.Button(self.ventana, text="Seleccionar carpeta con PDFs", font=("Arial", 10, "bold"), command=self.select_folder, bg='#ff8a9a')
+        self.btn_select_folder.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
+        self.btn_select_folder.bind('<Leave>', lambda e: e.widget.config(bg='#ff8a9a'))
+        self.btn_select_folder.place(x=150, y=70)
+        
         # Etiqueta para mostrar la ruta de la carpeta seleccionada
-        self.folder_path_label = tk.Label(self.ventana, text="", wraplength=400)
-        self.folder_path_label.pack()
+        self.folder_path_label = tk.Label(self.ventana, text="", wraplength=400, bg='#ffd6dc')
+        self.folder_path_label.place(x=110,y=115)
 
         # Botón para seleccionar la carpeta de destino
-        self.btn_select_output_folder = tk.Button(self.ventana, text="Seleccionar carpeta de destino", command=self.select_output_folder, state=tk.DISABLED)
-        self.btn_select_output_folder.pack(pady=10)
+        self.btn_select_output_folder = tk.Button(self.ventana, text="Seleccionar carpeta de destino", font=("Arial", 10, "bold"), command=self.select_output_folder, state=tk.DISABLED, bg='#ff8a9a')
+        self.btn_select_output_folder.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
+        self.btn_select_output_folder.bind('<Leave>', lambda e: e.widget.config(bg='#ff8a9a'))
+        self.btn_select_output_folder.place(x=150, y=150)
 
         # Etiqueta para mostrar la ruta de la carpeta de destino
-        self.output_folder_label = tk.Label(self.ventana, text="", wraplength=400)
-        self.output_folder_label.pack()
+        self.output_folder_label = tk.Label(self.ventana, text="", wraplength=400, bg='#ffd6dc')
+        self.output_folder_label.place(x=90,y=200)
 
         # Botón para unir PDFs
-        self.btn_unir_pdf = tk.Button(self.ventana, text="Unir PDFs", command=self.unir_pdf, state=tk.DISABLED)
-        self.btn_unir_pdf.pack(pady=20)
+        self.btn_unir_pdf = tk.Button(self.ventana, text="Unir PDFs", command=self.unir_pdf, state=tk.DISABLED, font=("Arial", 10, "bold"), bg='#ff8a9a')
+        self.btn_unir_pdf.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
+        self.btn_unir_pdf.bind('<Leave>', lambda e: e.widget.config(bg='#ff8a9a'))
+        self.btn_unir_pdf.place(x=215,y=250)
 
         self.folder_path = None
         self.output_folder = None
         
-        self.close_button = tk.Button(self.ventana, text="cerrar", command=self.on_close)
-        self.close_button.pack(pady=20)
+        close_button = tk.Button(self.ventana, text="Cerrar", command=self.on_close, font=("Arial", 11, "bold"), bg='#ff8a9a')
+        close_button.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
+        close_button.bind('<Leave>', lambda e: e.widget.config(bg='#ff8a9a'))
+        close_button.place(x=400,y=300)
         
         self.ventana.mainloop()
 
