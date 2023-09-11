@@ -41,7 +41,7 @@ class PDFDividerApp:
 
         # Etiqueta para mostrar la ruta del archivo PDF seleccionado
         self.selected_file_label = tk.Label(self.ventana, text="Ruta del archivo PDF: ", font=("Arial", 8, "bold"), bg='#ffd6dc')
-        self.selected_file_label.place(x=40, y=110)
+        self.selected_file_label.place(x=20, y=110)
 
         # Etiqueta para la instrucción
         self.num_pages = tk.Label(self.ventana, text="Número de páginas por PDF:", font=("Arial", 10, "bold"), bg='#ffd6dc')
