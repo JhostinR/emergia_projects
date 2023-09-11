@@ -115,7 +115,7 @@ class PDFDividerApp:
                 for j in range(i, min(i + pages_per_pdf, total_pages)):
                     pdf_writer.add_page(pdf_reader.pages[j])
 
-                output_filename = os.path.join(self.output_folder, f"output_{i // pages_per_pdf + 1}.pdf")
+                output_filename = os.path.join(self.output_folder, f"{os.path.basename(pdf_file)}_{i // pages_per_pdf + 1}.pdf")
                 with open(output_filename, "wb") as output_file:
                     pdf_writer.write(output_file)
 
