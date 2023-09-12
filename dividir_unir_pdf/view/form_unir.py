@@ -61,9 +61,6 @@ class PDFUnirApp:
         self.btn_unir_pdf.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
         self.btn_unir_pdf.bind('<Leave>', lambda e: e.widget.config(bg='#ff8a9a'))
         self.btn_unir_pdf.place(x=215,y=250)
-
-        self.folder_path = None
-        self.output_folder = None
         
         close_button = tk.Button(self.ventana, text="Cerrar", command=self.on_close, font=("Arial", 11, "bold"), bg='#ff8a9a')
         close_button.bind('<Enter>', lambda e: e.widget.config(bg='#f7072b'))
