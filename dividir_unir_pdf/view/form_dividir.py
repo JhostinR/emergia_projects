@@ -1,10 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from tkinter import filedialog, messagebox
-from PyPDF2 import PdfReader, PdfWriter
+from tkinter import filedialog
 from util.helpers import Helpers
 from controller.dividir_functions import TrabajarPDF
-import os
 
 help = Helpers()
 pdf = TrabajarPDF()
@@ -88,8 +86,6 @@ class PDFDividerApp:
         self.select_output_button.config(state=tk.NORMAL)
         self.divide_button.config(state=tk.DISABLED)
         self.rutaPDF = file_path 
-
-    pdf.divide_pdf(self, rutaPDF)
     
     def select_output_folder(self):
         output_folder = filedialog.askdirectory()
@@ -97,7 +93,14 @@ class PDFDividerApp:
         self.output_label.config(text=f"Ruta de salida: {output_folder}")
         self.divide_button.config(state=tk.NORMAL)
         self.rutaGuardar = output_folder 
+    
+    def divide_pdf(self):
+        num_pages = int(self.entry_pages_per_pdf.get())
+        rutaPDF = self.rutaPDF
+        rutaGuardar = self.rutaGuardar
 
+        pdf.divide_pdf(rutaPDF, rutaGuardar, num_pages)
+    
     def on_close(self):
         self.ventana.destroy()  # Cierra la ventana de dividir PDF
         self.ventana_principal.deiconify()  # Muestra la ventana principal
