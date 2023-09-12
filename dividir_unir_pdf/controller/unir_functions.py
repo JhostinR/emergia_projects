@@ -1,11 +1,10 @@
-import tkinter as tk
 from tkinter import messagebox
 from PyPDF2 import PdfReader, PdfWriter
 import os
 
 class UnirPDF():
-    def unir_pdf(self, output_folder, folder_path):
-        if folder_path and output_folder:
+    def unir_pdf(self, folder_path, output_folder):
+        if output_folder and folder_path:
             try:
                 # Obtener la lista de archivos PDF en la carpeta seleccionada
                 pdf_files = [os.path.join(folder_path, filename) for filename in os.listdir(folder_path) if filename.endswith(".pdf")]
