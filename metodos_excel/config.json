@@ -1,0 +1,14 @@
+{
+    "imagenPDF":{
+        "Value": "\\metodos_excel\\vendor\\img\\pdf_icon.ico"
+    },
+
+    "imagenPrincipal":{
+        "Value": "\\metodos_excel\\vendor\\img\\imgPDF.png"
+    },
+    "imagenUnir":{
+        "Value": "\\metodos_excel\\vendor\\img\\unirPDF.png"
+    }
+    
+}
+

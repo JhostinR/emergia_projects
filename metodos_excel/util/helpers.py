@@ -10,10 +10,10 @@ relative_path = os.getcwd()
 class Helpers:
     # Definiendo una variable que inicializa el menu
     def __init__(self):
-        self.__rutaConfig = relative_path + "/dividir_unir_pdf/config.json"
+        self.__rutaConfig = relative_path + "/metodos_excel/config.json"
     
     def leerConfig(self, clave, value):
-        with open(self.__rutaConfig, 'r') as file: 
+        with open(self.__rutaConfig, 'r') as file:
             config = json.load(file)
             if config[clave][value] == "":
                 print("No esta")
