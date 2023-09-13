@@ -50,33 +50,41 @@ class Visualizador:
         self.label_rows = tk.Label(self.ventana_principal, text="numero de registros", font=("Arial", 10, "normal"), bg='#cafcd4')
         self.label_rows.place(x=20, y=150)
         
+        # Menú desplegable
+        self.option_var = tk.StringVar(self.ventana_principal)
+        self.option_var.set("Seleccionar opción")  # Valor predeterminado
+        options = ["Seleccionar opción", "Mover", "Renombrar", "Copiar"]
+        option_menu = tk.OptionMenu(self.ventana_principal, self.option_var, *options)
+        option_menu.config(width=20, font=("Arial", 10, "bold"), bg='#b1fac0')
+        option_menu.place(x=180, y=250)
+
         self.ventana_principal.mainloop()
 
     def select_pdf_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
         self.entry_filename.delete(0, tk.END)
         self.entry_filename.insert(0, file_path)
-        
-        folder_name = os.path.split(file_path)[0]
-        file_name = os.path.split(file_path)[1]
     
-        self.selected_file_label.config(text=f"Ruta del archivo: {folder_name}/{file_name}")
+        if file_path:
+            folder_name, file_name = os.path.split(file_path)
+            parent_folder_name = os.path.basename(os.path.normpath(folder_name))  # Obtiene el nombre de la última carpeta
+    
+            self.selected_file_label.config(text=f"Ruta del archivo: {parent_folder_name}/{file_name}")
+    
+            if file_path.endswith(".csv"):
+                df = pd.read_csv(file_path)
+                num_rows = len(df.index)
+                self.label_rows.config(text=f"Número de registros: {num_rows}")
+            elif file_path.endswith(".xlsx"):
+                df = pd.read_excel(file_path)
+                num_rows = len(df.index)
+                self.label_rows.config(text=f"Número de registros: {num_rows}")
+            else:
+                df = pd.read_csv(file_path)
+                num_rows = len(df.index)
+                self.label_rows.config(text=f"Número de registros: {num_rows}")
 
-        if file_path.endswith(".csv"):
-            df = pd.read_csv(file_path)
-            num_rows = len(df.index)
-            self.label_rows.config(text=f"Número de registros: {num_rows}")
-        elif file_path.endswith(".xlsx"):
-            df = pd.read_excel(file_path)
-            num_rows = len(df.index)
-            self.label_rows.config(text=f"Número de registros: {num_rows}")
-        else:
-            df = pd.read_csv(file_path)
-            num_rows = len(df.index)
-            self.label_rows.config(text=f"Número de registros: {num_rows}")
 
-        # Update the label_rows to show the number of rows in the DataFrame
-        self.label_rows.config(text=f"Número de registros: {num_rows}")
 
 if __name__ == "__main__":
     Visualizador()
