@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 from util.helpers import Helpers
 from PIL import Image, ImageTk
+import pandas as pd
 
 help = Helpers()
 
@@ -45,6 +46,9 @@ class Visualizador:
         self.selected_file_label = tk.Label(self.ventana_principal, text="Ruta del archivo PDF: ", font=("Arial", 8, "bold"), bg='#ffd6dc')
         self.selected_file_label.place(x=20, y=110)
 
+        self.label_rows = tk.Label(self.ventana_principal, text="pruebas", font=("Arial", 10, "normal"), bg='#fff')
+        self.label_rows.place(x=20, y=150)
+        
         self.ventana_principal.mainloop()
 
     def select_pdf_file(self):
@@ -52,6 +56,14 @@ class Visualizador:
         self.entry_filename.delete(0, tk.END)
         self.entry_filename.insert(0, file_path)
         self.selected_file_label.config(text=f"Ruta del archivo PDF: {file_path}")
+
+        # Read the Excel file
+        df = pd.read_excel(file_path)
+
+        # Print the first 5 rows
+        # Add a new label to the GUI window
+        label_rows = tk.Label(self.ventana_principal, text=df.head(5).to_string(), font=("Arial", 10, "normal"), bg='#fff')
+        label_rows.place(x=20, y=150)
 
 if __name__ == "__main__":
     Visualizador()
