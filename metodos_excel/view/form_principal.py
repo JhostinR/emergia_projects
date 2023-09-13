@@ -3,6 +3,7 @@ from tkinter import filedialog
 from util.helpers import Helpers
 from PIL import Image, ImageTk
 import pandas as pd
+import os 
 
 help = Helpers()
 
@@ -55,7 +56,11 @@ class Visualizador:
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
         self.entry_filename.delete(0, tk.END)
         self.entry_filename.insert(0, file_path)
-        self.selected_file_label.config(text=f"Ruta del archivo: {file_path}")
+        
+        folder_name = os.path.split(file_path)[0]
+        file_name = os.path.split(file_path)[1]
+    
+        self.selected_file_label.config(text=f"Ruta del archivo: {folder_name}/{file_name}")
 
         if file_path.endswith(".csv"):
             df = pd.read_csv(file_path)
