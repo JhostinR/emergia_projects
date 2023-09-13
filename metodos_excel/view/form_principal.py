@@ -46,7 +46,7 @@ class Visualizador:
         self.selected_file_label = tk.Label(self.ventana_principal, text="Ruta del archivo: ", font=("Arial", 8, "bold"), bg='#cafcd4')
         self.selected_file_label.place(x=20, y=110)
 
-        self.label_rows = tk.Label(self.ventana_principal, text="pruebas", font=("Arial", 10, "normal"), bg='#cafcd4')
+        self.label_rows = tk.Label(self.ventana_principal, text="numero de registros", font=("Arial", 10, "normal"), bg='#cafcd4')
         self.label_rows.place(x=20, y=150)
         
         self.ventana_principal.mainloop()
@@ -59,15 +59,19 @@ class Visualizador:
 
         if file_path.endswith(".csv"):
             df = pd.read_csv(file_path)
+            num_rows = len(df.index)
+            self.label_rows.config(text=f"Número de registros: {num_rows}")
         elif file_path.endswith(".xlsx"):
             df = pd.read_excel(file_path)
+            num_rows = len(df.index)
+            self.label_rows.config(text=f"Número de registros: {num_rows}")
         else:
             df = pd.read_csv(file_path)
+            num_rows = len(df.index)
+            self.label_rows.config(text=f"Número de registros: {num_rows}")
 
-        # Print the first 5 rows
-        # Add a new label to the GUI window
-        label_rows = tk.Label(self.ventana_principal, text=df.head(5).to_string(), font=("Arial", 10, "normal"), bg='#cafcd4')
-        label_rows.place(x=20, y=150)
+        # Update the label_rows to show the number of rows in the DataFrame
+        self.label_rows.config(text=f"Número de registros: {num_rows}")
 
 if __name__ == "__main__":
     Visualizador()
