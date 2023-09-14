@@ -101,7 +101,7 @@ class Visualizador:
                 self.label_rows.config(text=f"Número de registros: {num_rows}")
 
     def move(self):
-        """Moves the selected file to a new location."""
+        """Mover el archivo a la nueva locacion"""
         file_path = self.entry_filename.get()
         
         if file_path:
@@ -109,12 +109,12 @@ class Visualizador:
 
             if file_path and new_path:
                 shutil.move(file_path, new_path)
-                messagebox.showinfo("exito", "se movio el archivo correctamente")
+                messagebox.showinfo("exito", "Se movio el archivo correctamente")
         else:
-            messagebox.showerror("error","selecciona un archivo")
+            messagebox.showerror("Error","Selecciona un archivo")
 
     def rename(self):
-        """Renames the selected file."""
+        """Renombrar el archivo"""
         file_path = self.entry_filename.get()
 
         if file_path:
@@ -125,12 +125,12 @@ class Visualizador:
                     messagebox.showerror("Error", "El nuevo nombre no puede ser el mismo que el nombre original.")
                 else:
                     os.rename(file_path, new_name)
-                    messagebox.showinfo("Exito", "Se cambio el nombre del archivo correctamente")
+                    messagebox.showinfo("¡Exito!", "Se cambio el nombre del archivo correctamente")
         else:
-            messagebox.showerror("error","selecciona un archivo")
+            messagebox.showerror("Error","Selecciona un archivo")
 
     def copy(self):
-        """Copies the selected file to a new location."""
+        """Copiar el archivo seleccionado a otra ruta"""
         file_path = self.entry_filename.get()
         
         if file_path:
@@ -138,9 +138,9 @@ class Visualizador:
 
             if file_path and new_path:
                 shutil.copy(file_path, new_path)
-                messagebox.showinfo("exito", "se copio el archivo correctamente")
+                messagebox.showinfo("¡Exito!", "Se copio el archivo correctamente")
         else:
-            messagebox.showerror("error","selecciona un archivo")
+            messagebox.showerror("¡Error!","Selecciona un archivo")
 
     def close(self):
         self.ventana_principal.destroy()
