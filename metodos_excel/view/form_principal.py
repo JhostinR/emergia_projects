@@ -40,7 +40,7 @@ class Visualizador:
         self.entry_filename = tk.Entry(self.ventana_principal, width=24)
         self.entry_filename.place_forget()
 
-        self.select_file_button = tk.Button(self.ventana_principal, text="Seleccionar archivo", font=("Arial", 10, "bold"), command=self.select_pdf_file, width=18, bg='#b1fac0')
+        self.select_file_button = tk.Button(self.ventana_principal, text="Seleccionar archivo", font=("Arial", 10, "bold"), command=self.select_file, width=18, bg='#b1fac0')
         self.select_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.select_file_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.select_file_button.place(x=180, y=70)
@@ -51,32 +51,34 @@ class Visualizador:
 
         self.label_rows = tk.Label(self.ventana_principal, text="numero de registros", font=("Arial", 10, "normal"), bg='#cafcd4')
         self.label_rows.place(x=20, y=150)
+        
+        self.entry_foldername = tk.Entry(self.ventana_principal, width=24)
+        self.entry_foldername.place_forget()
 
-        # Menú desplegable
-        self.move_button = tk.Button(self.ventana_principal, text="Mover", font=("Arial", 10, "bold"), command=self.move, width=18, bg='#b1fac0')
-        self.move_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
-        self.move_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.move_button.place(x=10, y=250)
+        self.select_folder_button = tk.Button(self.ventana_principal, text="Seleccionar carpeta", font=("Arial", 10, "bold"), command=self.select_folder, width=18, bg='#b1fac0')
+        self.select_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.select_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.select_folder_button.place(x=180, y=190)
 
-        # Botón Aceptar
-        self.rename_button = tk.Button(self.ventana_principal, text="Renombrar", font=("Arial", 10, "bold"), command=self.rename, width=18, bg='#b1fac0')
-        self.rename_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
-        self.rename_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.rename_button.place(x=180, y=250)
+        # Etiqueta para mostrar la ruta del archivo PDF seleccionado
+        self.selected_folder_label = tk.Label(self.ventana_principal, text="Ruta del archivo: ", font=("Arial", 8, "bold"), bg='#cafcd4')
+        self.selected_folder_label.place(x=20, y=240)
 
-        self.copy_button = tk.Button(self.ventana_principal, text="Copiar", font=("Arial", 10, "bold"), command=self.copy, width=18, bg='#b1fac0')
-        self.copy_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
-        self.copy_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.copy_button.place(x=350, y=250)
+        self.select_folder_button = tk.Button(self.ventana_principal, text="Validar", font=("Arial", 10, "bold"), command=self.verify_files, width=18, bg='#b1fac0')
+        self.select_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.select_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.select_folder_button.place(x=180, y=290)
+        
+
         # Botón salir
-        self.exit_button = tk.Button(self.ventana_principal, text="salir", font=("Arial", 10, "bold"), command=self.close, width=18, bg='#b1fac0')
+        self.exit_button = tk.Button(self.ventana_principal, text="Salir", font=("Arial", 10, "bold"), command=self.close, width=18, bg='#b1fac0')
         self.exit_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.exit_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.exit_button.place(x=180, y=350)
         
         self.ventana_principal.mainloop()
     
-    def select_pdf_file(self):
+    def select_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
         self.entry_filename.delete(0, tk.END)
         self.entry_filename.insert(0, file_path)
@@ -100,47 +102,37 @@ class Visualizador:
                 num_rows = len(df.index)
                 self.label_rows.config(text=f"Número de registros: {num_rows}")
 
-    def move(self):
-        """Mover el archivo a la nueva locacion"""
-        file_path = self.entry_filename.get()
-        
-        if file_path:
-            new_path = filedialog.askdirectory()
 
-            if file_path and new_path:
-                shutil.move(file_path, new_path)
-                messagebox.showinfo("exito", "Se movio el archivo correctamente")
+    def select_folder(self):
+            folder_path = filedialog.askdirectory()
+            self.entry_foldername.delete(0, tk.END)
+            self.entry_foldername.insert(0, folder_path)
+
+            if folder_path:
+                folder1, folder2 = os.path.split(folder_path)
+                parent_folder_name = os.path.basename(os.path.normpath(folder1))
+
+                self.selected_folder_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
+
+    def verify_files(self):
+        df = pd.read_csv(self.entry_filename.get())
+        df = df.assign(file_name=df.index)
+
+        file_names_in_folder = os.listdir(self.entry_foldername.get())
+
+        file_names_in_document = df["file_name"].tolist()
+
+        missing_files = []
+        for file_name in file_names_in_document:
+            if file_name not in file_names_in_folder:
+                missing_files.append(file_name)
+
+        if missing_files:
+            # Create a messagebox
+            messagebox.showwarning("Error", f"Los siguientes archivos no existen en la carpeta seleccionada: {missing_files}")
         else:
-            messagebox.showerror("Error","Selecciona un archivo")
+            messagebox.showinfo("Información", "Todos los archivos existen en la carpeta seleccionada.")
 
-    def rename(self):
-        """Renombrar el archivo"""
-        file_path = self.entry_filename.get()
-
-        if file_path:
-            new_name = filedialog.asksaveasfilename(defaultextension=os.path.splitext(file_path)[1])
-
-            if new_name:
-                if new_name == file_path:
-                    messagebox.showerror("Error", "El nuevo nombre no puede ser el mismo que el nombre original.")
-                else:
-                    os.rename(file_path, new_name)
-                    messagebox.showinfo("¡Exito!", "Se cambio el nombre del archivo correctamente")
-        else:
-            messagebox.showerror("Error","Selecciona un archivo")
-
-    def copy(self):
-        """Copiar el archivo seleccionado a otra ruta"""
-        file_path = self.entry_filename.get()
-        
-        if file_path:
-            new_path = filedialog.askdirectory()
-
-            if file_path and new_path:
-                shutil.copy(file_path, new_path)
-                messagebox.showinfo("¡Exito!", "Se copio el archivo correctamente")
-        else:
-            messagebox.showerror("¡Error!","Selecciona un archivo")
 
     def close(self):
         self.ventana_principal.destroy()
