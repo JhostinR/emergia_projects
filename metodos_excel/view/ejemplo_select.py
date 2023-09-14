@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from util.helpers import Helpers
 from PIL import Image, ImageTk
 import pandas as pd
@@ -53,19 +53,21 @@ class Visualizador:
         self.label_rows.place(x=20, y=150)
 
         # Menú desplegable
-        self.option_var = tk.StringVar(self.ventana_principal)
-        self.option_var.set("Seleccionar opción")  # Valor predeterminado
-        options = ["Seleccionar opción", "Mover", "Renombrar", "Copiar"]
-        option_menu = tk.OptionMenu(self.ventana_principal, self.option_var, *options)
-        option_menu.config(width=20, font=("Arial", 10, "bold"), bg='#b1fac0')
-        option_menu.place(x=180, y=250)
+        self.move_button = tk.Button(self.ventana_principal, text="Mover", font=("Arial", 10, "bold"), command=self.move, width=18, bg='#b1fac0')
+        self.move_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.move_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.move_button.place(x=10, y=250)
 
         # Botón Aceptar
-        self.accept_button = tk.Button(self.ventana_principal, text="Aceptar", font=("Arial", 10, "bold"), command=self.process_action, width=18, bg='#b1fac0')
-        self.accept_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
-        self.accept_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.accept_button.place(x=180, y=300)
+        self.rename_button = tk.Button(self.ventana_principal, text="Renombrar", font=("Arial", 10, "bold"), command=self.rename, width=18, bg='#b1fac0')
+        self.rename_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.rename_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.rename_button.place(x=180, y=250)
 
+        self.copy_button = tk.Button(self.ventana_principal, text="Copiar", font=("Arial", 10, "bold"), command=self.copy, width=18, bg='#b1fac0')
+        self.copy_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.copy_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.copy_button.place(x=350, y=250)
         # Botón salir
         self.exit_button = tk.Button(self.ventana_principal, text="salir", font=("Arial", 10, "bold"), command=self.close, width=18, bg='#b1fac0')
         self.exit_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
@@ -73,9 +75,6 @@ class Visualizador:
         self.exit_button.place(x=180, y=350)
         
         self.ventana_principal.mainloop()
-
-    def close(self):
-        self.ventana_principal.destroy()
     
     def select_pdf_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
@@ -101,39 +100,50 @@ class Visualizador:
                 num_rows = len(df.index)
                 self.label_rows.config(text=f"Número de registros: {num_rows}")
 
-    def process_action(self):
-        selected_action = self.option_var.get()
-        source_file_path = self.entry_filename.get()
+    def move(self):
+        """Mover el archivo a la nueva locacion"""
+        file_path = self.entry_filename.get()
+        
+        if file_path:
+            new_path = filedialog.askdirectory()
 
-        if selected_action == "Renombrar":
-            new_name = filedialog.asksaveasfilename(defaultextension=os.path.splitext(source_file_path)[1])
+            if file_path and new_path:
+                shutil.move(file_path, new_path)
+                messagebox.showinfo("exito", "Se movio el archivo correctamente")
+        else:
+            messagebox.showerror("Error","Selecciona un archivo")
+
+    def rename(self):
+        """Renombrar el archivo"""
+        file_path = self.entry_filename.get()
+
+        if file_path:
+            new_name = filedialog.asksaveasfilename(defaultextension=os.path.splitext(file_path)[1])
+
             if new_name:
-                # Copia el archivo original a la nueva ubicación y renómbralo
-                shutil.copy(source_file_path, new_name)
-                self.entry_filename.delete(0, tk.END)
-                self.entry_filename.insert(0, new_name)
-                self.selected_file_label.config(text=f"Ruta del archivo: {new_name}")
+                if new_name == file_path:
+                    messagebox.showerror("Error", "El nuevo nombre no puede ser el mismo que el nombre original.")
+                else:
+                    os.rename(file_path, new_name)
+                    messagebox.showinfo("¡Exito!", "Se cambio el nombre del archivo correctamente")
+        else:
+            messagebox.showerror("Error","Selecciona un archivo")
 
-        elif selected_action == "Mover":
-            destination_folder = filedialog.askdirectory()
-            if destination_folder:
-                destination_path = os.path.join(destination_folder, os.path.basename(source_file_path))
-                # Copia el archivo original a la nueva ubicación y renómbralo
-                shutil.copy(source_file_path, destination_path)
-                self.entry_filename.delete(0, tk.END)
-                self.entry_filename.insert(0, destination_path)
-                self.selected_file_label.config(text=f"Ruta del archivo: {destination_path}")
+    def copy(self):
+        """Copiar el archivo seleccionado a otra ruta"""
+        file_path = self.entry_filename.get()
+        
+        if file_path:
+            new_path = filedialog.askdirectory()
 
-        elif selected_action == "Copiar":
-            destination_folder = filedialog.askdirectory()
-            if destination_folder:
-                destination_path = os.path.join(destination_folder, os.path.basename(source_file_path))
-                # Copia el archivo original a la nueva ubicación y renómbralo
-                shutil.copy(source_file_path, destination_path)
-                self.entry_filename.delete(0, tk.END)
-                self.entry_filename.insert(0, destination_path)
-                self.selected_file_label.config(text=f"Ruta del archivo: {destination_path}")
+            if file_path and new_path:
+                shutil.copy(file_path, new_path)
+                messagebox.showinfo("¡Exito!", "Se copio el archivo correctamente")
+        else:
+            messagebox.showerror("¡Error!","Selecciona un archivo")
 
+    def close(self):
+        self.ventana_principal.destroy()
 
 if __name__ == "__main__":
     Visualizador()
