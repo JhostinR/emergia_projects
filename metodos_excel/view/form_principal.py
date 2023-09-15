@@ -115,24 +115,43 @@ class Visualizador:
                 self.selected_folder_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
 
     def verify_files(self):
-        df = pd.read_csv(self.entry_filename.get())
-        df = df.assign(file_name=df.index)
+        file_path = self.entry_filename.get()
+        folder_path = self.entry_foldername.get()
 
-        file_names_in_folder = os.listdir(self.entry_foldername.get())
+        if not os.path.exists(file_path):
+            messagebox.showerror("Error", "El archivo seleccionado no existe.")
+            return
 
-        file_names_in_document = df["file_name"].tolist()
+        if not os.path.exists(folder_path):
+            messagebox.showerror("Error", "La carpeta seleccionada no existe.")
+            return
 
+        if not file_path.endswith((".csv", ".xlsx")):
+            messagebox.showerror("Error", "El archivo debe ser un archivo CSV o Excel.")
+            return
+
+        if file_path.endswith(".csv"):
+            df = pd.read_csv(file_path, sep=';')
+        else:
+            df = pd.read_excel(file_path)
+
+        file_names_in_folder = os.listdir(folder_path)
         missing_files = []
-        for file_name in file_names_in_document:
-            if file_name not in file_names_in_folder:
-                missing_files.append(file_name)
+
+        for index, row in df.iterrows():
+            folder_name = row[0]
+
+            if folder_name not in file_names_in_folder:
+                missing_files.append(f"Carpeta: {folder_name} (no existe)")
+
+            for col in row[1:]:
+                if col not in file_names_in_folder:
+                    missing_files.append(f"Archivo: {col} (no existe en {folder_name})")
 
         if missing_files:
-            # Create a messagebox
-            messagebox.showwarning("Error", f"Los siguientes archivos no existen en la carpeta seleccionada: {missing_files}")
+            messagebox.showwarning("Archivos faltantes", f"Los siguientes archivos o carpetas no existen en la carpeta seleccionada:\n{', '.join(missing_files)}")
         else:
-            messagebox.showinfo("Información", "Todos los archivos existen en la carpeta seleccionada.")
-
+            messagebox.showinfo("Archivos coincidentes", "Todos los archivos y carpetas existen en la carpeta seleccionada.")
 
     def close(self):
         self.ventana_principal.destroy()
