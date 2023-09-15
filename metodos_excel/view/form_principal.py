@@ -4,6 +4,7 @@ from util.helpers import Helpers
 from PIL import Image, ImageTk
 import pandas as pd
 import os
+from os import path
 import shutil
 
 help = Helpers()
@@ -12,6 +13,9 @@ help = Helpers()
 class Visualizador:
     def __init__(self):
         # Crear una ventana_principal de Tkinter
+        
+        self.rutaPrincipalBusqueda = ''
+        
         self.ventana_principal = tk.Tk()
         super().__init__()
         self.ventana_principal.title('Dividir PDF')
@@ -109,6 +113,7 @@ class Visualizador:
             self.entry_foldername.insert(0, folder_path)
 
             if folder_path:
+                self.rutaPrincipalBusqueda = folder_path
                 folder1, folder2 = os.path.split(folder_path)
                 parent_folder_name = os.path.basename(os.path.normpath(folder1))
 
@@ -117,7 +122,7 @@ class Visualizador:
     def verify_files(self):
         file_path = self.entry_filename.get()
         folder_path = self.entry_foldername.get()
-
+        
         if not os.path.exists(file_path):
             messagebox.showerror("Error", "El archivo seleccionado no existe.")
             return
@@ -131,25 +136,29 @@ class Visualizador:
             return
 
         if file_path.endswith(".csv"):
-            df = pd.read_csv(file_path, sep=';')
+            df = pd.read_csv(file_path, sep = ",")
         else:
             df = pd.read_excel(file_path)
-
-        file_names_in_folder = os.listdir(folder_path)
+        
+        missing_folders = []
         missing_files = []
 
+
+
+
         for index, row in df.iterrows():
-            folder_name = row[0]
-
+            folder_name = row["0"]
+            file_names_in_folder = os.listdir(path.join(str(self.rutaPrincipalBusqueda), str(folder_name)))
+            
             if folder_name not in file_names_in_folder:
-                missing_files.append(f"Carpeta: {folder_name} (no existe)")
-
+                missing_folders.append({"Carpeta": f"No existe carpeta: {folder_name}"})
+            
             for col in row[1:]:
                 if col not in file_names_in_folder:
-                    missing_files.append(f"Archivo: {col} (no existe en {folder_name})")
-
+                    missing_files.append({"Archivo": f"No existe archivo: {col}"})
+        
         if missing_files:
-            messagebox.showwarning("Archivos faltantes", f"Los siguientes archivos o carpetas no existen en la carpeta seleccionada:\n{', '.join(missing_files)}")
+            messagebox.showwarning("Archivos faltantes", f"Los siguientes archivos o carpetas no existen en la carpeta seleccionada:\n{''.join(str(missing_files))}")
         else:
             messagebox.showinfo("Archivos coincidentes", "Todos los archivos y carpetas existen en la carpeta seleccionada.")
 
