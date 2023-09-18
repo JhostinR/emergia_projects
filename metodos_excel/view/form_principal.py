@@ -13,6 +13,8 @@ class Visualizador:
         # Crear una ventana_principal de Tkinter
         
         self.rutaPrincipalBusqueda = ''
+        self.missing_folders = []
+        self.missing_files = []
         
         self.ventana_principal = tk.Tk()
         super().__init__()
@@ -118,6 +120,15 @@ class Visualizador:
 
                 self.selected_folder_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
 
+    def validate_list_missing(self):
+        if(len(self.missing_folders) > 0):
+            dfFolders= pd.DataFrame.from_dict(self.missing_folders)
+            dfFolders.to_excel("missing_folders.xlsx", index=False)
+
+        if(len(self.missing_files) > 0):
+            dfFiles = pd.DataFrame.from_dict(self.missing_files)
+            dfFiles.to_excel("missing_files.xlsx", index=False)
+        
     def verify_files(self):
         file_path = self.entry_filename.get()
         folder_path = self.entry_foldername.get()
@@ -138,29 +149,24 @@ class Visualizador:
             df = pd.read_csv(file_path, sep = ",")
         else:
             df = pd.read_excel(file_path)
-        
-        missing_folders = []
-        missing_files = []
 
         for index, row in df.iterrows():
             folder_name = row["0"]
-            file_names_in_folder = listdir(path.join(str(self.rutaPrincipalBusqueda), str(folder_name)))
-            
-            if folder_name not in file_names_in_folder:
-                missing_folders.append({"Carpeta": f"No existe carpeta: {folder_name}"})
-                missing_folders_df = pd.DataFrame(missing_folders)
-                missing_folders_df.to_excel("missing_folders.xlsx")
-            
-            for col in row[1:]:
-                if col not in file_names_in_folder:
-                    missing_files.append({"Archivo": f"No existe archivo: {col}"})
-                    missing_files_df = pd.DataFrame(missing_files)
-                    missing_files_df.to_excel("missing_files.xlsx")
-        
-        if missing_files:
-            messagebox.showwarning("Archivos faltantes", f"Los siguientes archivos o carpetas no existen en la carpeta seleccionada:\n{''.join(str(missing_files))}")
-        else:
-            messagebox.showinfo("Archivos coincidentes", "Todos los archivos y carpetas existen en la carpeta seleccionada.")
+            rutaCarpetaIndividual = path.exists(path.join(str(self.rutaPrincipalBusqueda), str(folder_name)))
+            if(rutaCarpetaIndividual):
+                file_names_in_folder = listdir(path.join(str(self.rutaPrincipalBusqueda), str(folder_name)))
+                
+                for col in row[1:]:
+                    if col not in file_names_in_folder:
+                        self.missing_files.append({"Archivo": f"{col}", "Carpeta contenedora": f"{folder_name}", "Estado": "No existe el archivo en la ruta"})
+            else:
+                self.missing_folders.append({"Carpeta": f"{folder_name}", "Estado": f"No existe la carpeta"})
+                
+        self.validate_list_missing()
+        # if self.missing_files:
+        #     messagebox.showwarning("Archivos faltantes", f"Los siguientes archivos o carpetas no existen en la carpeta seleccionada:\n{''.join(str(self.missing_files))}")
+        # else:
+        messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
 
     def close(self):
         self.ventana_principal.destroy()
