@@ -151,7 +151,7 @@ class Visualizador:
             df = pd.read_excel(file_path)
 
         for index, row in df.iterrows():
-            folder_name = row["0"]
+            folder_name = row.iloc[0]
             rutaCarpetaIndividual = path.exists(path.join(str(self.rutaPrincipalBusqueda), str(folder_name)))
             if(rutaCarpetaIndividual):
                 file_names_in_folder = listdir(path.join(str(self.rutaPrincipalBusqueda), str(folder_name)))
