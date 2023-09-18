@@ -143,9 +143,6 @@ class Visualizador:
         missing_folders = []
         missing_files = []
 
-
-
-
         for index, row in df.iterrows():
             folder_name = row["0"]
             file_names_in_folder = os.listdir(path.join(str(self.rutaPrincipalBusqueda), str(folder_name)))
@@ -159,6 +156,11 @@ class Visualizador:
         
         if missing_files:
             messagebox.showwarning("Archivos faltantes", f"Los siguientes archivos o carpetas no existen en la carpeta seleccionada:\n{''.join(str(missing_files))}")
+            missing_folders_df = pd.DataFrame(missing_folders)
+            missing_folders_df.to_excel("missing_folders.xlsx")
+
+            missing_files_df = pd.DataFrame(missing_files)
+            missing_files_df.to_excel("missing_files.xlsx")
         else:
             messagebox.showinfo("Archivos coincidentes", "Todos los archivos y carpetas existen en la carpeta seleccionada.")
 
