@@ -174,9 +174,9 @@ class Visualizador:
                 
 
         if self.validate_list_missing():
-            messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
-        else:
             messagebox.showinfo("Archivos faltantes", "se completo el proceso")
+        else:
+            messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
             
     def rename_file(self):
         """Renombrar el archivo seleccionado"""
