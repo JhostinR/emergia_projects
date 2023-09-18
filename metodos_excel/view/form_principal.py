@@ -3,9 +3,7 @@ from tkinter import filedialog, messagebox
 from util.helpers import Helpers
 from PIL import Image, ImageTk
 import pandas as pd
-import os
-from os import path
-import shutil
+from os import path, listdir
 
 help = Helpers()
 
@@ -88,8 +86,8 @@ class Visualizador:
         self.entry_filename.insert(0, file_path)
 
         if file_path:
-            folder_name, file_name = os.path.split(file_path)
-            parent_folder_name = os.path.basename(os.path.normpath(folder_name))  # Obtiene el nombre de la última carpeta
+            folder_name, file_name = path.split(file_path)
+            parent_folder_name = path.basename(path.normpath(folder_name))  # Obtiene el nombre de la última carpeta
 
             self.selected_file_label.config(text=f"Ruta del archivo: {parent_folder_name}/{file_name}")
 
@@ -114,8 +112,9 @@ class Visualizador:
 
             if folder_path:
                 self.rutaPrincipalBusqueda = folder_path
-                folder1, folder2 = os.path.split(folder_path)
-                parent_folder_name = os.path.basename(os.path.normpath(folder1))
+                
+                folder1, folder2 = path.split(folder_path)
+                parent_folder_name = path.basename(path.normpath(folder1))
 
                 self.selected_folder_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
 
@@ -123,11 +122,11 @@ class Visualizador:
         file_path = self.entry_filename.get()
         folder_path = self.entry_foldername.get()
         
-        if not os.path.exists(file_path):
+        if not path.exists(file_path):
             messagebox.showerror("Error", "El archivo seleccionado no existe.")
             return
 
-        if not os.path.exists(folder_path):
+        if not path.exists(folder_path):
             messagebox.showerror("Error", "La carpeta seleccionada no existe.")
             return
 
@@ -145,22 +144,21 @@ class Visualizador:
 
         for index, row in df.iterrows():
             folder_name = row["0"]
-            file_names_in_folder = os.listdir(path.join(str(self.rutaPrincipalBusqueda), str(folder_name)))
+            file_names_in_folder = listdir(path.join(str(self.rutaPrincipalBusqueda), str(folder_name)))
             
             if folder_name not in file_names_in_folder:
                 missing_folders.append({"Carpeta": f"No existe carpeta: {folder_name}"})
+                missing_folders_df = pd.DataFrame(missing_folders)
+                missing_folders_df.to_excel("missing_folders.xlsx")
             
             for col in row[1:]:
                 if col not in file_names_in_folder:
                     missing_files.append({"Archivo": f"No existe archivo: {col}"})
+                    missing_files_df = pd.DataFrame(missing_files)
+                    missing_files_df.to_excel("missing_files.xlsx")
         
         if missing_files:
             messagebox.showwarning("Archivos faltantes", f"Los siguientes archivos o carpetas no existen en la carpeta seleccionada:\n{''.join(str(missing_files))}")
-            missing_folders_df = pd.DataFrame(missing_folders)
-            missing_folders_df.to_excel("missing_folders.xlsx")
-
-            missing_files_df = pd.DataFrame(missing_files)
-            missing_files_df.to_excel("missing_files.xlsx")
         else:
             messagebox.showinfo("Archivos coincidentes", "Todos los archivos y carpetas existen en la carpeta seleccionada.")
 
