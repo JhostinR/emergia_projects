@@ -177,6 +177,43 @@ class Visualizador:
             messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
         else:
             messagebox.showinfo("Archivos faltantes", "se completo el proceso")
+            
+    def rename_file(self):
+        """Renombrar el archivo seleccionado"""
+        file_path = self.entry_filename.get()
+
+        if file_path:
+            new_name = filedialog.asksaveasfilename(defaultextension=path.splitext(file_path)[1])
+
+            if new_name:
+                if new_name == file_path:
+                    messagebox.showerror("Error", "El nuevo nombre no puede ser el mismo que el nombre original.")
+                else:
+                    rename(file_path, new_name)
+                    messagebox.showinfo("¡Exito!", "Se cambio el nombre del archivo correctamente")
+            else:
+                messagebox.showerror("Error", "¡Selecciona un archivo!")
+        else:
+            messagebox.showerror("Error", "¡Selecciona un archivo!")
+
+    def rename_folder(self):
+        """Renombrar la carpeta seleccionada"""
+        folder_path = self.entry_filename.get()
+
+        if folder_path:
+            new_name = filedialog.askdirectory()
+
+            if new_name:
+                if new_name == folder_path:
+                    messagebox.showerror("Error", "El nuevo nombre no puede ser el mismo que el nombre original.")
+                else:
+                    rename(folder_path, new_name)
+                    messagebox.showinfo("¡Exito!", "Se cambio el nombre de la carpeta correctamente")
+            else:
+                messagebox.showerror("Error", "¡Selecciona una carpeta!")
+        else:
+            messagebox.showerror("Error", "¡Selecciona una carpeta!")
+
 
     def close(self):
         self.ventana_principal.destroy()
