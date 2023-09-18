@@ -73,6 +73,16 @@ class Visualizador:
         self.select_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.select_folder_button.place(x=180, y=290)
         
+        self.rename_file_button = tk.Button(self.ventana_principal, text="Renombrar archivo", font=("Arial", 10, "bold"), command=self.rename_file, width=18, bg='#b1fac0')
+        self.rename_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.rename_file_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.rename_file_button.place(x=10, y=300)
+        
+        self.rename_folder_button = tk.Button(self.ventana_principal, text="Renombrar carpeta", font=("Arial", 10, "bold"), command=self.rename_folder, width=18, bg='#b1fac0')
+        self.rename_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.rename_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.rename_folder_button.place(x=340, y=300)
+
 
         # Botón salir
         self.exit_button = tk.Button(self.ventana_principal, text="Salir", font=("Arial", 10, "bold"), command=self.close, width=18, bg='#b1fac0')
