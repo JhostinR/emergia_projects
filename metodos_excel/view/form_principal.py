@@ -3,7 +3,7 @@ from tkinter import filedialog, messagebox
 from util.helpers import Helpers
 from PIL import Image, ImageTk
 import pandas as pd
-from os import path, listdir
+from os import path, listdir, rename
 
 help = Helpers()
 
@@ -162,11 +162,11 @@ class Visualizador:
             else:
                 self.missing_folders.append({"Carpeta": f"{folder_name}", "Estado": f"No existe la carpeta"})
                 
-        self.validate_list_missing()
-        # if self.missing_files:
-        #     messagebox.showwarning("Archivos faltantes", f"Los siguientes archivos o carpetas no existen en la carpeta seleccionada:\n{''.join(str(self.missing_files))}")
-        # else:
-        messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
+
+        if self.validate_list_missing():
+            messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
+        else:
+            messagebox.showinfo("Archivos faltantes", "se completo el proceso")
 
     def close(self):
         self.ventana_principal.destroy()
