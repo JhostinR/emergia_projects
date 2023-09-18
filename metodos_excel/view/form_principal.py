@@ -4,6 +4,7 @@ from util.helpers import Helpers
 from PIL import Image, ImageTk
 import pandas as pd
 from os import path, listdir
+import os
 
 help = Helpers()
 
@@ -73,6 +74,16 @@ class Visualizador:
         self.select_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.select_folder_button.place(x=180, y=290)
         
+        self.rename_file_button = tk.Button(self.ventana_principal, text="Renombrar archivo", font=("Arial", 10, "bold"), command=self.rename_file, width=18, bg='#b1fac0')
+        self.rename_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.rename_file_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.rename_file_button.place(x=10, y=300)
+        
+        self.rename_folder_button = tk.Button(self.ventana_principal, text="Renombrar carpeta", font=("Arial", 10, "bold"), command=self.rename_folder, width=18, bg='#b1fac0')
+        self.rename_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.rename_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.rename_folder_button.place(x=340, y=300)
+
 
         # Botón salir
         self.exit_button = tk.Button(self.ventana_principal, text="Salir", font=("Arial", 10, "bold"), command=self.close, width=18, bg='#b1fac0')
@@ -167,6 +178,43 @@ class Visualizador:
         #     messagebox.showwarning("Archivos faltantes", f"Los siguientes archivos o carpetas no existen en la carpeta seleccionada:\n{''.join(str(self.missing_files))}")
         # else:
         messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
+        
+    def rename_file(self):
+        """Renombrar el archivo seleccionado"""
+        file_path = self.entry_filename.get()
+
+        if file_path:
+            new_name = filedialog.asksaveasfilename(defaultextension=os.path.splitext(file_path)[1])
+
+            if new_name:
+                if new_name == file_path:
+                    messagebox.showerror("Error", "El nuevo nombre no puede ser el mismo que el nombre original.")
+                else:
+                    os.rename(file_path, new_name)
+                    messagebox.showinfo("¡Exito!", "Se cambio el nombre del archivo correctamente")
+            else:
+                messagebox.showerror("Error", "¡Selecciona un archivo!")
+        else:
+            messagebox.showerror("Error", "¡Selecciona un archivo!")
+
+    def rename_folder(self):
+        """Renombrar la carpeta seleccionada"""
+        folder_path = self.entry_filename.get()
+
+        if folder_path:
+            new_name = filedialog.askdirectory()
+
+            if new_name:
+                if new_name == folder_path:
+                    messagebox.showerror("Error", "El nuevo nombre no puede ser el mismo que el nombre original.")
+                else:
+                    os.rename(folder_path, new_name)
+                    messagebox.showinfo("¡Exito!", "Se cambio el nombre de la carpeta correctamente")
+            else:
+                messagebox.showerror("Error", "¡Selecciona una carpeta!")
+        else:
+            messagebox.showerror("Error", "¡Selecciona una carpeta!")
+
 
     def close(self):
         self.ventana_principal.destroy()
