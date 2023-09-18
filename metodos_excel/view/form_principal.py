@@ -83,7 +83,6 @@ class Visualizador:
         self.rename_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.rename_folder_button.place(x=340, y=300)
 
-
         # Botón salir
         self.exit_button = tk.Button(self.ventana_principal, text="Salir", font=("Arial", 10, "bold"), command=self.close, width=18, bg='#b1fac0')
         self.exit_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
@@ -178,23 +177,47 @@ class Visualizador:
         else:
             messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
             
+        
+
+
+
     def rename_file(self):
         """Renombrar el archivo seleccionado"""
         file_path = self.entry_filename.get()
 
-        if file_path:
-            new_name = filedialog.asksaveasfilename(defaultextension=path.splitext(file_path)[1])
-
-            if new_name:
-                if new_name == file_path:
-                    messagebox.showerror("Error", "El nuevo nombre no puede ser el mismo que el nombre original.")
-                else:
-                    rename(file_path, new_name)
-                    messagebox.showinfo("¡Exito!", "Se cambio el nombre del archivo correctamente")
-            else:
-                messagebox.showerror("Error", "¡Selecciona un archivo!")
-        else:
+        if not file_path:
             messagebox.showerror("Error", "¡Selecciona un archivo!")
+            return
+
+        if not file_path.endswith((".csv", ".xlsx")):
+            messagebox.showerror("Error", "El archivo debe ser un archivo CSV o Excel.")
+            return
+
+        # Leer el archivo Excel seleccionado
+        df = pd.read_excel(file_path)
+
+        # Eliminar filas que contienen valores NaN en alguna columna
+        df = df.dropna(how='any')
+
+        # Obtener la ruta de la carpeta que contiene el archivo Excel
+        excel_folder = path.dirname(file_path)
+
+        # Iterar a través de las filas del DataFrame
+        for index, row in df.iterrows():
+            folder_name = row['CARPETA'] 
+            current_file_name = row['NOMBRE ACTUAL']
+            new_file_name = row['NUEVO NOMBRE']
+
+            folder_path = path.join(excel_folder, folder_name)
+            current_file_path = path.join(folder_path, current_file_name)
+            new_file_path = path.join(folder_path, new_file_name)
+
+            if path.exists(current_file_path):
+                rename(current_file_path, new_file_path)
+            else:
+                messagebox.showwarning("Advertencia", f"El archivo '{current_file_name}' en la carpeta '{folder_name}' no existe.")
+
+        messagebox.showinfo("¡Éxito!", "Se han renombrado los archivos según el archivo Excel.")
 
     def rename_folder(self):
         """Renombrar la carpeta seleccionada"""
@@ -214,9 +237,9 @@ class Visualizador:
         else:
             messagebox.showerror("Error", "¡Selecciona una carpeta!")
 
-
     def close(self):
         self.ventana_principal.destroy()
 
 if __name__ == "__main__":
     Visualizador()
+
