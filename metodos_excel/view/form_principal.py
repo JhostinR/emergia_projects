@@ -231,45 +231,50 @@ class Visualizador:
 
 
     def rename_file(self):
-            file_path = self.entry_filename.get()
+        file_path = self.entry_filename.get()
+        
+        if not file_path:
+            messagebox.showerror("Error", "¡Selecciona un archivo!")
+            return
+        
+        if not file_path.endswith((".csv", ".xlsx")):
+            messagebox.showerror("Error", "El archivo debe ser un archivo CSV o Excel.")
+            return
+        
+        # Leer el archivo Excel seleccionado
+        df = pd.read_excel(file_path)
+        
+        # Eliminar filas que contienen valores NaN en alguna columna
+        df = df.dropna(how='any')
+        
+        # Obtener la ruta de la carpeta que contiene el archivo Excel
+        excel_folder = path.dirname(file_path)
+        
+        # Iterar a través de las filas del DataFrame
+        for index, row in df.iterrows():
+            folder_name = str(int(row['CARPETA']))
+            current_file_name = row['NOMBRE ACTUAL']
+            new_file_name = row['NUEVO NOMBRE']
+        
+            folder_path = path.join(str(excel_folder), str(folder_name))
+            current_file_path = path.join(str(folder_path), str(current_file_name))
+            new_file_path = path.join(str(folder_path), str(new_file_name))
+        
+            # Obtener la ruta de la carpeta de destino
+            save_path = filedialog.askdirectory(initialdir=excel_folder, title="Guardar archivo con el nuevo nombre")
+        
+            # Si el usuario selecciona una ubicación, guardar el archivo
+            if save_path:
+                new_file_path = path.join(str(save_path), str(new_file_name))
+                try:
+                    rename(current_file_path, new_file_path)
+                    messagebox.showinfo("¡Éxito!", f"El archivo '{current_file_name}' se ha guardado en la carpeta '{save_path}' con el nuevo nombre '{new_file_name}'.")
+                except Exception as e:
+                    messagebox.showerror("Error", f"No se pudo guardar el archivo '{current_file_name}' en la carpeta '{save_path}': {str(e)}")
+            else:
+                messagebox.showwarning("Advertencia", f"El archivo '{current_file_name}' en la carpeta '{folder_name}' no se ha guardado.")
     
-            if not file_path:
-                messagebox.showerror("Error", "¡Selecciona un archivo!")
-                return
-    
-            if not file_path.endswith((".csv", ".xlsx")):
-                messagebox.showerror("Error", "El archivo debe ser un archivo CSV o Excel.")
-                return
-    
-            # Leer el archivo Excel seleccionado
-            df = pd.read_excel(file_path)
-    
-            # Eliminar filas que contienen valores NaN en alguna columna
-            df = df.dropna(how='any')
-    
-            # Obtener la ruta de la carpeta que contiene el archivo Excel
-            excel_folder = path.dirname(file_path)
-    
-            # Iterar a través de las filas del DataFrame
-            for index, row in df.iterrows():
-                folder_name = str(int(row['CARPETA']) )
-                current_file_name = row['NOMBRE ACTUAL']
-                new_file_name = row['NUEVO NOMBRE']
-    
-                folder_path = path.join(str(excel_folder), str(folder_name))
-                current_file_path = path.join(str(folder_path), str(current_file_name))
-                new_file_path = path.join(str(folder_path), str(new_file_name))
-    
-                # Obtener la ruta de la carpeta de destino
-                save_path = filedialog.askdirectory(initialdir=excel_folder, title="Guardar archivo con el nuevo nombre")
-    
-                # Si el usuario selecciona una ubicación, guardar el archivo
-                if save_path:
-                    rename(new_file_path, save_path)
-                else:
-                    messagebox.showwarning("Advertencia", f"El archivo '{current_file_name}' en la carpeta '{folder_name}' no existe.")
-    
-            messagebox.showinfo("¡Éxito!", "Se han renombrado los archivos según el archivo Excel.")
+        messagebox.showinfo("¡Éxito!", "Se han renombrado y guardado los archivos según el archivo Excel en las carpetas seleccionadas.")
 
 
 
