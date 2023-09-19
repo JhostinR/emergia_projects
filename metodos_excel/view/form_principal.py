@@ -13,6 +13,7 @@ class Visualizador:
         # Crear una ventana_principal de Tkinter
         
         self.rutaPrincipalBusqueda = ''
+        self.rutaPrincipalGuardado = ''
         self.missing_folders = []
         self.missing_files = []
         
@@ -63,7 +64,7 @@ class Visualizador:
         self.select_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.select_folder_button.place(x=220, y=190)
         
-        self.select_save_button = tk.Button(self.ventana_principal, text="Seleccionar carpeta guardado", font=("Arial", 10, "bold"), command=exit, width=24, bg='#b1fac0')
+        self.select_save_button = tk.Button(self.ventana_principal, text="Seleccionar carpeta guardado", font=("Arial", 10, "bold"), command=self.select_folder_save, width=24, bg='#b1fac0')
         self.select_save_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.select_save_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.select_save_button.place(x=200, y=290)
@@ -71,6 +72,9 @@ class Visualizador:
         self.selected_save_label = tk.Label(self.ventana_principal, text="Ruta Carpeta: ", font=("Arial", 8, "bold"), bg='#cafcd4')
         self.selected_save_label.place(x=20, y=340)
 
+        self.entry_savefolder = tk.Entry(self.ventana_principal, width=24)
+        self.entry_savefolder.place_forget()
+        
         # Etiqueta para mostrar la ruta del archivo PDF seleccionado
         self.selected_folder_label = tk.Label(self.ventana_principal, text="Ruta del archivo: ", font=("Arial", 8, "bold"), bg='#cafcd4')
         self.selected_folder_label.place(x=20, y=240)
@@ -146,6 +150,19 @@ class Visualizador:
 
                 self.selected_folder_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
 
+    def select_folder_save(self):
+            folder_save_path = filedialog.askdirectory()
+            self.entry_foldername.delete(0, tk.END)
+            self.entry_foldername.insert(0, folder_save_path)
+
+            if folder_save_path:
+                self.rutaPrincipalGuardado = folder_save_path
+                
+                folder1, folder2 = path.split(folder_save_path)
+                parent_folder_name = path.basename(path.normpath(folder1))
+
+                self.selected_save_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
+    
     def validate_list_missing(self):
         if(len(self.missing_folders) > 0):
             dfFolders= pd.DataFrame.from_dict(self.missing_folders)
@@ -195,6 +212,24 @@ class Visualizador:
             messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
             
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def rename_file(self):
             file_path = self.entry_filename.get()
     
@@ -235,7 +270,34 @@ class Visualizador:
                     messagebox.showwarning("Advertencia", f"El archivo '{current_file_name}' en la carpeta '{folder_name}' no existe.")
     
             messagebox.showinfo("¡Éxito!", "Se han renombrado los archivos según el archivo Excel.")
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def rename_folder(self):
         file_path = self.entry_filename.get()  # Obtener la ruta del archivo Excel
 
