@@ -200,13 +200,13 @@ class Visualizador:
 
         # Iterar a través de las filas del DataFrame
         for index, row in df.iterrows():
-            folder_name = row['CARPETA'] 
+            folder_name = str(int(row['CARPETA']) )
             current_file_name = row['NOMBRE ACTUAL']
             new_file_name = row['NUEVO NOMBRE']
 
-            folder_path = path.join(excel_folder, folder_name)
-            current_file_path = path.join(folder_path, current_file_name)
-            new_file_path = path.join(folder_path, new_file_name)
+            folder_path = path.join(str(excel_folder), str(folder_name))
+            current_file_path = path.join(str(folder_path), str(current_file_name))
+            new_file_path = path.join(str(folder_path), str(new_file_name))
 
             if path.exists(current_file_path):
                 rename(current_file_path, new_file_path)
