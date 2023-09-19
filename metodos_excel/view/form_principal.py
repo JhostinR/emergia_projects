@@ -177,12 +177,8 @@ class Visualizador:
         else:
             messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
             
-        
-
-
 
     def rename_file(self):
-        """Renombrar el archivo seleccionado"""
         file_path = self.entry_filename.get()
 
         if not file_path:
@@ -218,24 +214,48 @@ class Visualizador:
                 messagebox.showwarning("Advertencia", f"El archivo '{current_file_name}' en la carpeta '{folder_name}' no existe.")
 
         messagebox.showinfo("¡Éxito!", "Se han renombrado los archivos según el archivo Excel.")
-
+    
     def rename_folder(self):
-        """Renombrar la carpeta seleccionada"""
-        folder_path = self.entry_filename.get()
+        file_path = self.entry_filename.get()  # Obtener la ruta del archivo Excel
 
-        if folder_path:
-            new_name = filedialog.askdirectory()
+        if not file_path:
+            messagebox.showerror("Error", "¡Selecciona un archivo Excel!")
+            return
 
-            if new_name:
-                if new_name == folder_path:
-                    messagebox.showerror("Error", "El nuevo nombre no puede ser el mismo que el nombre original.")
-                else:
-                    rename(folder_path, new_name)
-                    messagebox.showinfo("¡Exito!", "Se cambio el nombre de la carpeta correctamente")
+        if not file_path.endswith((".xls", ".xlsx")):
+            messagebox.showerror("Error", "El archivo debe ser un archivo Excel.")
+            return
+
+        # Leer el archivo Excel seleccionado
+        try:
+            df = pd.read_excel(file_path)
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo leer el archivo Excel: {str(e)}")
+            return
+
+        # Obtener la ruta de la carpeta que contiene el archivo Excel
+        excel_folder = path.dirname(file_path)
+
+        # Iterar a través de las filas del DataFrame
+        for index, row in df.iterrows():
+            current_folder_name = row['Nombre Actual']
+            new_folder_name = row['Nuevo Nombe']
+
+            current_folder_path = path.join(str(excel_folder), str(current_folder_name))
+            new_folder_path = path.join(str(excel_folder), str(new_folder_name))
+
+            if path.exists(current_folder_path):
+                try:
+                    rename(current_folder_path, new_folder_path)
+                    messagebox.showinfo("¡Éxito!", f"Se cambió el nombre de la carpeta '{current_folder_name}' a '{new_folder_name}'.")
+                except Exception as e:
+                    messagebox.showerror("Error", f"No se pudo cambiar el nombre de la carpeta '{current_folder_name}': {str(e)}")
             else:
-                messagebox.showerror("Error", "¡Selecciona una carpeta!")
-        else:
-            messagebox.showerror("Error", "¡Selecciona una carpeta!")
+                messagebox.showwarning("Advertencia", f"La carpeta '{current_folder_name}' no existe.")
+
+        messagebox.showinfo("¡Éxito!", "Se han renombrado las carpetas según el archivo Excel.")
+
+
 
     def close(self):
         self.ventana_principal.destroy()
