@@ -113,8 +113,10 @@ class Visualizador:
         
         self.ventana_principal.mainloop()
 
-# ---------------------------------------------------------------------------------------------------------------------
+# region metodos
 
+# ---------------------------------------------------------------------------------------------------------------------
+#region select file
     def select_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
         self.entry_filename.delete(0, tk.END)
@@ -138,9 +140,9 @@ class Visualizador:
                 df = pd.read_csv(file_path)
                 num_rows = len(df.index)
                 self.label_rows.config(text=f"Número de registros: {num_rows}")
-
+#endregion select file
 # ---------------------------------------------------------------------------------------------------------------------
-
+#region select folder
     def select_folder(self):
         folder_path = filedialog.askdirectory()
         self.entry_foldername.delete(0, tk.END)
@@ -153,9 +155,9 @@ class Visualizador:
             parent_folder_name = path.basename(path.normpath(folder1))
 
             self.selected_folder_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
-
+#endregion select folder
 # ---------------------------------------------------------------------------------------------------------------------
-
+#region select folder save
     def select_folder_save(self):
         folder_save_path = filedialog.askdirectory()
         self.entry_savefolder.delete(0, tk.END)
@@ -168,9 +170,9 @@ class Visualizador:
             parent_folder_name = path.basename(path.normpath(folder1))
 
             self.selected_save_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
-
+#endregion select folder save
 # ---------------------------------------------------------------------------------------------------------------------
-
+#region validate list
     def validate_list_missing(self):
         if(len(self.missing_folders) > 0):
             dfFolders= pd.DataFrame.from_dict(self.missing_folders)
@@ -179,9 +181,9 @@ class Visualizador:
         if(len(self.missing_files) > 0):
             dfFiles = pd.DataFrame.from_dict(self.missing_files)
             dfFiles.to_excel("missing_files.xlsx", index=False)
-
+#endregion validate list
 # ---------------------------------------------------------------------------------------------------------------------
-
+#region verify files
     def verify_files(self):
         file_path = self.entry_filename.get()
         folder_path = self.entry_foldername.get()
@@ -220,10 +222,9 @@ class Visualizador:
             messagebox.showinfo("Archivos faltantes", "se completo el proceso")
         else:
             messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
-            
-
+#endregion validate files
 # ---------------------------------------------------------------------------------------------------------------------
-
+#region rename files
     def rename_file(self):
         file_path = self.entry_filename.get()
 
@@ -271,9 +272,9 @@ class Visualizador:
             messagebox.showinfo("Ubicaciones originales de los archivos con nuevos nombres", f"Las ubicaciones originales de los archivos con nuevos nombres son:\n{original_locations_message}")
 
         messagebox.showinfo("¡Éxito!", "Se han renombrado y guardado los archivos según el archivo Excel en la carpeta de destino seleccionada.")
-
+#endregion rename files
 # ---------------------------------------------------------------------------------------------------------------------
-
+#region rename folder
     def rename_folder(self):
         file_path = self.entry_filename.get()  # Obtener la ruta del archivo Excel
 
@@ -313,12 +314,14 @@ class Visualizador:
                 messagebox.showwarning("Advertencia", f"La carpeta '{current_folder_name}' no existe.")
 
         messagebox.showinfo("¡Éxito!", "Se han renombrado las carpetas según el archivo Excel.")
-
+#endregion rename folder
 # ---------------------------------------------------------------------------------------------------------------------
-
+#region close
     def close(self):
         self.ventana_principal.destroy()
-    
+#endregion close
+
+# endregion metodos
 if __name__ == "__main__":
     Visualizador()
 
