@@ -16,6 +16,7 @@ class Visualizador:
         self.rutaPrincipalGuardado = ''
         self.missing_folders = []
         self.missing_files = []
+        self.dest_folder_path = ''
         
         self.ventana_principal = tk.Tk()
         super().__init__()
@@ -111,7 +112,9 @@ class Visualizador:
         self.exit_button.place(x=230, y=500)
         
         self.ventana_principal.mainloop()
-    
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     def select_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
         self.entry_filename.delete(0, tk.END)
@@ -136,6 +139,7 @@ class Visualizador:
                 num_rows = len(df.index)
                 self.label_rows.config(text=f"Número de registros: {num_rows}")
 
+# ---------------------------------------------------------------------------------------------------------------------
 
     def select_folder(self):
             folder_path = filedialog.askdirectory()
@@ -150,19 +154,23 @@ class Visualizador:
 
                 self.selected_folder_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
 
+# --------------------------------------------------------------------------------------------------------------------------------------
+
     def select_folder_save(self):
-            folder_save_path = filedialog.askdirectory()
-            self.entry_foldername.delete(0, tk.END)
-            self.entry_foldername.insert(0, folder_save_path)
+        folder_save_path = filedialog.askdirectory()
+        self.entry_savefolder.delete(0, tk.END)
+        self.entry_savefolder.insert(0, folder_save_path)
 
-            if folder_save_path:
-                self.rutaPrincipalGuardado = folder_save_path
-                
-                folder1, folder2 = path.split(folder_save_path)
-                parent_folder_name = path.basename(path.normpath(folder1))
+        if folder_save_path:
+            self.dest_folder_path = folder_save_path # Guardar la carpeta de destino seleccionada
 
-                self.selected_save_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
-    
+            folder1, folder2 = path.split(folder_save_path)
+            parent_folder_name = path.basename(path.normpath(folder1))
+
+            self.selected_save_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
+
+# ----------------------------------------------------------------------------------------------------
+
     def validate_list_missing(self):
         if(len(self.missing_folders) > 0):
             dfFolders= pd.DataFrame.from_dict(self.missing_folders)
@@ -171,7 +179,9 @@ class Visualizador:
         if(len(self.missing_files) > 0):
             dfFiles = pd.DataFrame.from_dict(self.missing_files)
             dfFiles.to_excel("missing_files.xlsx", index=False)
-        
+
+# --------------------------------------------------------------------------------------------------------------------------------
+
     def verify_files(self):
         file_path = self.entry_filename.get()
         folder_path = self.entry_foldername.get()
@@ -212,96 +222,47 @@ class Visualizador:
             messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
             
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# -------------------------------------------------------------------------------------------------------------------------------------------------
 
     def rename_file(self):
         file_path = self.entry_filename.get()
-        
+
         if not file_path:
             messagebox.showerror("Error", "¡Selecciona un archivo!")
             return
-        
+
         if not file_path.endswith((".csv", ".xlsx")):
             messagebox.showerror("Error", "El archivo debe ser un archivo CSV o Excel.")
             return
-        
+
         # Leer el archivo Excel seleccionado
         df = pd.read_excel(file_path)
-        
+
         # Eliminar filas que contienen valores NaN en alguna columna
         df = df.dropna(how='any')
-        
+
         # Obtener la ruta de la carpeta que contiene el archivo Excel
         excel_folder = path.dirname(file_path)
-        
+
         # Iterar a través de las filas del DataFrame
         for index, row in df.iterrows():
             folder_name = str(int(row['CARPETA']))
             current_file_name = row['NOMBRE ACTUAL']
             new_file_name = row['NUEVO NOMBRE']
-        
+
             folder_path = path.join(str(excel_folder), str(folder_name))
             current_file_path = path.join(str(folder_path), str(current_file_name))
-            new_file_path = path.join(str(folder_path), str(new_file_name))
-        
-            # Obtener la ruta de la carpeta de destino
-            save_path = filedialog.askdirectory(initialdir=excel_folder, title="Guardar archivo con el nuevo nombre")
-        
-            # Si el usuario selecciona una ubicación, guardar el archivo
-            if save_path:
-                new_file_path = path.join(str(save_path), str(new_file_name))
-                try:
-                    rename(current_file_path, new_file_path)
-                    messagebox.showinfo("¡Éxito!", f"El archivo '{current_file_name}' se ha guardado en la carpeta '{save_path}' con el nuevo nombre '{new_file_name}'.")
-                except Exception as e:
-                    messagebox.showerror("Error", f"No se pudo guardar el archivo '{current_file_name}' en la carpeta '{save_path}': {str(e)}")
-            else:
-                messagebox.showwarning("Advertencia", f"El archivo '{current_file_name}' en la carpeta '{folder_name}' no se ha guardado.")
-    
-        messagebox.showinfo("¡Éxito!", "Se han renombrado y guardado los archivos según el archivo Excel en las carpetas seleccionadas.")
+            new_file_path = path.join(self.dest_folder_path, str(new_file_name)) # Utilizar la carpeta de destino seleccionada
 
+            try:
+                rename(current_file_path, new_file_path)
+                messagebox.showinfo("¡Éxito!", f"El archivo '{current_file_name}' se ha guardado en la carpeta '{self.dest_folder_path}' con el nuevo nombre '{new_file_name}'.")
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo guardar el archivo '{current_file_name}' en la carpeta '{self.dest_folder_path}': {str(e)}")
 
+        messagebox.showinfo("¡Éxito!", "Se han renombrado y guardado los archivos según el archivo Excel en la carpeta de destino seleccionada.")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     def rename_folder(self):
         file_path = self.entry_filename.get()  # Obtener la ruta del archivo Excel
@@ -343,7 +304,7 @@ class Visualizador:
 
         messagebox.showinfo("¡Éxito!", "Se han renombrado las carpetas según el archivo Excel.")
 
-
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
     def close(self):
         self.ventana_principal.destroy()
