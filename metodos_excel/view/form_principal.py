@@ -20,26 +20,25 @@ class Visualizador:
         super().__init__()
         self.ventana_principal.title('Dividir PDF')
         self.ventana_principal.config(bg='#cafcd4')
-        self.ventana_principal.configure(width=500, height=400)  # configura tamaño y altura de la ventana_principal
-        self.ventana_principal.geometry("500x400")  # Especificar el tamaño de la ventana_principal
+        self.ventana_principal.geometry("600x550")  # Especificar el tamaño de la ventana_principal
         self.ventana_principal.resizable(False, False)
-        help.centerWindows(self.ventana_principal, 400, 500)  # height width
+        help.centerWindows(self.ventana_principal, 550, 600)  # height width
 
         # Llama el icono de la ventana_principal
         logo = help.getImage("imagenExcel", (200, 200))
         self.ventana_principal.iconphoto(True, logo)
 
         imagen = Image.open(help.leerConfig("imagenPrincipal", "Value"))
-        nueva_imagen = imagen.resize((280, 280))
+        nueva_imagen = imagen.resize((300, 300))
         imagen_tk = ImageTk.PhotoImage(nueva_imagen)
 
         label = tk.Label(self.ventana_principal)
-        label.place(x=120, y=80)
+        label.place(x=150, y=100)
         label.config(image=imagen_tk, bg="#cafcd4")
 
         # Titulo principal
         titulo = tk.Label(self.ventana_principal, text="CONFIG EXCEL", font=("Arial", 26, "bold"), foreground="#016615", bg="#cafcd4")
-        titulo.place(x=120, y=8)
+        titulo.place(x=170, y=8)
 
         self.entry_filename = tk.Entry(self.ventana_principal, width=24)
         self.entry_filename.place_forget()
@@ -47,7 +46,7 @@ class Visualizador:
         self.select_file_button = tk.Button(self.ventana_principal, text="Seleccionar archivo", font=("Arial", 10, "bold"), command=self.select_file, width=18, bg='#b1fac0')
         self.select_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.select_file_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.select_file_button.place(x=180, y=70)
+        self.select_file_button.place(x=220, y=70)
 
         # Etiqueta para mostrar la ruta del archivo PDF seleccionado
         self.selected_file_label = tk.Label(self.ventana_principal, text="Ruta del archivo: ", font=("Arial", 8, "bold"), bg='#cafcd4')
@@ -62,7 +61,15 @@ class Visualizador:
         self.select_folder_button = tk.Button(self.ventana_principal, text="Seleccionar carpeta", font=("Arial", 10, "bold"), command=self.select_folder, width=18, bg='#b1fac0')
         self.select_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.select_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.select_folder_button.place(x=180, y=190)
+        self.select_folder_button.place(x=220, y=190)
+        
+        self.select_save_button = tk.Button(self.ventana_principal, text="Seleccionar carpeta guardado", font=("Arial", 10, "bold"), command=exit, width=24, bg='#b1fac0')
+        self.select_save_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.select_save_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.select_save_button.place(x=200, y=290)
+        
+        self.selected_save_label = tk.Label(self.ventana_principal, text="Ruta Carpeta: ", font=("Arial", 8, "bold"), bg='#cafcd4')
+        self.selected_save_label.place(x=20, y=340)
 
         # Etiqueta para mostrar la ruta del archivo PDF seleccionado
         self.selected_folder_label = tk.Label(self.ventana_principal, text="Ruta del archivo: ", font=("Arial", 8, "bold"), bg='#cafcd4')
@@ -71,23 +78,33 @@ class Visualizador:
         self.select_folder_button = tk.Button(self.ventana_principal, text="Validar", font=("Arial", 10, "bold"), command=self.verify_files, width=18, bg='#b1fac0')
         self.select_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.select_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.select_folder_button.place(x=180, y=290)
+        self.select_folder_button.place(x=230, y=420)
         
         self.rename_file_button = tk.Button(self.ventana_principal, text="Renombrar archivo", font=("Arial", 10, "bold"), command=self.rename_file, width=18, bg='#b1fac0')
         self.rename_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.rename_file_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.rename_file_button.place(x=10, y=300)
+        self.rename_file_button.place(x=10, y=480)
         
         self.rename_folder_button = tk.Button(self.ventana_principal, text="Renombrar carpeta", font=("Arial", 10, "bold"), command=self.rename_folder, width=18, bg='#b1fac0')
         self.rename_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.rename_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.rename_folder_button.place(x=340, y=300)
+        self.rename_folder_button.place(x=10, y=420)
+        
+        self.move_folder_button = tk.Button(self.ventana_principal, text="Mover Carpeta", font=("Arial", 10, "bold"), command=exit, width=18, bg='#b1fac0')
+        self.move_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.move_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.move_folder_button.place(x=430, y=420)
+        
+        self.move_file_button = tk.Button(self.ventana_principal, text="Mover Archivo", font=("Arial", 10, "bold"), command=exit, width=18, bg='#b1fac0')
+        self.move_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.move_file_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.move_file_button.place(x=430, y=480)
 
         # Botón salir
         self.exit_button = tk.Button(self.ventana_principal, text="Salir", font=("Arial", 10, "bold"), command=self.close, width=18, bg='#b1fac0')
         self.exit_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.exit_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.exit_button.place(x=180, y=350)
+        self.exit_button.place(x=230, y=500)
         
         self.ventana_principal.mainloop()
     
@@ -179,41 +196,45 @@ class Visualizador:
             
 
     def rename_file(self):
-        file_path = self.entry_filename.get()
-
-        if not file_path:
-            messagebox.showerror("Error", "¡Selecciona un archivo!")
-            return
-
-        if not file_path.endswith((".csv", ".xlsx")):
-            messagebox.showerror("Error", "El archivo debe ser un archivo CSV o Excel.")
-            return
-
-        # Leer el archivo Excel seleccionado
-        df = pd.read_excel(file_path)
-
-        # Eliminar filas que contienen valores NaN en alguna columna
-        df = df.dropna(how='any')
-
-        # Obtener la ruta de la carpeta que contiene el archivo Excel
-        excel_folder = path.dirname(file_path)
-
-        # Iterar a través de las filas del DataFrame
-        for index, row in df.iterrows():
-            folder_name = str(int(row['CARPETA']) )
-            current_file_name = row['NOMBRE ACTUAL']
-            new_file_name = row['NUEVO NOMBRE']
-
-            folder_path = path.join(str(excel_folder), str(folder_name))
-            current_file_path = path.join(str(folder_path), str(current_file_name))
-            new_file_path = path.join(str(folder_path), str(new_file_name))
-
-            if path.exists(current_file_path):
-                rename(current_file_path, new_file_path)
-            else:
-                messagebox.showwarning("Advertencia", f"El archivo '{current_file_name}' en la carpeta '{folder_name}' no existe.")
-
-        messagebox.showinfo("¡Éxito!", "Se han renombrado los archivos según el archivo Excel.")
+            file_path = self.entry_filename.get()
+    
+            if not file_path:
+                messagebox.showerror("Error", "¡Selecciona un archivo!")
+                return
+    
+            if not file_path.endswith((".csv", ".xlsx")):
+                messagebox.showerror("Error", "El archivo debe ser un archivo CSV o Excel.")
+                return
+    
+            # Leer el archivo Excel seleccionado
+            df = pd.read_excel(file_path)
+    
+            # Eliminar filas que contienen valores NaN en alguna columna
+            df = df.dropna(how='any')
+    
+            # Obtener la ruta de la carpeta que contiene el archivo Excel
+            excel_folder = path.dirname(file_path)
+    
+            # Iterar a través de las filas del DataFrame
+            for index, row in df.iterrows():
+                folder_name = str(int(row['CARPETA']) )
+                current_file_name = row['NOMBRE ACTUAL']
+                new_file_name = row['NUEVO NOMBRE']
+    
+                folder_path = path.join(str(excel_folder), str(folder_name))
+                current_file_path = path.join(str(folder_path), str(current_file_name))
+                new_file_path = path.join(str(folder_path), str(new_file_name))
+    
+                # Obtener la ruta de la carpeta de destino
+                save_path = filedialog.askdirectory(initialdir=excel_folder, title="Guardar archivo con el nuevo nombre")
+    
+                # Si el usuario selecciona una ubicación, guardar el archivo
+                if save_path:
+                    rename(new_file_path, save_path)
+                else:
+                    messagebox.showwarning("Advertencia", f"El archivo '{current_file_name}' en la carpeta '{folder_name}' no existe.")
+    
+            messagebox.showinfo("¡Éxito!", "Se han renombrado los archivos según el archivo Excel.")
     
     def rename_folder(self):
         file_path = self.entry_filename.get()  # Obtener la ruta del archivo Excel
