@@ -287,7 +287,7 @@ class Visualizador:
         # Iterar a través de las filas del DataFrame
         for index, row in df.iterrows():
             current_folder_name = row['Nombre Actual']
-            new_folder_name = row['Nuevo Nombe']
+            new_folder_name = row['Nuevo Nombre']
 
             current_folder_path = path.join(str(excel_folder), str(current_folder_name))
             new_folder_path = path.join(str(excel_folder), str(new_folder_name))
