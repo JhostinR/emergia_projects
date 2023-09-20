@@ -123,29 +123,26 @@ class Visualizador:
 
 # ---------------------------------------------------------------------------------------------------------------------
 #region select file
-    def select_file(self):
-        file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
-        self.entry_filename.delete(0, tk.END)
-        self.entry_filename.insert(0, file_path)
+    def select_files(self):
+        folder_path = filedialog.askdirectory()
 
-        if file_path:
-            folder_name, file_name = path.split(file_path)
-            parent_folder_name = path.basename(path.normpath(folder_name))  # Obtiene el nombre de la última carpeta
+        if folder_path:
+            file_paths = [f for f in listdir(folder_path) if path.isfile(path.join(folder_path, f))]
 
-            self.selected_file_label.config(text=f"Ruta del archivo: {parent_folder_name}/{file_name}")
+            self.selected_file_label.config(text=f"Archivos en la carpeta: {folder_path}")
 
-            if file_path.endswith(".csv"):
-                df = pd.read_csv(file_path)
-                num_rows = len(df.index)
-                self.label_rows.config(text=f"Número de registros: {num_rows}")
-            elif file_path.endswith(".xlsx"):
-                df = pd.read_excel(file_path)
-                num_rows = len(df.index)
-                self.label_rows.config(text=f"Número de registros: {num_rows}")
-            else:
-                df = pd.read_csv(file_path)
-                num_rows = len(df.index)
-                self.label_rows.config(text=f"Número de registros: {num_rows}")
+            num_rows = 0
+            for file_path in file_paths:
+                if file_path.endswith(".csv"):
+                    df = pd.read_csv(path.join(folder_path, file_path))
+                elif file_path.endswith(".xls") or file_path.endswith(".xlsx"):
+                    df = pd.read_excel(path.join(folder_path, file_path))
+                else:
+                    continue
+                
+                num_rows += len(df.index)
+
+            self.label_rows.config(text=f"Número total de registros en archivos: {num_rows}")
 #endregion select file
 # ---------------------------------------------------------------------------------------------------------------------
 #region select folder
