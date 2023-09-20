@@ -3,7 +3,9 @@ from tkinter import filedialog, messagebox
 from util.helpers import Helpers
 from PIL import Image, ImageTk
 import pandas as pd
-from os import path, listdir, rename
+import shutil
+from shutil import move
+from os import path, listdir, rename, makedirs, walk
 
 help = Helpers()
 
@@ -82,7 +84,12 @@ class Visualizador:
         self.select_folder_button = tk.Button(self.ventana_principal, text="Validar", font=("Arial", 10, "bold"), command=self.verify_files, width=18, bg='#b1fac0')
         self.select_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.select_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.select_folder_button.place(x=230, y=420)
+        self.select_folder_button.place(x=230, y=400)
+        
+        self.select_validar_button = tk.Button(self.ventana_principal, text="Validar 2.0", font=("Arial", 10, "bold"), command=self.validate_files_2, width=18, bg='#b1fac0')
+        self.select_validar_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615')) 
+        self.select_validar_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.select_validar_button.place(x=230, y=450)
         
         self.rename_file_button = tk.Button(self.ventana_principal, text="Renombrar archivo", font=("Arial", 10, "bold"), command=self.rename_file, width=18, bg='#b1fac0')
         self.rename_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
@@ -94,12 +101,12 @@ class Visualizador:
         self.rename_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.rename_folder_button.place(x=10, y=420)
         
-        self.move_folder_button = tk.Button(self.ventana_principal, text="Mover Carpeta", font=("Arial", 10, "bold"), command=exit, width=18, bg='#b1fac0')
+        self.move_folder_button = tk.Button(self.ventana_principal, text="Mover Carpeta", font=("Arial", 10, "bold"), command=self.move_folders, width=18, bg='#b1fac0')
         self.move_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.move_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.move_folder_button.place(x=430, y=420)
         
-        self.move_file_button = tk.Button(self.ventana_principal, text="Mover Archivo", font=("Arial", 10, "bold"), command=exit, width=18, bg='#b1fac0')
+        self.move_file_button = tk.Button(self.ventana_principal, text="Mover Archivo", font=("Arial", 10, "bold"), command=self.move_files, width=18, bg='#b1fac0')
         self.move_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.move_file_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.move_file_button.place(x=430, y=480)
@@ -111,7 +118,11 @@ class Visualizador:
         self.exit_button.place(x=230, y=500)
         
         self.ventana_principal.mainloop()
-    
+
+# region metodos
+
+# ---------------------------------------------------------------------------------------------------------------------
+#region select file
     def select_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
         self.entry_filename.delete(0, tk.END)
@@ -135,34 +146,39 @@ class Visualizador:
                 df = pd.read_csv(file_path)
                 num_rows = len(df.index)
                 self.label_rows.config(text=f"Número de registros: {num_rows}")
-
-
+#endregion select file
+# ---------------------------------------------------------------------------------------------------------------------
+#region select folder
     def select_folder(self):
-            folder_path = filedialog.askdirectory()
-            self.entry_foldername.delete(0, tk.END)
-            self.entry_foldername.insert(0, folder_path)
+        folder_path = filedialog.askdirectory()
+        self.entry_foldername.delete(0, tk.END)
+        self.entry_foldername.insert(0, folder_path)
 
-            if folder_path:
-                self.rutaPrincipalBusqueda = folder_path
-                
-                folder1, folder2 = path.split(folder_path)
-                parent_folder_name = path.basename(path.normpath(folder1))
+        if folder_path:
+            self.rutaPrincipalBusqueda = folder_path
+            
+            folder1, folder2 = path.split(folder_path)
+            parent_folder_name = path.basename(path.normpath(folder1))
 
-                self.selected_folder_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
-
+            self.selected_folder_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
+#endregion select folder
+# ---------------------------------------------------------------------------------------------------------------------
+#region select folder save
     def select_folder_save(self):
-            folder_save_path = filedialog.askdirectory()
-            self.entry_foldername.delete(0, tk.END)
-            self.entry_foldername.insert(0, folder_save_path)
+        folder_save_path = filedialog.askdirectory()
+        self.entry_savefolder.delete(0, tk.END)
+        self.entry_savefolder.insert(0, folder_save_path)
 
-            if folder_save_path:
-                self.rutaPrincipalGuardado = folder_save_path
-                
-                folder1, folder2 = path.split(folder_save_path)
-                parent_folder_name = path.basename(path.normpath(folder1))
+        if folder_save_path:
+            self.rutaPrincipalGuardado = folder_save_path # Guardar la carpeta de destino seleccionada
 
-                self.selected_save_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
-    
+            folder1, folder2 = path.split(folder_save_path)
+            parent_folder_name = path.basename(path.normpath(folder1))
+
+            self.selected_save_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
+#endregion select folder save
+# ---------------------------------------------------------------------------------------------------------------------
+#region validate list
     def validate_list_missing(self):
         if(len(self.missing_folders) > 0):
             dfFolders= pd.DataFrame.from_dict(self.missing_folders)
@@ -171,7 +187,9 @@ class Visualizador:
         if(len(self.missing_files) > 0):
             dfFiles = pd.DataFrame.from_dict(self.missing_files)
             dfFiles.to_excel("missing_files.xlsx", index=False)
-        
+#endregion validate list
+# ---------------------------------------------------------------------------------------------------------------------
+#region verify files
     def verify_files(self):
         file_path = self.entry_filename.get()
         folder_path = self.entry_foldername.get()
@@ -210,91 +228,106 @@ class Visualizador:
             messagebox.showinfo("Archivos faltantes", "se completo el proceso")
         else:
             messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
-            
+#endregion validate files
+# ---------------------------------------------------------------------------------------------------------------------
+#region validar 2.0
+    def validate_files_2(self):
+        # Obtener la ruta de la carpeta seleccionada
+        selected_folder_path = self.entry_foldername.get()
+
+        # Validar que la carpeta exista
+        if not selected_folder_path:
+            messagebox.showerror("Error", "¡Selecciona una carpeta!")
+            return
+
+        # Crear una lista para almacenar las carpetas y archivos
+        carpetas_archivos = []
+
+        # Iterar a través de las subcarpetas de la carpeta seleccionada
+        for subfolder_path, _, filenames in walk(selected_folder_path):
+            # Obtener el nombre de la carpeta
+            folder_name = path.basename(subfolder_path)
+
+            # Crear una lista de archivos que contiene la carpeta
+            file_names = [f for f in filenames if path.isfile(path.join(subfolder_path, f))]
+
+            # Agregar la carpeta y los archivos a la lista
+            carpetas_archivos.append({
+                "Carpeta": folder_name,
+                "Archivos": ",".join(file_names)
+            })
+
+        # Guardar la lista de carpetas y archivos en un archivo CSV
+        df_carpetas_archivos = pd.DataFrame.from_dict(carpetas_archivos)
+        df_carpetas_archivos.to_csv(path.join(self.rutaPrincipalGuardado, "carpetas_archivos.csv"), index=False)
+
+        messagebox.showinfo("¡Éxito!", "Se ha creado el archivo CSV con las carpetas y archivos.")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
+#endregion validar 2.0
+# ---------------------------------------------------------------------------------------------------------------------
+#region rename files
     def rename_file(self):
         file_path = self.entry_filename.get()
-        
+
         if not file_path:
             messagebox.showerror("Error", "¡Selecciona un archivo!")
             return
-        
+
         if not file_path.endswith((".csv", ".xlsx")):
             messagebox.showerror("Error", "El archivo debe ser un archivo CSV o Excel.")
             return
-        
+
         # Leer el archivo Excel seleccionado
         df = pd.read_excel(file_path)
-        
+
         # Eliminar filas que contienen valores NaN en alguna columna
         df = df.dropna(how='any')
-        
+
         # Obtener la ruta de la carpeta que contiene el archivo Excel
         excel_folder = path.dirname(file_path)
-        
+
+        # Crear una lista para almacenar las ubicaciones originales de los archivos con nuevos nombres
+        new_file_locations = []
+
         # Iterar a través de las filas del DataFrame
         for index, row in df.iterrows():
             folder_name = str(int(row['CARPETA']))
             current_file_name = row['NOMBRE ACTUAL']
             new_file_name = row['NUEVO NOMBRE']
-        
+
             folder_path = path.join(str(excel_folder), str(folder_name))
             current_file_path = path.join(str(folder_path), str(current_file_name))
-            new_file_path = path.join(self.rutaPrincipalGuardado, str(new_file_name))
-        
+            new_folder_path = path.join(self.rutaPrincipalGuardado, str(folder_name))  # Utilizar el nombre de la carpeta como nombre de la carpeta de destino
+            new_file_path = path.join(new_folder_path, str(new_file_name))  # Crear la ruta completa del archivo en la carpeta de destino
+
+            # Crear la carpeta de destino si no existe
+            if not path.exists(new_folder_path):
+                try:
+                    makedirs(new_folder_path)
+                except Exception as e:
+                    messagebox.showerror("Error", f"No se pudo crear la carpeta de destino '{new_folder_path}': {str(e)}")
+                    continue
+
+            # Copiar el archivo con el nuevo nombre a la carpeta de destino
             try:
-                rename(current_file_path, new_file_path)
-                messagebox.showinfo("¡Éxito!", f"El archivo '{current_file_name}' se ha guardado en la carpeta '{self.rutaPrincipalGuardado}' con el nuevo nombre '{new_file_name}'.")
+                shutil.copy(current_file_path, new_file_path)
+                new_file_locations.append(new_file_path)  # Registrar la ubicación del nuevo archivo
+                messagebox.showinfo("¡Éxito!", f"El archivo '{current_file_name}' se ha guardado en la carpeta '{new_folder_path}' con el nuevo nombre '{new_file_name}'.")
             except Exception as e:
-                messagebox.showerror("Error", f"No se pudo guardar el archivo '{current_file_name}' en la carpeta '{self.rutaPrincipalGuardado}': {str(e)}")
+                messagebox.showerror("Error", f"No se pudo guardar el archivo '{current_file_name}' en la carpeta '{new_folder_path}': {str(e)}")
+
+        # Mostrar un mensaje al usuario con las ubicaciones originales de los archivos con nuevos nombres
+        if new_file_locations:
+            original_locations_message = "\n".join(new_file_locations)
+            messagebox.showinfo("Ubicaciones originales de los archivos con nuevos nombres", f"Las ubicaciones originales de los archivos con nuevos nombres son:\n{original_locations_message}")
 
         messagebox.showinfo("¡Éxito!", "Se han renombrado y guardado los archivos según el archivo Excel en la carpeta de destino seleccionada.")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endregion rename files
+# ---------------------------------------------------------------------------------------------------------------------
+#region rename folder
     def rename_folder(self):
         file_path = self.entry_filename.get()  # Obtener la ruta del archivo Excel
 
@@ -319,7 +352,7 @@ class Visualizador:
         # Iterar a través de las filas del DataFrame
         for index, row in df.iterrows():
             current_folder_name = row['Nombre Actual']
-            new_folder_name = row['Nuevo Nombe']
+            new_folder_name = row['Nuevo Nombre']
 
             current_folder_path = path.join(str(excel_folder), str(current_folder_name))
             new_folder_path = path.join(str(excel_folder), str(new_folder_name))
@@ -334,12 +367,91 @@ class Visualizador:
                 messagebox.showwarning("Advertencia", f"La carpeta '{current_folder_name}' no existe.")
 
         messagebox.showinfo("¡Éxito!", "Se han renombrado las carpetas según el archivo Excel.")
+#endregion rename folder
+# ---------------------------------------------------------------------------------------------------------------------
+#region move files
+    def move_files(self):
+            file_path = self.entry_filename.get()
 
+            if not file_path:
+                messagebox.showerror("Error", "¡Selecciona un archivo Excel!")
+                return
 
+            if not file_path.endswith((".xls", ".xlsx")):
+                messagebox.showerror("Error", "El archivo debe ser un archivo Excel.")
+                return
 
+            # Leer el archivo Excel seleccionado
+            try:
+                df = pd.read_excel(file_path)
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo leer el archivo Excel: {str(e)}")
+                return
+
+            # Iterar a través de las filas del DataFrame
+            for index, row in df.iterrows():
+                folder_name = str(row['CARPETA ACTUAL'])
+                file_name = str(row['NOMBRE DE ARCHIVO A MOVER'])
+                dest_folder_name = str(row['CARPETA NUEVA'])
+                new_file_name = str(row['NUEVO NOMBRE ARCHIVO'])
+
+                folder_path = path.join(self.rutaPrincipalBusqueda, folder_name)
+                dest_folder_path = path.join(self.rutaPrincipalGuardado, dest_folder_name)
+                source_file_path = path.join(folder_path, file_name)
+                dest_file_path = path.join(dest_folder_path, new_file_name)
+
+                # Verificar si la carpeta de destino existe, y si no, crearla
+                if not path.exists(dest_folder_path):
+                    try:
+                        makedirs(dest_folder_path)
+                    except Exception as e:
+                        messagebox.showerror("Error", f"No se pudo crear la carpeta de destino '{dest_folder_path}': {str(e)}")
+                        continue
+                    
+                # Mover el archivo a la carpeta de destino con el nuevo nombre
+                try:
+                    move(source_file_path, dest_file_path)
+                    messagebox.showinfo("¡Éxito!", f"El archivo '{file_name}' se ha movido a la carpeta '{dest_folder_name}' con el nuevo nombre '{new_file_name}'.")
+                except Exception as e:
+                    messagebox.showerror("Error", f"No se pudo mover el archivo '{file_name}': {str(e)}")
+
+            messagebox.showinfo("¡Éxito!", "Se han movido los archivos según el archivo Excel en la carpeta de destino seleccionada.")
+#endregion move files
+# ---------------------------------------------------------------------------------------------------------------------
+#region move folder
+    def move_folders(self):
+        """Moves the selected folders to the specified destination."""
+
+        # Get the selected folder path.
+        selected_folder_path = self.entry_foldername.get()
+
+        # Get the destination folder path.
+        destination_folder_path = self.rutaPrincipalGuardado
+
+        # Create a list of all the subfolders in the selected folder.
+        subfolders = [f for f in listdir(selected_folder_path) if path.isdir(path.join(selected_folder_path, f))]
+
+        # Iterate over the subfolders and move them to the destination folder.
+        for subfolder in subfolders:
+            subfolder_path = path.join(selected_folder_path, subfolder)
+            move(subfolder_path, destination_folder_path)
+
+        # Update the selected folder label.
+        self.selected_folder_label.config(text="Ruta del archivo: {}".format(destination_folder_path))
+
+        # Clear the entry field.
+        self.entry_foldername.delete(0, tk.END)
+
+        # Display a message box to confirm that the folders were moved successfully.
+        messagebox.showinfo("carpetas movidas", "las carpetas se ham movido")
+#endregion move folder
+# ---------------------------------------------------------------------------------------------------------------------
+#region close
     def close(self):
         self.ventana_principal.destroy()
+#endregion close
 
+# endregion metodos
 if __name__ == "__main__":
     Visualizador()
 
