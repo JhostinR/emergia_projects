@@ -84,7 +84,12 @@ class Visualizador:
         self.select_folder_button = tk.Button(self.ventana_principal, text="Validar", font=("Arial", 10, "bold"), command=self.verify_files, width=18, bg='#b1fac0')
         self.select_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.select_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
-        self.select_folder_button.place(x=230, y=420)
+        self.select_folder_button.place(x=230, y=400)
+        
+        self.select_validar_button = tk.Button(self.ventana_principal, text="Validar 2.0", font=("Arial", 10, "bold"), command=exit, width=18, bg='#b1fac0')
+        self.select_validar_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
+        self.select_validar_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
+        self.select_validar_button.place(x=230, y=450)
         
         self.rename_file_button = tk.Button(self.ventana_principal, text="Renombrar archivo", font=("Arial", 10, "bold"), command=self.rename_file, width=18, bg='#b1fac0')
         self.rename_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
