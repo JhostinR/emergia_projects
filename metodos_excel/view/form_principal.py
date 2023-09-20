@@ -168,13 +168,13 @@ class Visualizador:
         folder_save_path = filedialog.askdirectory()
         self.entry_savefolder.delete(0, tk.END)
         self.entry_savefolder.insert(0, folder_save_path)
-
+    
         if folder_save_path:
-            self.rutaPrincipalGuardado = folder_save_path # Guardar la carpeta de destino seleccionada
-
+            self.rutaPrincipalGuardado = folder_save_path
+    
             folder1, folder2 = path.split(folder_save_path)
             parent_folder_name = path.basename(path.normpath(folder1))
-
+    
             self.selected_save_label.config(text=f"Ruta del archivo: {parent_folder_name}/{folder2}")
 #endregion select folder save
 # ---------------------------------------------------------------------------------------------------------------------
@@ -229,18 +229,9 @@ class Visualizador:
         else:
             messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
 #endregion validate files
-
+#----------------------------------------------------------------------------------------------------------------------
 #region validar 2.0
     def validate_files_2(self):
-        """Crea un archivo CSV con las carpetas y los archivos que contienen. Cada fila del archivo CSV contiene la siguiente información:
-
-        * Nombre de la carpeta
-        * Lista de archivos que contiene la carpeta
-
-        Args:
-            self (Visualizador): Instancia de la clase Visualizador.
-        """
-
         # Obtener la ruta de la carpeta seleccionada
         selected_folder_path = self.entry_foldername.get()
 
@@ -263,17 +254,16 @@ class Visualizador:
             # Agregar la carpeta y los archivos a la lista
             carpetas_archivos.append({
                 "Carpeta": folder_name,
-                "Archivos": ",".join(file_names)
+                "Archivos": ";".join(file_names)
             })
 
         # Guardar la lista de carpetas y archivos en un archivo CSV
         df_carpetas_archivos = pd.DataFrame.from_dict(carpetas_archivos)
-        df_carpetas_archivos.to_csv("carpetas_archivos.csv", index=False)
+        df_carpetas_archivos.to_csv(path.join(self.rutaPrincipalGuardado, "carpetas_archivos.csv"), index=False)
 
         messagebox.showinfo("¡Éxito!", "Se ha creado el archivo CSV con las carpetas y archivos.")
         
 #endregion validar 2.0
-
 # ---------------------------------------------------------------------------------------------------------------------
 #region rename files
     def rename_file(self):
@@ -458,8 +448,11 @@ class Visualizador:
     def close(self):
         self.ventana_principal.destroy()
 #endregion close
+#----------------------------------------------------------------------------------------------------------------------
 
 # endregion metodos
+
+
 if __name__ == "__main__":
     Visualizador()
 
