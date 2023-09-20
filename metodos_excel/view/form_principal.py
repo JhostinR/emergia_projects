@@ -4,7 +4,8 @@ from util.helpers import Helpers
 from PIL import Image, ImageTk
 import pandas as pd
 import shutil
-from os import path, listdir, rename
+from shutil import move
+from os import path, listdir, rename, makedirs
 
 help = Helpers()
 
@@ -100,7 +101,7 @@ class Visualizador:
         self.move_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.move_folder_button.place(x=430, y=420)
         
-        self.move_file_button = tk.Button(self.ventana_principal, text="Mover Archivo", font=("Arial", 10, "bold"), command=exit, width=18, bg='#b1fac0')
+        self.move_file_button = tk.Button(self.ventana_principal, text="Mover Archivo", font=("Arial", 10, "bold"), command=self.move_files, width=18, bg='#b1fac0')
         self.move_file_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.move_file_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.move_file_button.place(x=430, y=480)
@@ -256,15 +257,24 @@ class Visualizador:
 
             folder_path = path.join(str(excel_folder), str(folder_name))
             current_file_path = path.join(str(folder_path), str(current_file_name))
-            new_file_path = path.join(self.rutaPrincipalGuardado, str(new_file_name))  # Utilizar la carpeta de destino seleccionada
+            new_folder_path = path.join(self.rutaPrincipalGuardado, str(folder_name))  # Utilizar el nombre de la carpeta como nombre de la carpeta de destino
+            new_file_path = path.join(new_folder_path, str(new_file_name))  # Crear la ruta completa del archivo en la carpeta de destino
+
+            # Crear la carpeta de destino si no existe
+            if not path.exists(new_folder_path):
+                try:
+                    makedirs(new_folder_path)
+                except Exception as e:
+                    messagebox.showerror("Error", f"No se pudo crear la carpeta de destino '{new_folder_path}': {str(e)}")
+                    continue
 
             # Copiar el archivo con el nuevo nombre a la carpeta de destino
             try:
                 shutil.copy(current_file_path, new_file_path)
                 new_file_locations.append(new_file_path)  # Registrar la ubicación del nuevo archivo
-                messagebox.showinfo("¡Éxito!", f"El archivo '{current_file_name}' se ha guardado en la carpeta '{self.rutaPrincipalGuardado}' con el nuevo nombre '{new_file_name}'.")
+                messagebox.showinfo("¡Éxito!", f"El archivo '{current_file_name}' se ha guardado en la carpeta '{new_folder_path}' con el nuevo nombre '{new_file_name}'.")
             except Exception as e:
-                messagebox.showerror("Error", f"No se pudo guardar el archivo '{current_file_name}' en la carpeta '{self.rutaPrincipalGuardado}': {str(e)}")
+                messagebox.showerror("Error", f"No se pudo guardar el archivo '{current_file_name}' en la carpeta '{new_folder_path}': {str(e)}")
 
         # Mostrar un mensaje al usuario con las ubicaciones originales de los archivos con nuevos nombres
         if new_file_locations:
@@ -272,6 +282,7 @@ class Visualizador:
             messagebox.showinfo("Ubicaciones originales de los archivos con nuevos nombres", f"Las ubicaciones originales de los archivos con nuevos nombres son:\n{original_locations_message}")
 
         messagebox.showinfo("¡Éxito!", "Se han renombrado y guardado los archivos según el archivo Excel en la carpeta de destino seleccionada.")
+
 #endregion rename files
 # ---------------------------------------------------------------------------------------------------------------------
 #region rename folder
@@ -315,6 +326,55 @@ class Visualizador:
 
         messagebox.showinfo("¡Éxito!", "Se han renombrado las carpetas según el archivo Excel.")
 #endregion rename folder
+# ---------------------------------------------------------------------------------------------------------------------
+#region move files
+    def move_files(self):
+            file_path = self.entry_filename.get()
+
+            if not file_path:
+                messagebox.showerror("Error", "¡Selecciona un archivo Excel!")
+                return
+
+            if not file_path.endswith((".xls", ".xlsx")):
+                messagebox.showerror("Error", "El archivo debe ser un archivo Excel.")
+                return
+
+            # Leer el archivo Excel seleccionado
+            try:
+                df = pd.read_excel(file_path)
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo leer el archivo Excel: {str(e)}")
+                return
+
+            # Iterar a través de las filas del DataFrame
+            for index, row in df.iterrows():
+                folder_name = str(row['CARPETA ACTUAL'])
+                file_name = str(row['NOMBRE DE ARCHIVO A MOVER'])
+                dest_folder_name = str(row['CARPETA NUEVA'])
+                new_file_name = str(row['NUEVO NOMBRE ARCHIVO'])
+
+                folder_path = path.join(self.rutaPrincipalBusqueda, folder_name)
+                dest_folder_path = path.join(self.rutaPrincipalGuardado, dest_folder_name)
+                source_file_path = path.join(folder_path, file_name)
+                dest_file_path = path.join(dest_folder_path, new_file_name)
+
+                # Verificar si la carpeta de destino existe, y si no, crearla
+                if not path.exists(dest_folder_path):
+                    try:
+                        makedirs(dest_folder_path)
+                    except Exception as e:
+                        messagebox.showerror("Error", f"No se pudo crear la carpeta de destino '{dest_folder_path}': {str(e)}")
+                        continue
+                    
+                # Mover el archivo a la carpeta de destino con el nuevo nombre
+                try:
+                    move(source_file_path, dest_file_path)
+                    messagebox.showinfo("¡Éxito!", f"El archivo '{file_name}' se ha movido a la carpeta '{dest_folder_name}' con el nuevo nombre '{new_file_name}'.")
+                except Exception as e:
+                    messagebox.showerror("Error", f"No se pudo mover el archivo '{file_name}': {str(e)}")
+
+            messagebox.showinfo("¡Éxito!", "Se han movido los archivos según el archivo Excel en la carpeta de destino seleccionada.")
+#endregion move files
 # ---------------------------------------------------------------------------------------------------------------------
 #region close
     def close(self):
