@@ -96,7 +96,7 @@ class Visualizador:
         self.rename_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.rename_folder_button.place(x=10, y=420)
         
-        self.move_folder_button = tk.Button(self.ventana_principal, text="Mover Carpeta", font=("Arial", 10, "bold"), command=exit, width=18, bg='#b1fac0')
+        self.move_folder_button = tk.Button(self.ventana_principal, text="Mover Carpeta", font=("Arial", 10, "bold"), command=self.move_folders, width=18, bg='#b1fac0')
         self.move_folder_button.bind('<Enter>', lambda e: e.widget.config(bg='#016615'))
         self.move_folder_button.bind('<Leave>', lambda e: e.widget.config(bg='#b1fac0'))
         self.move_folder_button.place(x=430, y=420)
@@ -375,6 +375,34 @@ class Visualizador:
 
             messagebox.showinfo("¡Éxito!", "Se han movido los archivos según el archivo Excel en la carpeta de destino seleccionada.")
 #endregion move files
+# ---------------------------------------------------------------------------------------------------------------------
+#region move folder
+    def move_folders(self):
+        """Moves the selected folders to the specified destination."""
+
+        # Get the selected folder path.
+        selected_folder_path = self.entry_foldername.get()
+
+        # Get the destination folder path.
+        destination_folder_path = self.rutaPrincipalGuardado
+
+        # Create a list of all the subfolders in the selected folder.
+        subfolders = [f for f in listdir(selected_folder_path) if path.isdir(path.join(selected_folder_path, f))]
+
+        # Iterate over the subfolders and move them to the destination folder.
+        for subfolder in subfolders:
+            subfolder_path = path.join(selected_folder_path, subfolder)
+            move(subfolder_path, destination_folder_path)
+
+        # Update the selected folder label.
+        self.selected_folder_label.config(text="Ruta del archivo: {}".format(destination_folder_path))
+
+        # Clear the entry field.
+        self.entry_foldername.delete(0, tk.END)
+
+        # Display a message box to confirm that the folders were moved successfully.
+        messagebox.showinfo("carpetas movidas", "las carpetas se ham movido")
+#endregion move folder
 # ---------------------------------------------------------------------------------------------------------------------
 #region close
     def close(self):
