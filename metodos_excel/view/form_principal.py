@@ -229,6 +229,51 @@ class Visualizador:
         else:
             messagebox.showinfo("Archivos coincidentes", "Se ha procesado")
 #endregion validate files
+
+#region validar 2.0
+    def validate_files_2(self):
+        """Crea un archivo CSV con las carpetas y los archivos que contienen. Cada fila del archivo CSV contiene la siguiente información:
+
+        * Nombre de la carpeta
+        * Lista de archivos que contiene la carpeta
+
+        Args:
+            self (Visualizador): Instancia de la clase Visualizador.
+        """
+
+        # Obtener la ruta de la carpeta seleccionada
+        selected_folder_path = self.entry_foldername.get()
+
+        # Validar que la carpeta exista
+        if not selected_folder_path:
+            messagebox.showerror("Error", "¡Selecciona una carpeta!")
+            return
+
+        # Crear una lista para almacenar las carpetas y archivos
+        carpetas_archivos = []
+
+        # Iterar a través de las subcarpetas de la carpeta seleccionada
+        for subfolder_path, _, filenames in walk(selected_folder_path):
+            # Obtener el nombre de la carpeta
+            folder_name = path.basename(subfolder_path)
+
+            # Crear una lista de archivos que contiene la carpeta
+            file_names = [f for f in filenames if path.isfile(path.join(subfolder_path, f))]
+
+            # Agregar la carpeta y los archivos a la lista
+            carpetas_archivos.append({
+                "Carpeta": folder_name,
+                "Archivos": ",".join(file_names)
+            })
+
+        # Guardar la lista de carpetas y archivos en un archivo CSV
+        df_carpetas_archivos = pd.DataFrame.from_dict(carpetas_archivos)
+        df_carpetas_archivos.to_csv("carpetas_archivos.csv", index=False)
+
+        messagebox.showinfo("¡Éxito!", "Se ha creado el archivo CSV con las carpetas y archivos.")
+        
+#endregion validar 2.0
+
 # ---------------------------------------------------------------------------------------------------------------------
 #region rename files
     def rename_file(self):
@@ -409,49 +454,6 @@ class Visualizador:
         messagebox.showinfo("carpetas movidas", "las carpetas se ham movido")
 #endregion move folder
 # ---------------------------------------------------------------------------------------------------------------------
-#region validar 2.0
-    def validate_files_2(self):
-        """Crea un archivo CSV con las carpetas y los archivos que contienen. Cada fila del archivo CSV contiene la siguiente información:
-
-        * Nombre de la carpeta
-        * Lista de archivos que contiene la carpeta
-
-        Args:
-            self (Visualizador): Instancia de la clase Visualizador.
-        """
-
-        # Obtener la ruta de la carpeta seleccionada
-        selected_folder_path = self.entry_foldername.get()
-
-        # Validar que la carpeta exista
-        if not selected_folder_path:
-            messagebox.showerror("Error", "¡Selecciona una carpeta!")
-            return
-
-        # Crear una lista para almacenar las carpetas y archivos
-        carpetas_archivos = []
-
-        # Iterar a través de las subcarpetas de la carpeta seleccionada
-        for subfolder_path, _, filenames in walk(selected_folder_path):
-            # Obtener el nombre de la carpeta
-            folder_name = path.basename(subfolder_path)
-
-            # Crear una lista de archivos que contiene la carpeta
-            file_names = [f for f in filenames if path.isfile(path.join(subfolder_path, f))]
-
-            # Agregar la carpeta y los archivos a la lista
-            carpetas_archivos.append({
-                "Carpeta": folder_name,
-                "Archivos": ",".join(file_names)
-            })
-
-        # Guardar la lista de carpetas y archivos en un archivo CSV
-        df_carpetas_archivos = pd.DataFrame.from_dict(carpetas_archivos)
-        df_carpetas_archivos.to_csv("carpetas_archivos.csv", index=False)
-
-        messagebox.showinfo("¡Éxito!", "Se ha creado el archivo CSV con las carpetas y archivos.")
-        
-#endregion validar 2.0
 #region close
     def close(self):
         self.ventana_principal.destroy()
