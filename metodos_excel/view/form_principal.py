@@ -418,29 +418,21 @@ class Visualizador:
 # ---------------------------------------------------------------------------------------------------------------------
 #region move folder
     def move_folders(self):
-        """Moves the selected folders to the specified destination."""
 
-        # Get the selected folder path.
         selected_folder_path = self.entry_foldername.get()
 
-        # Get the destination folder path.
         destination_folder_path = self.rutaPrincipalGuardado
 
-        # Create a list of all the subfolders in the selected folder.
         subfolders = [f for f in listdir(selected_folder_path) if path.isdir(path.join(selected_folder_path, f))]
 
-        # Iterate over the subfolders and move them to the destination folder.
         for subfolder in subfolders:
             subfolder_path = path.join(selected_folder_path, subfolder)
             move(subfolder_path, destination_folder_path)
 
-        # Update the selected folder label.
         self.selected_folder_label.config(text="Ruta del archivo: {}".format(destination_folder_path))
 
-        # Clear the entry field.
         self.entry_foldername.delete(0, tk.END)
 
-        # Display a message box to confirm that the folders were moved successfully.
         messagebox.showinfo("carpetas movidas", "las carpetas se ham movido")
 #endregion move folder
 # ---------------------------------------------------------------------------------------------------------------------
