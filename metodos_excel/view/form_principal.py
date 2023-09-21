@@ -124,28 +124,28 @@ class Visualizador:
 # ---------------------------------------------------------------------------------------------------------------------
 #region select file
     def select_file(self):
-        file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
+        file_path = filedialog.askopenfilename(filetypes=[("Archivos CSV y Excel", "*.csv *.xlsx"), ("Todos los archivos", "*.*")])
+        
+        if not file_path:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo .csv o .xlsx")
+            return
+    
         self.entry_filename.delete(0, tk.END)
         self.entry_filename.insert(0, file_path)
-
-        if file_path:
-            folder_name, file_name = path.split(file_path)
-            parent_folder_name = path.basename(path.normpath(folder_name))  # Obtiene el nombre de la última carpeta
-
-            self.selected_file_label.config(text=f"Ruta del archivo: {parent_folder_name}/{file_name}")
-
-            if file_path.endswith(".csv"):
-                df = pd.read_csv(file_path)
-                num_rows = len(df.index)
-                self.label_rows.config(text=f"Número de registros: {num_rows}")
-            elif file_path.endswith(".xlsx"):
-                df = pd.read_excel(file_path)
-                num_rows = len(df.index)
-                self.label_rows.config(text=f"Número de registros: {num_rows}")
-            else:
-                df = pd.read_csv(file_path)
-                num_rows = len(df.index)
-                self.label_rows.config(text=f"Número de registros: {num_rows}")
+        
+        folder_name, file_name = path.split(file_path)
+        parent_folder_name = path.basename(path.normpath(folder_name)) # Obtiene el nombre de la última carpeta
+        self.selected_file_label.config(text=f"Ruta del archivo: {parent_folder_name}/{file_name}")
+        
+        df = None
+        if file_path.endswith(".csv"):
+            df = pd.read_csv(file_path)
+        elif file_path.endswith(".xlsx"):
+            df = pd.read_excel(file_path)
+        
+        if df is not None:
+            num_rows = len(df.index)
+            self.label_rows.config(text=f"Número de registros: {num_rows}")
 #endregion select file
 # ---------------------------------------------------------------------------------------------------------------------
 #region select folder
