@@ -418,22 +418,46 @@ class Visualizador:
 # ---------------------------------------------------------------------------------------------------------------------
 #region move folder
     def move_folders(self):
+        excel_file_path = self.entry_filename.get()
+        dest_folder_path = self.entry_savefolder.get()
 
-        selected_folder_path = self.entry_foldername.get()
+        if not excel_file_path or not dest_folder_path:
+            messagebox.showerror("Error", "Selecciona el archivo Excel y la carpeta de destino.")
+            return
 
-        destination_folder_path = self.rutaPrincipalGuardado
+        if not excel_file_path.endswith(".xlsx"):
+            messagebox.showerror("Error", "El archivo debe ser un archivo Excel (.xlsx).")
+            return
 
-        subfolders = [f for f in listdir(selected_folder_path) if path.isdir(path.join(selected_folder_path, f))]
+        if not path.exists(excel_file_path):
+            messagebox.showerror("Error", "El archivo Excel seleccionado no existe.")
+            return
 
-        for subfolder in subfolders:
-            subfolder_path = path.join(selected_folder_path, subfolder)
-            move(subfolder_path, destination_folder_path)
+        if not path.exists(dest_folder_path):
+            messagebox.showerror("Error", "La carpeta de destino seleccionada no existe.")
+            return
 
-        self.selected_folder_label.config(text="Ruta del archivo: {}".format(destination_folder_path))
+        # Leer el archivo Excel y obtener la lista de carpetas a mover
+        try:
+            df = pd.read_excel(excel_file_path)
+            folder_names = df['Carpeta a Mover'].tolist()
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo leer el archivo Excel: {str(e)}")
+            return
 
-        self.entry_foldername.delete(0, tk.END)
+        # Mover las carpetas a la carpeta de destino
+        for folder_name in folder_names:
+            src_folder_path = path.join(self.rutaPrincipalBusqueda, str(folder_name))
+            dest_folder_path = path.join(self.rutaPrincipalGuardado, str(folder_name))
 
-        messagebox.showinfo("carpetas movidas", "las carpetas se ham movido")
+            if path.exists(src_folder_path):
+                try:
+                    shutil.move(src_folder_path, dest_folder_path)
+                    messagebox.showinfo("Éxito", f"La carpeta '{folder_name}' se ha movido a '{dest_folder_path}'.")
+                except Exception as e:
+                    messagebox.showerror("Error", f"No se pudo mover la carpeta '{folder_name}': {str(e)}")
+            else:
+                messagebox.showwarning("Advertencia", f"La carpeta '{folder_name}' no existe en la ubicación de origen.")
 #endregion move folder
 # ---------------------------------------------------------------------------------------------------------------------
 #region close
