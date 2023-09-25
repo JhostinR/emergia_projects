@@ -1,25 +1,35 @@
-import unittest
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-class PythonOrgSearch(unittest.TestCase):
+from bs4 import BeautifulSoup
 
-    def setUp(self):
-        self.driver = webdriver.Firefox()
+from time import sleep
+# PATH = "C:\DRIVER\geckodriver.exe"
+driver = webdriver.Firefox()
 
-    def test_search_in_python_org(self):
-        driver = self.driver
-        driver.get("http://www.python.org")
-        self.assertIn("Python", driver.title)
-        elem = driver.find_element(By.NAME, "q")
-        elem.send_keys("pycon")
-        elem.send_keys(Keys.RETURN)
-        self.assertNotIn("No results found.", driver.page_source)
+driver.get("https://www.mercadolibre.com.co/")
+print(driver.title)
+elem = driver.find_element(By.CLASS_NAME, "nav-search-input")
+elem.clear()
+elem.send_keys("monitor")
+elem.send_keys(Keys.ENTER)
+sleep(1)
 
+esperarBusqueda = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '/html/body/main/div/div[2]/section/ol')))
 
-    def tearDown(self):
-        self.driver.close()
+laVariableQueValidaPresencia = driver.find_element(By.XPATH, "")
+contenidoHTMLDeLaVariable = laVariableQueValidaPresencia.get_attribute('outerHTML')
+HTMLParseado = BeautifulSoup(contenidoHTMLDeLaVariable, 'html.parser')
 
-if __name__ == "__main__":
-    unittest.main()
+contenidoBase = driver.find_element(By.XPATH, '/html/body/main/div/div[2]/section/ol')
+htmlConvertido = BeautifulSoup(contenidoBase, 'html.parser')
+print(htmlConvertido)
+
+print("Lo encontró")
+
+# print(elem.find_element(By.CLASS_NAME, "ui-search-layout ui-search-layout--stack shops__layout"))
+# elem.clear()
+driver.close()
