@@ -20,16 +20,15 @@ sleep(1)
 
 esperarBusqueda = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '/html/body/main/div/div[2]/section/ol')))
 
-laVariableQueValidaPresencia = driver.find_element(By.XPATH, "")
-contenidoHTMLDeLaVariable = laVariableQueValidaPresencia.get_attribute('outerHTML')
-HTMLParseado = BeautifulSoup(contenidoHTMLDeLaVariable, 'html.parser')
+# laVariableQueValidaPresencia = driver.find_element(By.XPATH, "")
+# contenidoHTMLDeLaVariable = laVariableQueValidaPresencia.get_attribute('outerHTML')
+# HTMLParseado = BeautifulSoup(contenidoHTMLDeLaVariable, 'html.parser')
 
 contenidoBase = driver.find_element(By.XPATH, '/html/body/main/div/div[2]/section/ol')
-htmlConvertido = BeautifulSoup(contenidoBase, 'html.parser')
+contenidoHTML = contenidoBase.get_attribute('outerHTML')
+htmlConvertido = BeautifulSoup(contenidoHTML, 'html.parser')
 print(htmlConvertido)
 
 print("Lo encontró")
 
-# print(elem.find_element(By.CLASS_NAME, "ui-search-layout ui-search-layout--stack shops__layout"))
-# elem.clear()
 driver.close()
