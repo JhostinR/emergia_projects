@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
+import pandas as pd
 
 # Inicializar el navegador web (Firefox en este caso)
 driver = webdriver.Firefox()
@@ -34,7 +35,7 @@ resultados = soup.find_all("div", class_="ui-search-result__content-wrapper")
 for resultado in resultados:
     nombre = resultado.find("h2", class_="ui-search-item__title").text.strip()
     precio = resultado.find("span", class_="andes-money-amount__fraction").text.strip()
-    cuotas_element = resultado.find("div", class_="ui-search-price__second-line__label")
+    cuotas_element = resultado.find("span", class_="ui-search-item__group__element shops__items-group-details ui-search-installments ui-search-color--BLACK")
     cuotas = cuotas_element.text.strip() if cuotas_element else "No disponible"
     puntuacion_element = resultado.find("span", class_="ui-search-reviews__rating-number")
     puntuacion = puntuacion_element.text.strip() if puntuacion_element else "Sin puntuación"
@@ -52,6 +53,10 @@ for resultado in resultados:
 # Cerrar el navegador
 driver.quit()
 
+
 # Imprimir la lista de monitores
 for monitor in monitores:
     print(monitor)
+
+df = pd.DataFrame(monitores)
+df.to_excel("monitores.xlsx")

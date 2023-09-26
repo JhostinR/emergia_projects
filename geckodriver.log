@@ -1,0 +1,370 @@
+1695733334563	geckodriver	INFO	Listening on 127.0.0.1:58729
+1695733337668	mozrunner::runner	INFO	Running command: "C:\\Users\\fjarangor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileBNvsS3"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695733340129	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1695733340281	Marionette	INFO	Listening on port 58741
+WebDriver BiDi listening on ws://127.0.0.1:58730
+Read port: 58741
+1695733340692	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileBNvsS3" "" 0 ".purge.bg_rm" ""
+console.warn: "Skipping Glean as no metrics id is passed"
+DevTools listening on ws://127.0.0.1:58730/devtools/browser/734fc95a-c641-4b90-ade0-e9c76bfe5d31
+console.error: Region.sys.mjs: "Error fetching region" (new Error("TIMEOUT", "resource://gre/modules/Region.sys.mjs", 759))
+console.error: Region.sys.mjs: "Failed to fetch region" (new Error("TIMEOUT", "resource://gre/modules/Region.sys.mjs", 411))
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://www.mercadolibre.com.co."
+1695733373336	Marionette	INFO	Stopped listening on port 58741
+Dynamically enable window occlusion 1
+1695733373893	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, channelStatus: 2147500036, errorCode: 2, reason: error
+console.error: services.settings: 
+  Message: NetworkError: Network error: TypeError: NetworkError: Network request failed
+  Stack:
+    APIError@resource://services-settings/RemoteSettingsClient.sys.mjs:107:1
+NetworkError@resource://services-settings/RemoteSettingsClient.sys.mjs:111:5
+_adjustedError@resource://services-settings/RemoteSettingsClient.sys.mjs:907:14
+maybeSync@resource://services-settings/RemoteSettingsClient.sys.mjs:812:38
+
+console.warn: services.settings: main/devtools-devices sync interrupted by shutdown
+console.warn: services.settings: main/websites-with-shared-credential-backends sync interrupted by shutdown
+!!! error running onStopped callback: TypeError: callback is not a function
+console.error: (new NetworkError("Network error: TypeError: NetworkError: Network request failed", "resource://services-settings/RemoteSettingsClient.sys.mjs", 107))
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileBNvsS3\\storage" "to-be-removed" 0 "" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileBNvsS3\\storage\\to-be-removed"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileBNvsS3\\storage\\to-be-removed. removed 6 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileBNvsS3" "cache2.2023-09-26-13-02-54.purge.bg_rm" 10 ".purge.bg_rm" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileBNvsS3\\cache2.2023-09-26-13-02-54.purge.bg_rm"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileBNvsS3\\cache2.2023-09-26-13-02-54.purge.bg_rm. removed 98 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+1695733515024	geckodriver	INFO	Listening on 127.0.0.1:59016
+1695733518104	mozrunner::runner	INFO	Running command: "C:\\Users\\fjarangor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileWAfs89"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695733518644	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1695733518763	Marionette	INFO	Listening on port 59026
+WebDriver BiDi listening on ws://127.0.0.1:59017
+Read port: 59026
+1695733519068	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileWAfs89" "" 0 ".purge.bg_rm" ""
+console.warn: "Skipping Glean as no metrics id is passed"
+DevTools listening on ws://127.0.0.1:59017/devtools/browser/fae82c46-2f5c-4c15-a4fc-18d824f4f20c
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://www.mercadolibre.com.co."
+1695733529419	Marionette	INFO	Stopped listening on port 59026
+Dynamically enable window occlusion 1
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileWAfs89\\storage" "to-be-removed" 0 "" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileWAfs89\\storage\\to-be-removed"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileWAfs89\\storage\\to-be-removed. removed 11 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileWAfs89" "cache2.2023-09-26-13-05-30.purge.bg_rm" 10 ".purge.bg_rm" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileWAfs89\\cache2.2023-09-26-13-05-30.purge.bg_rm"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileWAfs89\\cache2.2023-09-26-13-05-30.purge.bg_rm. removed 2 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+1695736720684	geckodriver	INFO	Listening on 127.0.0.1:60845
+1695736723820	mozrunner::runner	INFO	Running command: "C:\\Users\\fjarangor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileRQzLsU"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695736724397	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1695736724551	Marionette	INFO	Listening on port 60856
+Read port: 60856
+WebDriver BiDi listening on ws://127.0.0.1:60846
+1695736724829	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileRQzLsU" "" 0 ".purge.bg_rm" ""
+console.warn: "Skipping Glean as no metrics id is passed"
+DevTools listening on ws://127.0.0.1:60846/devtools/browser/5953cd27-3b30-4e4e-bf9b-461e306a121a
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://www.mercadolibre.com.co."
+1695736738618	Marionette	INFO	Stopped listening on port 60856
+JavaScript warning: https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js, line 1: Script terminated by timeout at:
+l@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425619
+4650@https://http2.mlstatic.com/frontend-assets/search-nordic/2533.a3b7620a.js:1:169649
+o@https://http2.mlstatic.com/frontend-assets/search-nordic/2533.a3b7620a.js:1:170607
+545@https://http2.mlstatic.com/frontend-assets/search-nordic/2533.a3b7620a.js:1:138287
+o@https://http2.mlstatic.com/frontend-assets/search-nordic/2533.a3b7620a.js:1:170607
+47522/<@https://http2.mlstatic.com/frontend-assets/search-nordic/2533.a3b7620a.js:1:171101
+47522@https://http2.mlstatic.com/frontend-assets/search-nordic/2533.a3b7620a.js:1:171127
+l@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425706
+50377@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:240124
+l@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425706
+42030@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:246971
+l@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425706
+98533@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:307365
+l@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425706
+16159@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:193967
+l@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425706
+81090@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:199814
+l@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425706
+56527@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:411335
+l@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425706
+32155@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:150
+l@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425706
+i<@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:430146
+l.O@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:425988
+t@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:429897
+@https://http2.mlstatic.com/frontend-assets/search-nordic/7418.c57ccfad.js:2:71
+
+Dynamically enable window occlusion 1
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileRQzLsU\\storage" "to-be-removed" 0 "" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileRQzLsU\\storage\\to-be-removed"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileRQzLsU\\storage\\to-be-removed. removed 11 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileRQzLsU" "cache2.2023-09-26-13-58-59.purge.bg_rm" 10 ".purge.bg_rm" ""
+console.error: "Cache folder attempt no 1"
+console.error: "Cache folder attempt no 2"
+console.error: "Cache folder attempt no 3"
+console.error: "Cache folder attempt no 4"
+console.error: "Cache folder attempt no 5"
+console.error: "Cache folder attempt no 6"
+console.error: "Cache folder attempt no 7"
+console.error: "Cache folder attempt no 8"
+console.error: "Cache folder attempt no 9"
+console.error: "Cache folder attempt no 10"
+console.error: "Cache folder attempt no 11"
+console.error: "couldn't find cache folder C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileRQzLsU\\cache2.2023-09-26-13-58-59.purge.bg_rm"
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: BackgroundTasksManager: 
+  Backgroundtask named 'removeDirectory' threw exception
+  Message: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [nsIFile.directoryEntries]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/backgroundtasks/BackgroundTask_removeDirectory.sys.mjs :: cleanupOtherDirectories :: line 206"  data: no]
+  Stack:
+    cleanupOtherDirectories@resource://gre/modules/backgroundtasks/BackgroundTask_removeDirectory.sys.mjs:206:17
+runBackgroundTask@resource://gre/modules/backgroundtasks/BackgroundTask_removeDirectory.sys.mjs:327:11
+
+1695736923567	geckodriver	INFO	Listening on 127.0.0.1:61094
+1695736926781	mozrunner::runner	INFO	Running command: "C:\\Users\\fjarangor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile0QtUqk"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695736927293	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1695736927416	Marionette	INFO	Listening on port 61105
+WebDriver BiDi listening on ws://127.0.0.1:61095
+Read port: 61105
+1695736927606	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile0QtUqk" "" 0 ".purge.bg_rm" ""
+console.warn: "Skipping Glean as no metrics id is passed"
+DevTools listening on ws://127.0.0.1:61095/devtools/browser/d0ee99cb-a933-4192-bf6e-4c3dc4cf8b66
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://www.mercadolibre.com.co."
+1695736934787	Marionette	INFO	Stopped listening on port 61105
+JavaScript warning: https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js, line 2: Script terminated by timeout at:
+K@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:80202
+dr@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:101998
+hr@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:102404
+Ss/<@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:181867
+Ss@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:182416
+ls@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:174915
+S@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:208363
+R@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:208894
+
+Dynamically enable window occlusion 1
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile0QtUqk\\storage" "to-be-removed" 0 "" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile0QtUqk\\storage\\to-be-removed"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile0QtUqk\\storage\\to-be-removed. removed 11 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile0QtUqk" "cache2.2023-09-26-14-02-15.purge.bg_rm" 10 ".purge.bg_rm" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile0QtUqk\\cache2.2023-09-26-14-02-15.purge.bg_rm"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile0QtUqk\\cache2.2023-09-26-14-02-15.purge.bg_rm. removed 35 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+1695737000944	geckodriver	INFO	Listening on 127.0.0.1:61271
+1695737004041	mozrunner::runner	INFO	Running command: "C:\\Users\\fjarangor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecKpGij"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695737004565	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1695737004687	Marionette	INFO	Listening on port 61283
+WebDriver BiDi listening on ws://127.0.0.1:61272
+Read port: 61283
+1695737004987	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecKpGij" "" 0 ".purge.bg_rm" ""
+console.warn: "Skipping Glean as no metrics id is passed"
+DevTools listening on ws://127.0.0.1:61272/devtools/browser/2a3f34eb-1438-4205-8701-b620f5cf7082
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://www.mercadolibre.com.co."
+1695737012383	Marionette	INFO	Stopped listening on port 61283
+JavaScript warning: https://listado.mercadolibre.com.co/monitor#D[A:monitor] line 5 > injectedScript, line 79: Script terminated by timeout at:
+imageLazyLoading/lazyImageObserver<@https://listado.mercadolibre.com.co/monitor#D[A:monitor] line 5 > injectedScript:79:17
+
+JavaScript warning: https://connect.facebook.net/en_US/fbevents.js, line 24: Script terminated by timeout at:
+n@https://connect.facebook.net/en_US/fbevents.js:24:2264
+a@https://connect.facebook.net/en_US/fbevents.js:24:85076
+B@https://connect.facebook.net/signals/config/320061471494422?v=2.9.129&r=stable&domain=listado.mercadolibre.com.co:100:2200
+E@https://connect.facebook.net/signals/config/320061471494422?v=2.9.129&r=stable&domain=listado.mercadolibre.com.co:100:3055
+e.exports</</<@https://connect.facebook.net/signals/config/320061471494422?v=2.9.129&r=stable&domain=listado.mercadolibre.com.co:100:4109
+
+Dynamically enable window occlusion 1
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecKpGij\\storage" "to-be-removed" 0 "" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecKpGij\\storage\\to-be-removed"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecKpGij\\storage\\to-be-removed. removed 11 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecKpGij" "cache2.2023-09-26-14-03-33.purge.bg_rm" 10 ".purge.bg_rm" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecKpGij\\cache2.2023-09-26-14-03-33.purge.bg_rm"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecKpGij\\cache2.2023-09-26-14-03-33.purge.bg_rm. removed 75 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+1695737030599	geckodriver	INFO	Listening on 127.0.0.1:61441
+1695737033685	mozrunner::runner	INFO	Running command: "C:\\Users\\fjarangor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileeoC5V9"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695737034205	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1695737034325	Marionette	INFO	Listening on port 61452
+WebDriver BiDi listening on ws://127.0.0.1:61442
+Read port: 61452
+1695737034624	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileeoC5V9" "" 0 ".purge.bg_rm" ""
+console.warn: "Skipping Glean as no metrics id is passed"
+DevTools listening on ws://127.0.0.1:61442/devtools/browser/c632ae11-8690-446d-affc-cf12cc30bddc
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://www.mercadolibre.com.co."
+1695737041141	Marionette	INFO	Stopped listening on port 61452
+JavaScript warning: https://http2.mlstatic.com/frontend-assets/search-nordic/6925.22e35a21.js, line 2: Script terminated by timeout at:
+23174/e.exports@https://http2.mlstatic.com/frontend-assets/search-nordic/6925.22e35a21.js:2:369455
+value/<@https://http2.mlstatic.com/frontend-assets/search-nordic/254.e0696462.js:1:30714
+Ei@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:193123
+ks@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:179040
+ys@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:178968
+vs@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:178829
+ls@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:173961
+S@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:208363
+R@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:208894
+
+Dynamically enable window occlusion 1
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileeoC5V9\\storage" "to-be-removed" 0 "" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileeoC5V9\\storage\\to-be-removed"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileeoC5V9\\storage\\to-be-removed. removed 11 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileeoC5V9" "cache2.2023-09-26-14-04-01.purge.bg_rm" 10 ".purge.bg_rm" ""
+console.error: "Cache folder attempt no 1"
+console.error: "Cache folder attempt no 2"
+console.error: "Cache folder attempt no 3"
+console.error: "Cache folder attempt no 4"
+console.error: "Cache folder attempt no 5"
+console.error: "Cache folder attempt no 6"
+console.error: "Cache folder attempt no 7"
+console.error: "Cache folder attempt no 8"
+console.error: "Cache folder attempt no 9"
+console.error: "Cache folder attempt no 10"
+console.error: "Cache folder attempt no 11"
+console.error: "couldn't find cache folder C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofileeoC5V9\\cache2.2023-09-26-14-04-01.purge.bg_rm"
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: BackgroundTasksManager: 
+  Backgroundtask named 'removeDirectory' threw exception
+  Message: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [nsIFile.directoryEntries]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/backgroundtasks/BackgroundTask_removeDirectory.sys.mjs :: cleanupOtherDirectories :: line 206"  data: no]
+  Stack:
+    cleanupOtherDirectories@resource://gre/modules/backgroundtasks/BackgroundTask_removeDirectory.sys.mjs:206:17
+runBackgroundTask@resource://gre/modules/backgroundtasks/BackgroundTask_removeDirectory.sys.mjs:327:11
+
+1695737857324	geckodriver	INFO	Listening on 127.0.0.1:62034
+1695737860413	mozrunner::runner	INFO	Running command: "C:\\Users\\fjarangor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecCuctg"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695737860959	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1695737861085	Marionette	INFO	Listening on port 62042
+WebDriver BiDi listening on ws://127.0.0.1:62035
+Read port: 62042
+1695737861391	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecCuctg" "" 0 ".purge.bg_rm" ""
+console.warn: "Skipping Glean as no metrics id is passed"
+DevTools listening on ws://127.0.0.1:62035/devtools/browser/7e14564c-7d7e-4f26-9eca-ae41579db5bb
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://www.mercadolibre.com.co."
+1695737884756	Marionette	INFO	Stopped listening on port 62042
+JavaScript warning: https://http2.mlstatic.com/storage/melidata-js-sdk/js/3/0.4.3/melidata.min.js, line 1: Script terminated by timeout at:
+doSend@https://http2.mlstatic.com/storage/melidata-js-sdk/js/3/0.4.3/melidata.min.js:1:18952
+sendTrackFromBrowser/<@https://http2.mlstatic.com/storage/melidata-js-sdk/js/3/0.4.3/melidata.min.js:1:17900
+
+Dynamically enable window occlusion 1
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecCuctg\\storage" "to-be-removed" 0 "" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecCuctg\\storage\\to-be-removed"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecCuctg\\storage\\to-be-removed. removed 6 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecCuctg" "cache2.2023-09-26-14-18-05.purge.bg_rm" 10 ".purge.bg_rm" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecCuctg\\cache2.2023-09-26-14-18-05.purge.bg_rm"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofilecCuctg\\cache2.2023-09-26-14-18-05.purge.bg_rm. removed 96 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+1695737909696	geckodriver	INFO	Listening on 127.0.0.1:62216
+1695737912764	mozrunner::runner	INFO	Running command: "C:\\Users\\fjarangor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port ... "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile9aUhuW"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1695737913278	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1695737913399	Marionette	INFO	Listening on port 62227
+WebDriver BiDi listening on ws://127.0.0.1:62217
+Read port: 62227
+1695737913703	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile9aUhuW" "" 0 ".purge.bg_rm" ""
+console.warn: "Skipping Glean as no metrics id is passed"
+DevTools listening on ws://127.0.0.1:62217/devtools/browser/e369371c-00f9-42ac-bde0-65af7ab0a2a4
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://www.mercadolibre.com.co."
+1695737919745	Marionette	INFO	Stopped listening on port 62227
+JavaScript warning: https://http2.mlstatic.com/frontend-assets/search-nordic/6925.22e35a21.js, line 2: Script terminated by timeout at:
+55514/a<@https://http2.mlstatic.com/frontend-assets/search-nordic/6925.22e35a21.js:2:350893
+71811/e.exports@https://http2.mlstatic.com/frontend-assets/search-nordic/6925.22e35a21.js:2:350156
+97786/e.exports@https://http2.mlstatic.com/frontend-assets/search-nordic/6925.22e35a21.js:2:349830
+27361/e.exports@https://http2.mlstatic.com/frontend-assets/search-nordic/6925.22e35a21.js:2:351097
+normalizePictureData@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:232040
+J/<@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:221459
+J@https://http2.mlstatic.com/frontend-assets/search-nordic/search.desktop.4852235f.js:1:221441
+Eo@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:133031
+Ei@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:189886
+ks@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:179040
+ys@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:178968
+vs@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:178829
+ls@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:173961
+S@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:208363
+R@https://http2.mlstatic.com/frontend-assets/search-nordic/framework.fd19a95e.js:2:208894
+
+Dynamically enable window occlusion 1
+!!! error running onStopped callback: TypeError: callback is not a function
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+*** You are running in background task mode. ***
+*** You are running in headless mode.
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile9aUhuW\\storage" "to-be-removed" 0 "" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile9aUhuW\\storage\\to-be-removed"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile9aUhuW\\storage\\to-be-removed. removed 11 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
+console.error: "C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile9aUhuW" "cache2.2023-09-26-14-18-40.purge.bg_rm" 10 ".purge.bg_rm" ""
+console.error: "started removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile9aUhuW\\cache2.2023-09-26-14-18-40.purge.bg_rm"
+console.error: "done removing C:\\Users\\FJARAN~1\\AppData\\Local\\Temp\\rust_mozprofile9aUhuW\\cache2.2023-09-26-14-18-40.purge.bg_rm. removed 25 entries."
+console.warn: "Skipping Glean as no metrics id is passed"
