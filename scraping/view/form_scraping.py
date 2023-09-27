@@ -34,11 +34,12 @@ resultados = soup.find_all("div", class_="ui-search-result__content-wrapper")
 
 for resultado in resultados:
     nombre = resultado.find("h2", class_="ui-search-item__title").text.strip()
-    precio = resultado.find("span", class_="andes-money-amount__fraction").text.strip()
+    precio_element = resultado.find("div", class_="ui-search-price")
+    precio = precio_element.find("span", class_="andes-money-amount__fraction").text.strip() if precio_element else "No disponible"
     cuotas_element = resultado.find("span", class_="ui-search-item__group__element shops__items-group-details ui-search-installments ui-search-color--BLACK")
-    cuotas = cuotas_element.text.strip() if cuotas_element else "No disponible"
+    cuotas = cuotas_element.text.strip().replace("en", "").replace("x", "x $").replace("pesos", "") if cuotas_element else "No disponible"
     cuotas_interes = resultado.find("span", class_="ui-search-item__group__element shops__items-group-details ui-search-installments ui-search-color--LIGHT_GREEN")
-    cuotas_sin_interes = cuotas_interes.text.strip() if cuotas_interes else "No disponible"
+    cuotas_sin_interes = cuotas_interes.text.strip().replace("en", "").replace("x", "x $").replace("pesos", "") if cuotas_interes else "No disponible"
     puntuacion_element = resultado.find("span", class_="ui-search-reviews__rating-number")
     puntuacion = puntuacion_element.text.strip() if puntuacion_element else "Sin puntuación"
     
