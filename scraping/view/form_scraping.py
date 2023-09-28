@@ -56,6 +56,20 @@ for resultado in resultados:
 
 # Cerrar el navegador
 driver.quit()
+for monitor in monitores:
+    for key,value in monitor.items():
+        if (key == "Cuotas" or key == "Cuotas sin interes") and value == "No disponible":
+            pass
+        elif key == "Cuotas":
+            valorLista = value.split("$")
+            print(valorLista)
+            value = f"{valorLista[0]}${valorLista[-1]}"
+            print(f"este es el valor nuevo {value}")
+            monitor[key] = value
+        elif key == "Cuotas sin interes":
+            valorLista = value.split("$")
+            value = f"{valorLista[0]}${valorLista[-1]}"
+            monitor[key] = value
 
 # Imprimir la lista de monitores
 for monitor in monitores:
