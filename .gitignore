@@ -1,4 +1,4 @@
 *.pyc
 *.xlsx
 */pycache
-.log
+*.log
