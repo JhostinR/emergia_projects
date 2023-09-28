@@ -39,7 +39,7 @@ for resultado in resultados:
     cuotas_element = resultado.find("span", class_="ui-search-item__group__element shops__items-group-details ui-search-installments ui-search-color--BLACK")
     cuotas = cuotas_element.text.strip().replace("en", "").replace("x", "x $").replace("pesos", "") if cuotas_element else "No disponible"
     cuotas_interes = resultado.find("span", class_="ui-search-item__group__element shops__items-group-details ui-search-installments ui-search-color--LIGHT_GREEN")
-    cuotas_sin_interes = cuotas_interes.text.strip().replace("en", "").replace("x", "x $").replace("pesos", "") if cuotas_interes else "No disponible"
+    cuotas_sin_interes = cuotas_interes.text.strip().replace("en", "").replace("x", "x $").replace("pesos", "").replace("sin interés", " sin interés") if cuotas_interes else "No disponible"
     puntuacion_element = resultado.find("span", class_="ui-search-reviews__rating-number")
     puntuacion = puntuacion_element.text.strip() if puntuacion_element else "Sin puntuación"
     
@@ -62,9 +62,7 @@ for monitor in monitores:
             pass
         elif key == "Cuotas":
             valorLista = value.split("$")
-            print(valorLista)
             value = f"{valorLista[0]}${valorLista[-1]}"
-            print(f"este es el valor nuevo {value}")
             monitor[key] = value
         elif key == "Cuotas sin interes":
             valorLista = value.split("$")
