@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import pandas as pd
 
-# Inicializar el navegador web (Firefox en este caso)
+# Inicializar el navegador web
 driver = webdriver.Firefox()
 driver.get("https://www.mercadolibre.com.co/")
 
@@ -56,6 +56,7 @@ for resultado in resultados:
 
 # Cerrar el navegador
 driver.quit()
+
 for monitor in monitores:
     for key,value in monitor.items():
         if (key == "Cuotas" or key == "Cuotas sin interes") and value == "No disponible":
