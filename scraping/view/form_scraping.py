@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import pandas as pd
+import os
 
 # Inicializar el navegador web
 driver = webdriver.Firefox()
@@ -75,4 +76,6 @@ for monitor in monitores:
     print(monitor)
 
 df = pd.DataFrame(monitores)
-df.to_excel("monitores.xlsx")
+df.to_excel("monitores.xlsx", sheet_name="Monitores")
+
+os.system('monitores.xlsx')
