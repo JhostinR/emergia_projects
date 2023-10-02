@@ -21,7 +21,7 @@ class DatosProcessor:
     
     def guardar_en_excel(self, filename):
         df = pd.DataFrame(self.datos)
-        df.to_excel(filename, sheet_name="Monitores")
+        df.to_excel(filename, sheet_name="Monitores", index=False)
     
     def abrir_excel(self, filename):
         system(filename)
