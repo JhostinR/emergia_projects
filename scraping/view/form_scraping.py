@@ -58,6 +58,7 @@ for resultado in resultados:
 # Cerrar el navegador
 driver.quit()
 
+# Formatear los valores de las cuotas y cuotas sin interés
 for monitor in monitores:
     for key,value in monitor.items():
         if (key == "Cuotas" or key == "Cuotas sin interes") and value == "No disponible":
@@ -75,7 +76,10 @@ for monitor in monitores:
 for monitor in monitores:
     print(monitor)
 
+# Crear un DataFrame y guardar en un archivo Excel
 df = pd.DataFrame(monitores)
 df.to_excel("monitores.xlsx", sheet_name="Monitores")
 
+
+# Abrir el archivo Excel
 os.system('monitores.xlsx')

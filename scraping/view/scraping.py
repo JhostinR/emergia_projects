@@ -18,16 +18,17 @@ search_box.send_keys("monitor")
 search_box.send_keys(Keys.ENTER)
 
 # Esperar a que se carguen los resultados de búsqueda
-element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '/html/body/main/div/div[2]/section/ol')))
+esperarBusqueda = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '/html/body/main/div/div[2]/section/ol')))
 
 # Obtener el contenido HTML de los resultados de búsqueda
-html_content = element.get_attribute('outerHTML')
+contenidoBase = driver.find_element(By.XPATH, '/html/body/main/div/div[2]/section/ol')
+contenidoHTML = contenidoBase.get_attribute('outerHTML')
 
 # Parsear el contenido HTML con BeautifulSoup
-soup = BeautifulSoup(html_content, 'html.parser')
+soup = BeautifulSoup(contenidoHTML, 'html.parser')
 
 # Crear una lista para almacenar los datos de los monitores
-monitors = []
+monitores = []
 
 # Iterar a través de los elementos de resultados y extraer la información
 resultados = soup.find_all("div", class_="ui-search-result__content-wrapper")
@@ -42,38 +43,40 @@ for resultado in resultados:
     cuotas_sin_interes = cuotas_interes.text.strip().replace("en", "").replace("x", "x $").replace("pesos", "").replace("sin interés", " sin interés") if cuotas_interes else "No disponible"
     puntuacion_element = resultado.find("span", class_="ui-search-reviews__rating-number")
     puntuacion = puntuacion_element.text.strip() if puntuacion_element else "Sin puntuación"
-
+    
     # Agregar los datos del monitor a la lista
     monitor = {
         "Nombre": nombre,
         "Precio": precio,
         "Cuotas": cuotas,
-        "Cuotas sin interes": cuotas_sin_interes,
+        "Cuotas sin interes" : cuotas_sin_interes,
         "Puntuación": puntuacion
     }
-
-    monitors.append(monitor)
+    
+    monitores.append(monitor)
 
 # Cerrar el navegador
 driver.quit()
 
-# Limpiar los datos de las cuotas
-for monitor in monitors:
-    for key, value in monitor.items():
-        if (key == "Cuotas" or key == "Cuotas sin interes") and value == "No disponible":
-            pass
-        elif key == "Cuotas":
-            value_list = value.split("$")
-            value = f"{value_list[0]}${value_list[-1]}"
-            monitor[key] = value
-        elif key == "Cuotas sin interes":
-            value_list = value.split("$")
-            value = f"{value_list[0]}${value_list[-1]}"
-            monitor[key] = value
+# Función para formatear el valor de las cuotas
+def formatear_cuotas(cuotas):
+    if cuotas != "No disponible":
+        cuotas = cuotas.replace("x $", "").replace(",", "").strip()
+        return f"${cuotas}"
+    return cuotas
 
-# Guardar los datos en un archivo Excel
-df = pd.DataFrame(monitors)
-df.to_excel("monitores.xlsx", sheet_name="Monitores")
+# Formatear los valores de las cuotas
+for monitor in monitores:
+    monitor["Cuotas"] = formatear_cuotas(monitor["Cuotas"])
+    monitor["Cuotas sin interes"] = formatear_cuotas(monitor["Cuotas sin interes"])
+
+# Imprimir la lista de monitores
+for monitor in monitores:
+    print(monitor)
+
+# Crear un DataFrame y guardar en un archivo Excel
+df = pd.DataFrame(monitores)
+df.to_excel("monitores.xlsx", sheet_name="Monitores", index=False)
 
 # Abrir el archivo Excel
 os.system('monitores.xlsx')
