@@ -1,7 +1,7 @@
 # En tu script principal (main.py o como desees llamarlo)
-from Selenium import SeleniumDriver
-from MercadoLibre import MercadoLibreScraper
-from ProcesadorDatos import DatosProcessor
+from controller.Selenium import SeleniumDriver
+from controller.MercadoLibre import MercadoLibreScraper
+from controller.ProcesadorDatos import DatosProcessor
 
 # Inicializa el controlador Selenium
 driver = SeleniumDriver().get_driver()
