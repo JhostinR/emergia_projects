@@ -1,8 +1,11 @@
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
 class SeleniumDriver:
     def __init__(self):
-        self.driver = webdriver.Firefox()
+        options = Options()
+        options.headless = True
+        self.driver = webdriver.Firefox(options=options)
     
     def get_driver(self):
         return self.driver
