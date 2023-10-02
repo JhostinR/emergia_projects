@@ -1,6 +1,0 @@
-https://www.ionos.es/digitalguide/paginas-web/desarrollo-web/clean-code-que-es-el-codigo-limpio/
-Esto es Clean Code
-
-Traten de separar todo
-
-Nosotros en la arq que manejamos tenemos un archivo llamado Selenium.py, y ese archivo lo único que hace es instanciar el driver de Selenium, no hace nada mas, en otro archivo llamado como la página que se automatiza, en su caso sería (MercadoLibre.py) todo lo de navegación en mercado libre, y por último, la clase o archivo pues, encargado de limpiar los datos, y crear el excel
