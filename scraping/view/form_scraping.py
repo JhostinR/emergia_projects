@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import pandas as pd
-import os
+from os import system
 
 # Inicializar el navegador web
 driver = webdriver.Firefox()
@@ -82,4 +82,4 @@ df.to_excel("monitores.xlsx", sheet_name="Monitores")
 
 
 # Abrir el archivo Excel
-os.system('monitores.xlsx')
+system('monitores.xlsx')

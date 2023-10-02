@@ -1,5 +1,5 @@
 import pandas as pd
-import os
+from os import system
 
 class DatosProcessor:
     def __init__(self, datos):
@@ -24,4 +24,4 @@ class DatosProcessor:
         df.to_excel(filename, sheet_name="Monitores")
     
     def abrir_excel(self, filename):
-        os.system(filename)
+        system(filename)
