@@ -17,9 +17,9 @@ datos = scraper.parsear_resultados(contenidoHTML)
 driver.quit()
 
 # Procesa los datos y los guarda en un archivo Excel
-processor = DatosProcessor(datos)
-processor.formatear_valores()
-processor.guardar_en_excel("monitores.xlsx")
+procesador = DatosProcessor(datos)
+procesador.formatear_valores()
+procesador.guardar_en_excel("monitores.xlsx")
 
 # Abre el archivo Excel
-processor.abrir_excel("monitores.xlsx")
+procesador.abrir_excel("monitores.xlsx")
